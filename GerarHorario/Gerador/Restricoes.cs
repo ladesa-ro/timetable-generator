@@ -1,15 +1,12 @@
-using System.ComponentModel.Design;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using Google.OrTools.Sat;
 using Sisgea.GerarHorario.Core.Dtos.Configuracoes;
 using Sisgea.GerarHorario.Core.Dtos.Entidades;
 
 namespace Sisgea.GerarHorario.Core;
 
-using CombinacaoAula = (int diaSemanaIso, int intervaloIndex, string turmaId, string diarioId, string professorId, DateTime dataAnual);
+using CombinacaoAula = (int diaSemanaIso, int intervaloIndex, string turmaId, string diarioId, string professorId);
 
 public class Restricoes
 {
@@ -49,13 +46,7 @@ public class Restricoes
                 {
                     foreach (var diario in options.DiariosByTurmaId(turma.Id))
                     {
-                        foreach (var data in options.DataAnual)
-                        {
-                            if (data.diaSemanaIso == diaSemanaIso)
-                            {
-                                yield return (diaSemanaIso, intervaloIndex, turma.Id, diario.Id, diario.ProfessorId, data.dataAnual);
-                            }
-                        }
+                        yield return (diaSemanaIso, intervaloIndex, turma.Id, diario.Id, diario.ProfessorId);
                     }
                 }
             }
@@ -81,8 +72,6 @@ public class Restricoes
                 exceptionContext: $" (diário: {diario.Id}, turma: {turma.Id})"
             )!;
 
-
-
             // =====================================================================================
 
             var disponivelParaTurma = Restricoes.VerificarIntervaloEmDisponibilidades(turma.Disponibilidades, combinacao.diaSemanaIso, intervaloDeTempo);
@@ -107,7 +96,7 @@ public class Restricoes
     ///<summary>
     /// RESTRIÇÃO: Diário: respeitar limite de quantidade máxima na semana.
     ///</summary>
-   /* public static void AplicarLimiteDeDiarioNaSemana(
+    public static void AplicarLimiteDeDiarioNaSemana(
       GerarHorarioContext contexto
     )
     {
@@ -127,8 +116,7 @@ public class Restricoes
             }
         }
 
-
-    }*/
+    }
 
     ///<summary>
     /// RESTRIÇÃO: Turma: não ter mais de uma aula ativa ao mesmo tempo.
@@ -151,8 +139,6 @@ public class Restricoes
 
                     if (propostas.Count != 0)
                     {
-                        contexto.Options.AddLogDebug($"Dia: {diaSemanaIso} | Intervalo: {contexto.Options.HorariosDeAula[intervaloIndex]} | {turma.Id} | Quantidade de Propostas: {propostas.Count}");
-
                         contexto.Model.AddAtMostOne(propostas);
                     }
 
@@ -166,13 +152,6 @@ public class Restricoes
     ///<summary>
     /// RESTRIÇÃO: Professor: não ter mais de uma aula ativa ao mesmo tempo.
     ///</summary>
-    ///
-    static bool debugValor(PropostaDeAula proposta)
-    {
-        System.Console.WriteLine("Diario CONSECUTIVO: " + proposta.DiarioId + " | Dia: " + proposta.DiaSemanaIso + " Intervalo: " + proposta.IntervaloIndex);
-        System.Console.WriteLine("\n");
-        return true;
-    }
     public static void AplicarLimiteDeNoMaximoUmDiarioAtivoPorProfessorEmUmHorario(GerarHorarioContext contexto)
     {
 
@@ -189,7 +168,6 @@ public class Restricoes
                                         propostaDeAula.IntervaloIndex == intervaloIndex
                                         &&
                                         contexto.Options.ProfessorEstaVinculadoAoDiario(diarioId: propostaDeAula.DiarioId, professorId: professor.Id)
-                                        && debugValor(propostaDeAula)
                                     select propostaDeAula.ModelBoolVar;
 
                     if (propostas.Any())
@@ -266,6 +244,13 @@ public class Restricoes
     ///<summary>
     /// RESTRIÇÃO: O professor não pode trabalhar 3 turnos.
     ///</summary>
+    ///
+
+    static bool debugValor(PropostaDeAula carro)
+    {
+        Console.WriteLine($"Debug valor: {carro.ProfessorId}");
+        return true;
+    }
     public static void ProfessorNaoPodeTrabalharEmTresTurnosDiferentes(GerarHorarioContext contexto)
     {
         foreach (var professor in contexto.Options.Professores)
@@ -288,6 +273,7 @@ public class Restricoes
                                      proposta.DiaSemanaIso == diaSemanaIso
                                      &&
                                      proposta.IntervaloIndex >= 5 && proposta.IntervaloIndex <= 9
+                                    
                                      select proposta.ModelBoolVar;
 
                 var propostasNoite = from proposta in contexto.TodasAsPropostasDeAula
@@ -297,6 +283,7 @@ public class Restricoes
                                      proposta.DiaSemanaIso == diaSemanaIso
                                      &&
                                      proposta.IntervaloIndex >= 10 && proposta.IntervaloIndex <= 14
+                                     
                                      select proposta.ModelBoolVar;
 
                 /*
@@ -311,38 +298,42 @@ public class Restricoes
                 |       manha e tarde  |  true |  true | false | 
                 |       tarde e noite  | false |  true |  true | 
                 */
+                if (propostasManha.Any() && propostasTarde.Any() && propostasNoite.Any())
+                {
+                    //Console.WriteLine("toppp");
+                    long[,] possibilidadesPermitidas = {
+                        { 0, 0, 0 }, // nao dar aula no dia
+                        { 1, 0, 0 }, //dar aula so de MANHA
+                        { 0, 1, 0 }, //dar aula so a tarde
+                        { 0, 0, 1 }, //dar aula so a noite
+                        { 1, 1, 0 }, //manha e tarde
+                        { 0, 1, 1 }  //tarde e noite
+                    };
 
-                long[,] possibilidadesPermitidas = {
-                    { 0, 0, 0 }, // nao dar aula no dia
-                    { 1, 0, 0 }, //dar aula so de MANHA
-                    { 0, 1, 0 }, //dar aula so a tarde
-                    { 0, 0, 1 }, //dar aula so a noite
-                    { 1, 1, 0 }, //manha e tarde
-                    { 0, 1, 1 }  //tarde e noite
-                };
 
+                    var qntAulasManha = contexto.Model.NewIntVar(0, propostasManha.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Manha");
+                    var qntAulasTarde = contexto.Model.NewIntVar(0, propostasTarde.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Tarde");
+                    var qntAulasNoite = contexto.Model.NewIntVar(0, propostasNoite.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Noite");
 
-                var qntAulasManha = contexto.Model.NewIntVar(0, propostasManha.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Manha");
-                var qntAulasTarde = contexto.Model.NewIntVar(0, propostasTarde.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Tarde");
-                var qntAulasNoite = contexto.Model.NewIntVar(0, propostasNoite.Count(), $"qnt_ativo_{professor.Id}_{diaSemanaIso}_Noite");
+                    contexto.Model.Add(qntAulasManha == LinearExpr.Sum(propostasManha));
+                    contexto.Model.Add(qntAulasTarde == LinearExpr.Sum(propostasTarde));
+                    contexto.Model.Add(qntAulasNoite == LinearExpr.Sum(propostasNoite));
 
-                contexto.Model.Add(qntAulasManha == LinearExpr.Sum(propostasManha));
-                contexto.Model.Add(qntAulasTarde == LinearExpr.Sum(propostasTarde));
-                contexto.Model.Add(qntAulasNoite == LinearExpr.Sum(propostasNoite));
+                    var alumgaAulaManha = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Manha"); // == LinearExpr.Sum(propostasManha) > 0;
+                    var alumgaAulaTarde = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Tarde"); // == LinearExpr.Sum(propostasTarde) > 0;
+                    var alumgaAulaNoite = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Noite"); // == LinearExpr.Sum(propostasNoite) > 0;
 
-                var alumgaAulaManha = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Manha"); // == LinearExpr.Sum(propostasManha) > 0;
-                var alumgaAulaTarde = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Tarde"); // == LinearExpr.Sum(propostasTarde) > 0;
-                var alumgaAulaNoite = contexto.Model.NewBoolVar($"ativo_{professor.Id}_{diaSemanaIso}_Noite"); // == LinearExpr.Sum(propostasNoite) > 0;
+                    contexto.Model.Add(qntAulasManha >= 1).OnlyEnforceIf(alumgaAulaManha);
+                    contexto.Model.Add(qntAulasTarde >= 1).OnlyEnforceIf(alumgaAulaTarde);
+                    contexto.Model.Add(qntAulasNoite >= 1).OnlyEnforceIf(alumgaAulaNoite);
 
-                contexto.Model.Add(qntAulasManha >= 1).OnlyEnforceIf(alumgaAulaManha);
-                contexto.Model.Add(qntAulasTarde >= 1).OnlyEnforceIf(alumgaAulaTarde);
-                contexto.Model.Add(qntAulasNoite >= 1).OnlyEnforceIf(alumgaAulaNoite);
+                    contexto.Model.Add(qntAulasManha < 1).OnlyEnforceIf(alumgaAulaManha.Not());
+                    contexto.Model.Add(qntAulasTarde < 1).OnlyEnforceIf(alumgaAulaTarde.Not());
+                    contexto.Model.Add(qntAulasNoite < 1).OnlyEnforceIf(alumgaAulaNoite.Not());
 
-                contexto.Model.Add(qntAulasManha < 1).OnlyEnforceIf(alumgaAulaManha.Not());
-                contexto.Model.Add(qntAulasTarde < 1).OnlyEnforceIf(alumgaAulaTarde.Not());
-                contexto.Model.Add(qntAulasNoite < 1).OnlyEnforceIf(alumgaAulaNoite.Not());
-
-                contexto.Model.AddAllowedAssignments([alumgaAulaManha, alumgaAulaTarde, alumgaAulaNoite]).AddTuples(possibilidadesPermitidas);
+                    contexto.Model.AddAllowedAssignments([alumgaAulaManha, alumgaAulaTarde, alumgaAulaNoite]).AddTuples(possibilidadesPermitidas);
+                }
+               
             }
         }
     }
@@ -388,6 +379,7 @@ public class Restricoes
         }
 
     }
+
     //PADRONALIZADO
     public static void AgruparDisciplinasPadronizado(GerarHorarioContext contexto)
     {
@@ -408,19 +400,14 @@ public class Restricoes
                 int skipCount2 = 10;
                 PropostaDeAula propostaAnterior = null;
 
-
                 while (consecutivas.Count < diario.QuantidadeMaximaSemana)
                 {
-                    System.Console.WriteLine("O skip foi de: " + skip);
                     var propostasSkipadas = propostasDoDiario.Skip(skip).Take(1).ToList();
 
                     if (diario.QuantidadeMaximaSemana == 4)
                     {
-
-
                         var primeiraDivisao = propostasDoDiario.Skip(skipCount1).Take(2).ToList();
                         skip = sorteio.Next(propostasDoDiario.Count() - diario.QuantidadeMaximaSemana);
-                        System.Console.WriteLine("O skip2 foi de: " + skip);
                         var segundaDivisao = propostasDoDiario.Skip(skipCount2).Take(2).ToList();
                         propostasSkipadas.Clear();
                         propostasSkipadas.AddRange(primeiraDivisao);
@@ -464,11 +451,7 @@ public class Restricoes
                     }
                 }
 
-                //DEBUG
-                foreach (var proposta in consecutivas)
-                {
-                    System.Console.WriteLine("Diario CONSECUTIVO: " + proposta.DiarioId + " | Dia: " + proposta.DiaSemanaIso + " Intervalo: " + proposta.IntervaloIndex);
-                }
+               
 
                 System.Console.WriteLine("\n");
             }
@@ -504,9 +487,6 @@ public class Restricoes
             {
                 Random sorteio = new Random();
                 int skip = sorteio.Next(propostasDoDiario.Count() - quantidadeDeAulas);
-                System.Console.WriteLine(propostasDoDiario.Count());
-                System.Console.WriteLine("O skip foi de: " + skip);
-
                 for (int j = 0; j < quantidadeDesejada[i]; j++)
                 {
                     propostasSkipadas.AddRange(propostasDoDiario.Skip(skip).Take(1).ToList());
@@ -515,15 +495,11 @@ public class Restricoes
 
                 foreach (var proposta in propostasSkipadas)
                 {
-                    System.Console.WriteLine("Diario CONSECUTIVO: " + proposta.DiarioId + " | Dia: " + proposta.DiaSemanaIso + " Intervalo: " + proposta.IntervaloIndex);
-
                     var primeiraProposta = propostasSkipadas.First();
                     if (!horariosUsados.Contains((proposta.DiaSemanaIso, proposta.IntervaloIndex)))
                     {
                         if (primeiraProposta.IntervaloIndex + quantidadeDesejada[i] - 1 <= 4 || primeiraProposta.IntervaloIndex + quantidadeDesejada[i] - 1 >= 6)
                         {
-                            System.Console.WriteLine("Diario CONSECUTIVO PASSADAS: " + proposta.DiarioId + " | Dia: " + proposta.DiaSemanaIso + " Intervalo: " + proposta.IntervaloIndex);
-
                             consecutivas.Add(proposta);
                             horariosUsados.Add((proposta.DiaSemanaIso, proposta.IntervaloIndex));
                             validacao = true;
@@ -590,32 +566,7 @@ public class Restricoes
         }
 
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

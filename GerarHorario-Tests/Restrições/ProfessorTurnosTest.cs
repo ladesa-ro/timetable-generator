@@ -188,7 +188,6 @@ public class ProfessorTurnosTest
             new Data(new DateTime(2024, 2, 14), DiaSemanaIso.QUARTA),
             new Data(new DateTime(2024, 2, 15), DiaSemanaIso.QUINTA),
             new Data(new DateTime(2024, 2, 16), DiaSemanaIso.SEXTA)
-
         };
 
         var gerarHorarioOptions = new GerarHorarioOptions(

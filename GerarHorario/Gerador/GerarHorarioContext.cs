@@ -36,7 +36,6 @@ public class GerarHorarioContext
                 diarioId: combinacao.diarioId,
                 professorId: combinacao.professorId,
                 diaSemanaIso: combinacao.diaSemanaIso,
-                dataAnual: combinacao.dataAnual,
                 intervaloIndex: combinacao.intervaloIndex,
                 intervalo: intervalo
             );
