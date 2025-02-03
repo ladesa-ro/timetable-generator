@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Feb 03 11:37:53 GMT 2025","Mon Feb 03 11:37:53 GMT 2025","157","","","","Tests","Test1","Test1",""
+"passed","Mon Feb 03 11:37:53 GMT 2025","Mon Feb 03 11:37:53 GMT 2025","5","","","","IntervaloTest","TestVerificarIntervalo","TestVerificarIntervalo",""
