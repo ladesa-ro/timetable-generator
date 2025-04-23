@@ -1,9 +1,12 @@
-﻿using Sisgea.GerarHorario.Core.Dtos.Configuracoes;
+﻿using Allure.NUnit;
+using NUnit.Framework;
+using Sisgea.GerarHorario.Core.Dtos.Configuracoes;
 using Sisgea.GerarHorario.Core.Dtos.Entidades;
 using Sisgea.GerarHorario.Core.Dtos.HorarioGerado;
 
 namespace Sisgea.GerarHorario.Core;
 
+[AllureNUnit]
 public class ProgramTest
 {
 

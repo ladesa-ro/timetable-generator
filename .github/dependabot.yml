@@ -1,22 +1,10 @@
 version: 2
 updates:
-  - package-ecosystem: docker
-    directory: "/playground/.devops"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 10
-
   - package-ecosystem: nuget
-    directory: "/"
+    directory: "/gerar-horario"
     schedule:
       interval: daily
-    open-pull-requests-limit: 10
-
-  - package-ecosystem: docker
-    directory: "/.devops/dotnet-sdk"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
 
   - package-ecosystem: github-actions
     directory: "/.github/workflows"
