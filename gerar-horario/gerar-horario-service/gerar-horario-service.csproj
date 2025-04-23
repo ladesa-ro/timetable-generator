@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>dcdb8d1c-71e7-4c9c-950d-9711dd395943</UserSecretsId>
@@ -13,6 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\gerar-horario\Gerar-Horario.csproj" />
+      <ProjectReference Include="..\gerar-horario-core\gerar-horario-core.csproj" />
     </ItemGroup>
 </Project>

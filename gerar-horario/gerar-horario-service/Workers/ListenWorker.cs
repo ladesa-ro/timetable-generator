@@ -119,12 +119,8 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         await _channel.BasicPublishAsync(exchange: string.Empty, routingKey: "horario_gerado", body: body);
 
-        logger.LogInformation($" [x] Horario Gerado {DateTime.Now}}");
+        logger.LogInformation($" [x] Horario Gerado {DateTime.Now}");
     }
-
-
-
-
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {

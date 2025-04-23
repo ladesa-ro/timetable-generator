@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>library</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>Gerar_Horario</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -11,9 +10,4 @@
   <ItemGroup>
     <PackageReference Include="Google.OrTools" Version="9.11.4210" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\api-sisgha\API.csproj" />
-  </ItemGroup>
-
 </Project>
