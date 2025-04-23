@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup Label="Dependencies">
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="7.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gerar-horario-core\gerar-horario-core.csproj" />
