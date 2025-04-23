@@ -1,0 +1,1310 @@
+{
+  "diaSemanaInicio": 1,
+  "diaSemanaFim": 5,
+  "turmas": [
+    {
+      "id": "1",
+      "nome": "1A INFORMATICA",
+      "diariosDaTurma": [
+        {
+          "id": "diario:1_1",
+          "turmaId": "turma:1",
+          "professorId": "1",
+          "disciplinaId": "disciplina:1",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_2",
+          "turmaId": "turma:1",
+          "professorId": "2",
+          "disciplinaId": "disciplina:2",
+          "quantidadeMaximaSemana": 1
+        },
+        {
+          "id": "diario:1_3",
+          "turmaId": "turma:1",
+          "professorId": "3",
+          "disciplinaId": "disciplina:3",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_4",
+          "turmaId": "turma:1",
+          "professorId": "4",
+          "disciplinaId": "disciplina:4",
+          "quantidadeMaximaSemana": 3
+        },
+        {
+          "id": "diario:1_5",
+          "turmaId": "turma:1",
+          "professorId": "5",
+          "disciplinaId": "disciplina:5",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_6",
+          "turmaId": "turma:1",
+          "professorId": "6",
+          "disciplinaId": "disciplina:6",
+          "quantidadeMaximaSemana": 1
+        },
+        {
+          "id": "diario:1_7",
+          "turmaId": "turma:1",
+          "professorId": "7",
+          "disciplinaId": "disciplina:7",
+          "quantidadeMaximaSemana": 4
+        },
+        {
+          "id": "diario:1_8",
+          "turmaId": "turma:1",
+          "professorId": "8",
+          "disciplinaId": "disciplina:8",
+          "quantidadeMaximaSemana": 4
+        },
+        {
+          "id": "diario:1_9",
+          "turmaId": "turma:1",
+          "professorId": "9",
+          "disciplinaId": "disciplina:9",
+          "quantidadeMaximaSemana": 3
+        },
+        {
+          "id": "diario:1_10",
+          "turmaId": "turma:1",
+          "professorId": "10",
+          "disciplinaId": "disciplina:10",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_11",
+          "turmaId": "turma:1",
+          "professorId": "11",
+          "disciplinaId": "disciplina:11",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_12",
+          "turmaId": "turma:1",
+          "professorId": "12",
+          "disciplinaId": "disciplina:12",
+          "quantidadeMaximaSemana": 2
+        },
+        {
+          "id": "diario:1_13",
+          "turmaId": "turma:1",
+          "professorId": "13",
+          "disciplinaId": "disciplina:13",
+          "quantidadeMaximaSemana": 1
+        },
+        {
+          "id": "diario:1_14",
+          "turmaId": "turma:1",
+          "professorId": "14",
+          "disciplinaId": "disciplina:14",
+          "quantidadeMaximaSemana": 3
+        },
+        {
+          "id": "diario:1_15",
+          "turmaId": "turma:1",
+          "professorId": "15",
+          "disciplinaId": "disciplina:15",
+          "quantidadeMaximaSemana": 1
+        }
+      ],
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "13:00",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "13:00",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "13:00",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    }
+  ],
+  "professores": [
+    {
+      "id": "1",
+      "nome": "Danilo",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "13:00",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nome": "Elias",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nome": "Jo\u00E3o",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nome": "Jackson",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nome": "Adalberto",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "nome": "Beatriz",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "nome": "Carlos",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "nome": "Daniela",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "9",
+      "nome": "Eduardo",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "19:00",
+            "horarioFim": "22:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "nome": "Enzo",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "nome": "Fernanda",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "nome": "Gustavo",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "nome": "Mariana",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "nome": "Rafael",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "nome": "Deizi",
+      "diaPRD": 0,
+      "intervaloEscolhido": null,
+      "diaAulaEscolhido": 0,
+      "disponibilidades": [
+        {
+          "diaSemanaIso": 1,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 2,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 3,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "11:59:59"
+          }
+        },
+        {
+          "diaSemanaIso": 4,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        },
+        {
+          "diaSemanaIso": 5,
+          "intervalo": {
+            "horarioInicio": "07:30",
+            "horarioFim": "17:29:59"
+          }
+        }
+      ]
+    }
+  ],
+  "horariosDeAula": [
+    {
+      "horarioInicio": "07:30",
+      "horarioFim": "08:19:59"
+    },
+    {
+      "horarioInicio": "08:20",
+      "horarioFim": "09:09:59"
+    },
+    {
+      "horarioInicio": "09:10",
+      "horarioFim": "09:59:59"
+    },
+    {
+      "horarioInicio": "10:20",
+      "horarioFim": "11:09:59"
+    },
+    {
+      "horarioInicio": "11:10",
+      "horarioFim": "11:59:59"
+    },
+    {
+      "horarioInicio": "13:00",
+      "horarioFim": "13:49:59"
+    },
+    {
+      "horarioInicio": "13:50",
+      "horarioFim": "14:39:59"
+    },
+    {
+      "horarioInicio": "14:40",
+      "horarioFim": "15:29:59"
+    },
+    {
+      "horarioInicio": "15:50",
+      "horarioFim": "16:39:59"
+    },
+    {
+      "horarioInicio": "16:40",
+      "horarioFim": "17:29:59"
+    },
+    {
+      "horarioInicio": "19:00",
+      "horarioFim": "19:49:59"
+    },
+    {
+      "horarioInicio": "19:50",
+      "horarioFim": "20:39:59"
+    },
+    {
+      "horarioInicio": "20:50",
+      "horarioFim": "21:39:59"
+    },
+    {
+      "horarioInicio": "21:40",
+      "horarioFim": "22:29:59"
+    }
+  ],
+  "diarios": [
+    {
+      "id": "diario:1_1",
+      "turmaId": "turma:1",
+      "professorId": "1",
+      "disciplinaId": "disciplina:1",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_2",
+      "turmaId": "turma:1",
+      "professorId": "2",
+      "disciplinaId": "disciplina:2",
+      "quantidadeMaximaSemana": 1
+    },
+    {
+      "id": "diario:1_3",
+      "turmaId": "turma:1",
+      "professorId": "3",
+      "disciplinaId": "disciplina:3",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_4",
+      "turmaId": "turma:1",
+      "professorId": "4",
+      "disciplinaId": "disciplina:4",
+      "quantidadeMaximaSemana": 3
+    },
+    {
+      "id": "diario:1_5",
+      "turmaId": "turma:1",
+      "professorId": "5",
+      "disciplinaId": "disciplina:5",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_6",
+      "turmaId": "turma:1",
+      "professorId": "6",
+      "disciplinaId": "disciplina:6",
+      "quantidadeMaximaSemana": 1
+    },
+    {
+      "id": "diario:1_7",
+      "turmaId": "turma:1",
+      "professorId": "7",
+      "disciplinaId": "disciplina:7",
+      "quantidadeMaximaSemana": 4
+    },
+    {
+      "id": "diario:1_8",
+      "turmaId": "turma:1",
+      "professorId": "8",
+      "disciplinaId": "disciplina:8",
+      "quantidadeMaximaSemana": 4
+    },
+    {
+      "id": "diario:1_9",
+      "turmaId": "turma:1",
+      "professorId": "9",
+      "disciplinaId": "disciplina:9",
+      "quantidadeMaximaSemana": 3
+    },
+    {
+      "id": "diario:1_10",
+      "turmaId": "turma:1",
+      "professorId": "10",
+      "disciplinaId": "disciplina:10",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_11",
+      "turmaId": "turma:1",
+      "professorId": "11",
+      "disciplinaId": "disciplina:11",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_12",
+      "turmaId": "turma:1",
+      "professorId": "12",
+      "disciplinaId": "disciplina:12",
+      "quantidadeMaximaSemana": 2
+    },
+    {
+      "id": "diario:1_13",
+      "turmaId": "turma:1",
+      "professorId": "13",
+      "disciplinaId": "disciplina:13",
+      "quantidadeMaximaSemana": 1
+    },
+    {
+      "id": "diario:1_14",
+      "turmaId": "turma:1",
+      "professorId": "14",
+      "disciplinaId": "disciplina:14",
+      "quantidadeMaximaSemana": 3
+    },
+    {
+      "id": "diario:1_15",
+      "turmaId": "turma:1",
+      "professorId": "15",
+      "disciplinaId": "disciplina:15",
+      "quantidadeMaximaSemana": 1
+    }
+  ]
+}
