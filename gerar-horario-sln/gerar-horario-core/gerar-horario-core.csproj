@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>library</OutputType>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,6 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Google.OrTools" Version="9.11.4210" />
+    <PackageReference Include="Google.OrTools" Version="9.12.4544" />
   </ItemGroup>
 </Project>
