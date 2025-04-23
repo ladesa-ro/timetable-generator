@@ -4,7 +4,15 @@ updates:
     directory: "/gerar-horario-sln"
     schedule:
       interval: daily
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 10
+    groups:
+      minor-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: github-actions
     directory: "/.github/workflows"
