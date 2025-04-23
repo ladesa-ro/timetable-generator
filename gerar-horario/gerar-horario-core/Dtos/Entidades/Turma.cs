@@ -1,4 +1,4 @@
-namespace Sisgea.GerarHorario.Core.Dtos.Entidades;
+namespace Ladesa.GerarHorario.Core.Dtos.Entidades;
 
 public record Turma
 {
@@ -9,7 +9,12 @@ public record Turma
 
     public DisponibilidadeDia[] Disponibilidades { get; set; }
 
-    public Turma(string id, string? nome, Diario[] diariosDaTurma, DisponibilidadeDia[] disponibilidades)
+    public Turma(
+        string id,
+        string? nome,
+        Diario[] diariosDaTurma,
+        DisponibilidadeDia[] disponibilidades
+    )
     {
         Id = id;
         Nome = nome;
@@ -17,8 +22,5 @@ public record Turma
         Disponibilidades = disponibilidades;
     }
 
-    public Turma()
-    {
-
-    }
+    public Turma() { }
 }

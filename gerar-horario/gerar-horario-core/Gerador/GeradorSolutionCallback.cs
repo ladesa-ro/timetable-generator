@@ -1,13 +1,12 @@
 using Google.OrTools.Sat;
-using Sisgea.GerarHorario.Core.Dtos.HorarioGerado;
+using Ladesa.GerarHorario.Core.Dtos.HorarioGerado;
 
-namespace Sisgea.GerarHorario.Core;
+namespace Ladesa.GerarHorario.Core;
 
 public class GeradorSolutionCallback : CpSolverSolutionCallback
 {
     public Action<HorarioGerado> Action { get; }
     public GerarHorarioContext Contexto { get; init; }
-
 
     public GeradorSolutionCallback(GerarHorarioContext contexto, Action<HorarioGerado> action)
     {
@@ -17,17 +16,19 @@ public class GeradorSolutionCallback : CpSolverSolutionCallback
 
     public override void OnSolutionCallback()
     {
-        var propostasAtivas = from propostaAula in this.Contexto.TodasAsPropostasDeAula
-                              where
-                                BooleanValue(propostaAula.ModelBoolVar)
-                              select new HorarioGeradoAula(propostaAula.TurmaId, propostaAula.DiarioId, propostaAula.IntervaloIndex, propostaAula.DiaSemanaIso, propostaAula.ProfessorId);
+        var propostasAtivas =
+            from propostaAula in this.Contexto.TodasAsPropostasDeAula
+            where BooleanValue(propostaAula.ModelBoolVar)
+            select new HorarioGeradoAula(
+                propostaAula.TurmaId,
+                propostaAula.DiarioId,
+                propostaAula.IntervaloIndex,
+                propostaAula.DiaSemanaIso,
+                propostaAula.ProfessorId
+            );
 
-        var horarioGerado = new HorarioGerado
-        {
-            Aulas = propostasAtivas.ToArray()
-        };
+        var horarioGerado = new HorarioGerado { Aulas = propostasAtivas.ToArray() };
 
         this.Action(horarioGerado);
     }
 }
-

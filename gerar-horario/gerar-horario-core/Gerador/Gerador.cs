@@ -1,8 +1,8 @@
 using Google.OrTools.Sat;
-using Sisgea.GerarHorario.Core.Dtos.Configuracoes;
-using Sisgea.GerarHorario.Core.Dtos.HorarioGerado;
+using Ladesa.GerarHorario.Core.Dtos.Configuracoes;
+using Ladesa.GerarHorario.Core.Dtos.HorarioGerado;
 
-namespace Sisgea.GerarHorario.Core;
+namespace Ladesa.GerarHorario.Core;
 
 public class Gerador
 {
@@ -18,7 +18,6 @@ public class Gerador
         // contexto.TodasAsPropostasDeAula -> List<PropostaDeAula>;
         var contexto = new GerarHorarioContext(options, iniciarTodasAsPropostasDeAula: true);
         // ================================================
-
 
         // ====================================================================
         // RESTRIÇÃO: Turma: não ter mais de uma aula ativa ao mesmo tempo.
@@ -54,15 +53,11 @@ public class Gerador
 
         // ====================================================================
         // RESTRIÇÃO: Todo professor deve ter 1 dia sem aulas (PRD na segunda ou na sexta).
-         Restricoes.PadronizarPRD(contexto);
+        Restricoes.PadronizarPRD(contexto);
 
         // ====================================================================
         // RESTRIÇÃO: Permitir escolher o dia de disponibilidade (PRD) de um professor.
         //Restricoes.EspecificarPRD(contexto, "1", 5);
-        
-
-
-
 
         // Ajudar o modelo para gerar o resultado mais satisfatório dentre
         // todas as soluções possíveis.
@@ -73,8 +68,7 @@ public class Gerador
         return contexto;
     }
 
-    public static IEnumerable<HorarioGerado> GerarHorario(
-      GerarHorarioOptions options)
+    public static IEnumerable<HorarioGerado> GerarHorario(GerarHorarioOptions options)
     {
         // CRIA UM MODELO COM AS RESTRIÇÕES VINDAS DAS OPÇÕES
         var contexto = PrepararModelComRestricoes(options);
@@ -83,7 +77,7 @@ public class Gerador
 
         // Gatilho para quando "um horário foi gerado".
         var tickGenerated = new AutoResetEvent(false);
-      
+
         HorarioGerado? horarioGerado = null;
 
         // thread de solução de horário para essa requisição
@@ -93,17 +87,16 @@ public class Gerador
 
             do
             {
-                
-                var solver = new CpSolver
-                {
-                    StringParameters = "enumerate_all_solutions:true"
-                };
+                var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
 
-                var solutionPrinter = new GeradorSolutionCallback(contexto, (spHorarioGerado) =>
-                {
-                    horarioGerado = spHorarioGerado;
-                    tickGenerated.Set();
-                });
+                var solutionPrinter = new GeradorSolutionCallback(
+                    contexto,
+                    (spHorarioGerado) =>
+                    {
+                        horarioGerado = spHorarioGerado;
+                        tickGenerated.Set();
+                    }
+                );
 
                 if (previousScore != null)
                 {
@@ -112,38 +105,31 @@ public class Gerador
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
-
                 if (sat == CpSolverStatus.Feasible || sat == CpSolverStatus.Optimal)
                 {
-                   var solverScore = solver.ObjectiveValue;
-                   previousScore = (long)solverScore;
+                    var solverScore = solver.ObjectiveValue;
+                    previousScore = (long)solverScore;
                 }
                 else
                 {
                     previousScore = 0;
                 }
-
-               
-
             } while (previousScore > 0);
 
             horarioGerado = null;
             tickGenerated.Set();
         });
 
-
         solutionGeneratorThread.Start();
 
         do
         {
-
             tickGenerated.WaitOne();
 
             if (horarioGerado != null)
             {
                 yield return horarioGerado;
             }
-
         } while (horarioGerado != null);
 
         yield break;
@@ -155,7 +141,10 @@ public class Gerador
     /// acordo com as preferências de agrupamento da turma e preferências
     /// de cada professor.
     ///</summary>
-    public static void OtimizarResultadoDeAcordoComAsPreferencias(GerarHorarioContext contexto, long? limiteScore = null)
+    public static void OtimizarResultadoDeAcordoComAsPreferencias(
+        GerarHorarioContext contexto,
+        long? limiteScore = null
+    )
     {
         var qualidade = LinearExpr.NewBuilder();
 
@@ -171,6 +160,4 @@ public class Gerador
 
         contexto.Model.Maximize(qualidade);
     }
-
 }
-

@@ -1,4 +1,4 @@
-namespace Sisgea.GerarHorario.Core.Dtos.Entidades;
+namespace Ladesa.GerarHorario.Core.Dtos.Entidades;
 
 public record Intervalo
 {
@@ -31,17 +31,14 @@ public record Intervalo
 
     public static bool VerificarIntervalo(Intervalo intervalo, Intervalo intervalo2)
     {
-        return VerificarIntervalo(intervalo, intervalo2.HorarioInicio) && VerificarIntervalo(intervalo, intervalo2.HorarioFim);
+        return VerificarIntervalo(intervalo, intervalo2.HorarioInicio)
+            && VerificarIntervalo(intervalo, intervalo2.HorarioFim);
     }
 
     public static int Somar12Horas(int horarioIndex)
     {
-
         int indexDesejado = horarioIndex - 9;
-       // System.Console.WriteLine("EXECUTADO: " + indexDesejado + "\n");
+        // System.Console.WriteLine("EXECUTADO: " + indexDesejado + "\n");
         return indexDesejado;
-
-
-
     }
 }

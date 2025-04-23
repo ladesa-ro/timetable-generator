@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
-using Sisgea.GerarHorario.Core.Dtos.Configuracoes;
+using Ladesa.GerarHorario.Core.Dtos.Configuracoes;
 
-namespace Sisgea.GerarHorario.Core;
+namespace Ladesa.GerarHorario.Core;
 
 public class GerarHorarioContext
 {
@@ -9,8 +9,12 @@ public class GerarHorarioContext
     public CpModel Model { get; init; }
     public List<PropostaDeAula> TodasAsPropostasDeAula { get; init; }
 
-
-    public GerarHorarioContext(GerarHorarioOptions options, CpModel? model = null, List<PropostaDeAula>? todasAsPropostasDeAula = null, bool iniciarTodasAsPropostasDeAula = true)
+    public GerarHorarioContext(
+        GerarHorarioOptions options,
+        CpModel? model = null,
+        List<PropostaDeAula>? todasAsPropostasDeAula = null,
+        bool iniciarTodasAsPropostasDeAula = true
+    )
     {
         Options = options;
         Model = model ?? new CpModel();
@@ -41,7 +45,6 @@ public class GerarHorarioContext
             );
 
             this.TodasAsPropostasDeAula.Add(propostaDeAula);
-
         }
 
         Console.WriteLine($"--> Quantidade de propostas: {this.TodasAsPropostasDeAula.Count}");

@@ -1,4 +1,4 @@
-using Sisgea.GerarHorario.Core.Dtos.Entidades;
+using Ladesa.GerarHorario.Core.Dtos.Entidades;
 
 public class Disciplina
 {

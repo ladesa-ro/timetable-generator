@@ -1,18 +1,18 @@
 name: NUnit Tests and Deploy Allure Reports
 
 on:
-  push:
-    branches:
-      - development
-    paths:
-      - "**/*"
-      - .github/workflows/test-and-deploy.yml
-  pull_request:
-    branches:
-      - development
-    paths:
-      - "**/*"
-      - .github/workflows/test-and-deploy.yml
+  # push:
+  #   branches:
+  #     - development
+  #   paths:
+  #     - "**/*"
+  #     - .github/workflows/test-and-deploy.yml
+  # pull_request:
+  #   branches:
+  #     - development
+  #   paths:
+  #     - "**/*"
+  #     - .github/workflows/test-and-deploy.yml
   workflow_dispatch:
 
 permissions:

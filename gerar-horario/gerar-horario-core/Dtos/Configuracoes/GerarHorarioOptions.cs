@@ -1,6 +1,6 @@
-using Sisgea.GerarHorario.Core.Dtos.Entidades;
+using Ladesa.GerarHorario.Core.Dtos.Entidades;
 
-namespace Sisgea.GerarHorario.Core.Dtos.Configuracoes;
+namespace Ladesa.GerarHorario.Core.Dtos.Configuracoes;
 
 public class GerarHorarioOptions
 {
@@ -10,8 +10,13 @@ public class GerarHorarioOptions
     public Professor[] Professores { get; set; }
     public Intervalo[] HorariosDeAula { get; set; }
 
-
-    public GerarHorarioOptions(int diaSemanaInicio, int diaSemanaFim, Turma[] turmas, Professor[] professores, Intervalo[] horariosDeAula)
+    public GerarHorarioOptions(
+        int diaSemanaInicio,
+        int diaSemanaFim,
+        Turma[] turmas,
+        Professor[] professores,
+        Intervalo[] horariosDeAula
+    )
     {
         DiaSemanaInicio = diaSemanaInicio;
         DiaSemanaFim = diaSemanaFim;
@@ -93,7 +98,11 @@ public class GerarHorarioOptions
         var horarioDeAula = this.HorariosDeAula[horarioDeAulaIndex];
         return horarioDeAula;
     }
-    public Intervalo HorarioDeAulaFindByIdStrict(int horarioDeAulaIndex, string? exceptionContext = null)
+
+    public Intervalo HorarioDeAulaFindByIdStrict(
+        int horarioDeAulaIndex,
+        string? exceptionContext = null
+    )
     {
         var horarioDeAula = this.HorarioDeAulaByIndex(horarioDeAulaIndex);
 

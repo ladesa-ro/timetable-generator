@@ -1,5 +1,4 @@
-namespace Sisgea.GerarHorario.Core.Dtos.Entidades;
-
+namespace Ladesa.GerarHorario.Core.Dtos.Entidades;
 
 public class DiaSemanaIso
 {

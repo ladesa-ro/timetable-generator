@@ -1,4 +1,4 @@
-namespace Sisgea.GerarHorario.Core.Dtos.HorarioGerado;
+namespace Ladesa.GerarHorario.Core.Dtos.HorarioGerado;
 
 public class HorarioGerado
 {
