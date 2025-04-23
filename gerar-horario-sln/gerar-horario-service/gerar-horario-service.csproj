@@ -6,7 +6,7 @@
     <UserSecretsId>dcdb8d1c-71e7-4c9c-950d-9711dd395943</UserSecretsId>
   </PropertyGroup>
   <ItemGroup Label="Dependencies">
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
   </ItemGroup>
   <ItemGroup>
