@@ -31,11 +31,11 @@ jobs:
           dotnet-version: 9.x
 
       - name: Restore dependencies
-        working-directory: ./gerar-horario
+        working-directory: ./gerar-horario-sln
         run: dotnet restore
 
       - name: Test
-        working-directory: ./gerar-horario
+        working-directory: ./gerar-horario-sln
         run: dotnet test
         continue-on-error: true
 
@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4.4.0
         with:
           name: allure-results
-          path: ./gerar-horario/gerar-horario-tests/bin/Debug/net9.0/allure-results
+          path: ./gerar-horario-sln/gerar-horario-tests/bin/Debug/net9.0/allure-results
           if-no-files-found: warn
           retention-days: 20
 

@@ -4,11 +4,8 @@ using Ladesa.GerarHorario.Core;
 using Ladesa.GerarHorario.Core.Dtos.Entidades;
 using Ladesa.GerarHorario.Core.Dtos.HorarioGerado;
 
-
 public static class RestricoesTest
 {
-
-
     //RESTRIÇÃO TEST: O professor não pode trabalhar 3 turnos e o professor não pode trabalhar de manhã e à noite.
     public static void ProfessorNaoPodeTrabalharEmTresTurnosDiferentesTest(
         IEnumerable<HorarioGeradoAula> horarioGerado,

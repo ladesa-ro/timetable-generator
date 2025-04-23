@@ -1,8 +1,8 @@
 ﻿using Allure.NUnit;
-using NUnit.Framework;
 using Ladesa.GerarHorario.Core.Dtos.Configuracoes;
 using Ladesa.GerarHorario.Core.Dtos.Entidades;
 using Ladesa.GerarHorario.Core.Dtos.HorarioGerado;
+using NUnit.Framework;
 
 namespace Ladesa.GerarHorario.Core;
 
@@ -579,40 +579,40 @@ public class ProgramTest
                         switch (aula.DiaDaSemanaIso)
                         {
                             case 0:
-                                {
-                                    dia = "DOM";
-                                    break;
-                                }
+                            {
+                                dia = "DOM";
+                                break;
+                            }
                             case 1:
-                                {
-                                    dia = "SEG";
-                                    break;
-                                }
+                            {
+                                dia = "SEG";
+                                break;
+                            }
                             case 2:
-                                {
-                                    dia = "TER";
-                                    break;
-                                }
+                            {
+                                dia = "TER";
+                                break;
+                            }
                             case 3:
-                                {
-                                    dia = "QUA";
-                                    break;
-                                }
+                            {
+                                dia = "QUA";
+                                break;
+                            }
                             case 4:
-                                {
-                                    dia = "QUI";
-                                    break;
-                                }
+                            {
+                                dia = "QUI";
+                                break;
+                            }
                             case 5:
-                                {
-                                    dia = "SEX";
-                                    break;
-                                }
+                            {
+                                dia = "SEX";
+                                break;
+                            }
                             case 6:
-                                {
-                                    dia = "SAB";
-                                    break;
-                                }
+                            {
+                                dia = "SAB";
+                                break;
+                            }
                         }
 
                         var diario = turma
