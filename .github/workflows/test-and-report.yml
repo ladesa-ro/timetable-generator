@@ -44,7 +44,7 @@ jobs:
         with:
           name: allure-results
           path: ./gerar-horario/gerar-horario-tests/bin/Debug/net9.0/allure-results
-          if-no-files-found: error
+          if-no-files-found: warning
           retention-days: 20
 
   report:
