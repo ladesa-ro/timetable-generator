@@ -42,9 +42,11 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: ./solution
 
       - name: Test
         run: dotnet test --configuration Debug
+        working-directory: ./solution
         continue-on-error: true
 
       - name: Upload Allure Results
@@ -52,8 +54,8 @@ jobs:
         with:
           name: allure-results
           path: |
-            ./test/**/allure-results
-            ./**/allure-results
+            ./solution/test/**/allure-results
+            ./solution/**/allure-results
           if-no-files-found: ignore
           retention-days: 20
 
@@ -83,9 +85,7 @@ jobs:
       - name: Compute destination dir
         id: compute-dest
         run: |
-          if [ "${GITHUB_REF}" = "refs/heads/development" ]; then
-            echo "dir=b/development" >> "$GITHUB_OUTPUT"
-          elif [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
             echo "dir=b/main" >> "$GITHUB_OUTPUT"
           else
             echo "dir=r/${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
