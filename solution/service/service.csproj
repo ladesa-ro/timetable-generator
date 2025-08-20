@@ -4,7 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dcdb8d1c-71e7-4c9c-950d-9711dd395943</UserSecretsId>
-    <RootNamespace>gerar-horario-service</RootNamespace>
+    <RootNamespace>Ladesa.TimetableGenerator.Service</RootNamespace>
   </PropertyGroup>
   <ItemGroup Label="Dependencies">
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />

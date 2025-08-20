@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>library</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>Gerar_Horario</RootNamespace>
+    <RootNamespace>Ladesa.TimetableGenerator.Core</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>

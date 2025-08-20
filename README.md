@@ -1,4 +1,4 @@
-# gerar-horario
+# timetable-generator
 
 [![CodeQL][badge-codeql-src]][badge-codeql-href]
 [![NUnit Tests + Allure Reports][badge-tests-src]][badge-tests-href]
@@ -7,25 +7,25 @@ Allure Report: [clique aqui][tests-allure-report].
 
 <!-- Badge / CodeQL -->
 
-[badge-codeql-src]: https://github.com/ladesa-ro/gerar-horario/actions/workflows/github-code-scanning/codeql/badge.svg
-[badge-codeql-href]: https://github.com/ladesa-ro/gerar-horario/actions/workflows/github-code-scanning/codeql
+[badge-codeql-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/github-code-scanning/codeql/badge.svg
+[badge-codeql-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/github-code-scanning/codeql
 
 <!-- Badge / Tests -->
 
-[badge-tests-src]: https://github.com/ladesa-ro/gerar-horario/actions/workflows/test-and-deploy.yml/badge.svg
-[badge-tests-href]: https://github.com/ladesa-ro/gerar-horario/actions/workflows/test-and-deploy.yml
+[badge-tests-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-deploy.yml/badge.svg
+[badge-tests-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-deploy.yml
 
 <!-- Links / Allure Report -->
 
-[tests-allure-report]: https://ladesa-ro.github.io/gerar-horario
+[tests-allure-report]: https://ladesa-ro.github.io/timetable-generator
 
 ## Desenvolvimento Local
 
 Para obter os arquivos do repositório, utilize a ferramenta `git`.
 
 ```sh
-git clone https://github.com/ladesa-ro/gerar-horario.git
-cd gerar-horario
+git clone https://github.com/ladesa-ro/timetable-generator.git
+cd timetable-generator
 ```
 
 ## Licença
