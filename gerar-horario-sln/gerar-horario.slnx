@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="./gerar-horario-test/gerar-horario-test.csproj" />
-  <Project Path="./gerar-horario-service/gerar-horario-service.csproj" />
-  <Project Path="./gerar-horario-core/gerar-horario-core.csproj" />
-</Solution>
