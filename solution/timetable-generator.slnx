@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="core\core.csproj" />
-  <Project Path="service\service.csproj" />
-  <Project Path="test\test.csproj" />
+    <Project Path="core\core.csproj"/>
+    <Project Path="service\service.csproj"/>
+    <Project Path="test\test.csproj"/>
 </Solution>

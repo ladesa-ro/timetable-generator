@@ -8,12 +8,14 @@ Allure Report: [clique aqui][tests-allure-report].
 <!-- Badge / CodeQL -->
 
 [badge-codeql-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/github-code-scanning/codeql/badge.svg
+
 [badge-codeql-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/github-code-scanning/codeql
 
 <!-- Badge / Tests -->
 
-[badge-tests-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-deploy.yml/badge.svg
-[badge-tests-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-deploy.yml
+[badge-tests-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-report.yml/badge.svg
+
+[badge-tests-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-report.yml
 
 <!-- Links / Allure Report -->
 
@@ -30,4 +32,4 @@ cd timetable-generator
 
 ## Licença
 
-[MIT - Ladesa e Contribuidores, 2024](./LICENSE).
+[MIT](./LICENSE).

@@ -11,14 +11,14 @@ using CombinacaoAula = (
     string TurmaId,
     string DiarioId,
     string ProfessorId
-);
+    );
 
 public class Gerador
 {
-    ///<summary>
-    /// UTILITÁRIO: Gera uma lista com todas as combinações de aula possíveis
-    /// sem respeitar nenhum critério.
-    ///</summary>
+    /// <summary>
+    ///     UTILITÁRIO: Gera uma lista com todas as combinações de aula possíveis
+    ///     sem respeitar nenhum critério.
+    /// </summary>
     public static IEnumerable<CombinacaoAula> GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(
         GerarHorarioOptions options
     )
@@ -28,36 +28,30 @@ public class Gerador
             data <= options.DataFinal;
             data = data.AddDays(1)
         )
-        {
-            for (
-                var intervaloIndex = 0;
-                intervaloIndex < options.HorariosDeAula.Length;
-                intervaloIndex++
-            )
+        for (
+            var intervaloIndex = 0;
+            intervaloIndex < options.HorariosDeAula.Length;
+            intervaloIndex++
+        )
+            foreach (var turma in options.Turmas)
+            foreach (var diario in options.DiariosByTurmaId(turma.Id))
             {
-                foreach (var turma in options.Turmas)
-                {
-                    foreach (var diario in options.DiariosByTurmaId(turma.Id))
-                    {
-                        var combinacaoAula = new CombinacaoAula(
-                            data,
-                            intervaloIndex,
-                            turma.Id,
-                            diario.Id,
-                            diario.ProfessorId
-                        );
+                var combinacaoAula = new CombinacaoAula(
+                    data,
+                    intervaloIndex,
+                    turma.Id,
+                    diario.Id,
+                    diario.ProfessorId
+                );
 
-                        yield return combinacaoAula;
-                    }
-                }
+                yield return combinacaoAula;
             }
-        }
     }
 
-    ///<summary>
-    /// UTILITÁRIO: Gera uma lista com todas as combinações de aula possíveis,
-    /// respeitando as disponibilidades da turma e disponibilidades do professor.
-    ///</summary>
+    /// <summary>
+    ///     UTILITÁRIO: Gera uma lista com todas as combinações de aula possíveis,
+    ///     respeitando as disponibilidades da turma e disponibilidades do professor.
+    /// </summary>
     public static IEnumerable<CombinacaoAula> GerarCombinacoesComDisponibilidade(
         GerarHorarioOptions options
     )
@@ -78,7 +72,7 @@ public class Gerador
 
             var professor = options.ProfessorFindByIdStrict(
                 diario.ProfessorId,
-                exceptionContext: $" (diário: {diario.Id}, turma: {turma.Id})"
+                $" (diário: {diario.Id}, turma: {turma.Id})"
             )!;
 
             // =====================================================================================
@@ -100,18 +94,15 @@ public class Gerador
 
             // =====================================================================================
 
-            if (disponivel)
-            {
-                yield return combinacao;
-            }
+            if (disponivel) yield return combinacao;
         }
     }
 
 
-    ///<summary>
-    /// Ponto de partida que inicia, restringe e otimiza o modelo para
-    /// solucionar o problema da geração de horário.
-    ///</summary>
+    /// <summary>
+    ///     Ponto de partida que inicia, restringe e otimiza o modelo para
+    ///     solucionar o problema da geração de horário.
+    /// </summary>
     public static GerarHorarioContext PrepararModelComRestricoes(GerarHorarioOptions options)
     {
         // ====================================================================
@@ -193,17 +184,14 @@ public class Gerador
 
                 var solutionPrinter = new GeradorSolutionCallback(
                     contexto,
-                    (spHorarioGerado) =>
+                    spHorarioGerado =>
                     {
                         horarioGerado = spHorarioGerado;
                         tickGenerated.Set();
                     }
                 );
 
-                if (previousScore != null)
-                {
-                    Gerador.OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
-                }
+                if (previousScore != null) OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
@@ -228,21 +216,18 @@ public class Gerador
         {
             tickGenerated.WaitOne();
 
-            if (horarioGerado != null)
-            {
-                yield return horarioGerado;
-            }
+            if (horarioGerado != null) yield return horarioGerado;
         } while (horarioGerado != null);
 
         yield break;
     }
 
-    ///<summary>
-    /// Visto que podem haver várias soluções válidas possíveis, precisamos
-    /// otimizar a resposta para que seja a mais satisfatória possível de
-    /// acordo com as preferências de agrupamento da turma e preferências
-    /// de cada professor.
-    ///</summary>
+    /// <summary>
+    ///     Visto que podem haver várias soluções válidas possíveis, precisamos
+    ///     otimizar a resposta para que seja a mais satisfatória possível de
+    ///     acordo com as preferências de agrupamento da turma e preferências
+    ///     de cada professor.
+    /// </summary>
     public static void OtimizarResultadoDeAcordoComAsPreferencias(
         GerarHorarioContext contexto,
         long? limiteScore = null
@@ -251,14 +236,9 @@ public class Gerador
         var qualidade = LinearExpr.NewBuilder();
 
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
-        {
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
-        }
 
-        if (limiteScore != null)
-        {
-            contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
-        }
+        if (limiteScore != null) contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
 
         contexto.Model.Maximize(qualidade);
     }

@@ -1,30 +1,31 @@
 using Ladesa.TimetableGenerator.Core;
 
-namespace Gerar_Horario_Test
+namespace Gerar_Horario_Test;
+
+public class Tests
 {
-    public class Tests
+    [SetUp]
+    public void Setup()
     {
-        [SetUp]
-        public void Setup() { }
+    }
 
-        [Test]
-        public void Test1()
-        {
-            Console.WriteLine("teste");
-            var mainTestResult = ProgramTest.MainTest();
+    [Test]
+    public void Test1()
+    {
+        Console.WriteLine("teste");
+        var mainTestResult = ProgramTest.MainTest();
 
-            //RestricoesTest.ProfessorNaoPodeTrabalharEmTresTurnosDiferentesTest(mainTestResult.Item1, mainTestResult.Item2);
-            RestricoesTest.HorarioAlmoçoTurmaTest(mainTestResult.Item1, mainTestResult.Item2);
-            RestricoesTest.HorarioAlmoçoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
+        //RestricoesTest.ProfessorNaoPodeTrabalharEmTresTurnosDiferentesTest(mainTestResult.Item1, mainTestResult.Item2);
+        RestricoesTest.HorarioAlmoçoTurmaTest(mainTestResult.Item1, mainTestResult.Item2);
+        RestricoesTest.HorarioAlmoçoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
 
-            RestricoesTest.MinimoDozeHorasEntreTurnosProfesssorTest(
-                mainTestResult.Item1,
-                mainTestResult.Item2
-            );
-            //  RestricoesTest.HorarioAlmoçoTurmaTest(mainTestResult.Item1, mainTestResult.Item2);
-            // RestricoesTest.HorarioAlmoçoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
-            //RestricoesTest.PRDTest(mainTestResult.Item1, mainTestResult.Item2);
-            RestricoesTest.EscolherTurnoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
-        }
+        RestricoesTest.MinimoDozeHorasEntreTurnosProfesssorTest(
+            mainTestResult.Item1,
+            mainTestResult.Item2
+        );
+        //  RestricoesTest.HorarioAlmoçoTurmaTest(mainTestResult.Item1, mainTestResult.Item2);
+        // RestricoesTest.HorarioAlmoçoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
+        //RestricoesTest.PRDTest(mainTestResult.Item1, mainTestResult.Item2);
+        RestricoesTest.EscolherTurnoProfessorTest(mainTestResult.Item1, mainTestResult.Item2);
     }
 }

@@ -3,8 +3,6 @@ using System.Text.Json;
 using GerarHorarioService.Extensions;
 using Ladesa.TimetableGenerator.Core;
 using Ladesa.TimetableGenerator.Core.Domain;
-using Ladesa.TimetableGenerator.Core.Domain;
-using Ladesa.TimetableGenerator.Core.Domain;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -13,9 +11,9 @@ namespace GerarHorarioService.Workers;
 public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMqHelpers)
     : BackgroundService
 {
-    private IConnection? _connection = null;
-    private IChannel? _channel = null;
-    private ConnectionFactory? _factory = null;
+    private IChannel? _channel;
+    private IConnection? _connection;
+    private ConnectionFactory? _factory;
 
     private async Task ConfigureQueue(CancellationToken stoppingToken)
     {
@@ -42,20 +40,20 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
         _connection = connection;
 
         await channel.QueueDeclareAsync(
-            queue: "gerar_horario",
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null,
+            "gerar_horario",
+            true,
+            false,
+            false,
+            null,
             cancellationToken: stoppingToken
         );
 
         await channel.QueueDeclareAsync(
-            queue: "horario_gerado",
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null,
+            "horario_gerado",
+            true,
+            false,
+            false,
+            null,
             cancellationToken: stoppingToken
         );
     }
@@ -69,10 +67,10 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
         consumer.ReceivedAsync += ListenResponseInGerarHorario;
 
         await _channel.BasicConsumeAsync(
-            queue: "gerar_horario",
-            autoAck: true,
-            consumer: consumer,
-            cancellationToken: stoppingToken
+            "gerar_horario",
+            true,
+            consumer,
+            stoppingToken
         );
 
         try
@@ -90,13 +88,13 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
         var body = ea.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);
 
-        logger.LogInformation($" [x] Received ");
+        logger.LogInformation(" [x] Received ");
 
         var serializationOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(message));
 
-        GerarHorarioOptions? gerarHorarioOptions =
+        var gerarHorarioOptions =
             await JsonSerializer.DeserializeAsync<GerarHorarioOptions>(
                 stream,
                 serializationOptions
@@ -114,9 +112,9 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
         var body = Encoding.UTF8.GetBytes(horarioJson);
 
         await _channel.BasicPublishAsync(
-            exchange: string.Empty,
-            routingKey: "horario_gerado",
-            body: body
+            string.Empty,
+            "horario_gerado",
+            body
         );
 
         logger.LogInformation($" [x] Horario Gerado {DateTime.Now}");
@@ -125,8 +123,8 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("Encerrando o consumidor...");
-        _channel?.CloseAsync(cancellationToken: stoppingToken);
-        _connection?.CloseAsync(cancellationToken: stoppingToken);
+        _channel?.CloseAsync(stoppingToken);
+        _connection?.CloseAsync(stoppingToken);
         await base.StopAsync(stoppingToken);
     }
 }

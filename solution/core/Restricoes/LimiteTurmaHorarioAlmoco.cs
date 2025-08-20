@@ -2,31 +2,30 @@ using Ladesa.TimetableGenerator.Core.Domain;
 
 namespace Ladesa.TimetableGenerator.Core.Restricoes;
 
-///<summary>
-/// RESTRIÇÃO: Mínimo de 1h30 de almoço para a turma
-///</summary>
+/// <summary>
+///     RESTRIÇÃO: Mínimo de 1h30 de almoço para a turma
+/// </summary>
 public class LimiteTurmaHorarioAlmoco
 {
     public static void Aplicar(GerarHorarioContext contexto)
     {
         var grupos = from proposta in contexto.TodasAsPropostasDeAula
-                     where (
-                         IntervaloDeTempo.VerificarIntervalo(
-                             new IntervaloDeTempo("11:30:00", "12:00:00"),
-                             proposta.IntervaloDeTempo.HorarioFim
-                         )
-                         || IntervaloDeTempo.VerificarIntervalo(
-                             new IntervaloDeTempo("13:00:00", "13:30:00"),
-                             proposta.IntervaloDeTempo.HorarioInicio
-                         )
-                     )
-                     group proposta by new { proposta.Data, proposta.TurmaId } into variantes
-                     select new
-                     {
-                         Data = variantes.Key.Data,
-                         TurmaId = variantes.Key.TurmaId,
-                         Propostas = variantes.AsEnumerable(),
-                     };
+            where IntervaloDeTempo.VerificarIntervalo(
+                      new IntervaloDeTempo("11:30:00", "12:00:00"),
+                      proposta.IntervaloDeTempo.HorarioFim
+                  )
+                  || IntervaloDeTempo.VerificarIntervalo(
+                      new IntervaloDeTempo("13:00:00", "13:30:00"),
+                      proposta.IntervaloDeTempo.HorarioInicio
+                  )
+            group proposta by new { proposta.Data, proposta.TurmaId }
+            into variantes
+            select new
+            {
+                variantes.Key.Data,
+                variantes.Key.TurmaId,
+                Propostas = variantes.AsEnumerable()
+            };
 
         foreach (var grupo in grupos)
         {
@@ -34,10 +33,7 @@ public class LimiteTurmaHorarioAlmoco
 
             var propostas = grupo.Propostas.Select(Proposta => Proposta.ModelBoolVar).ToList();
 
-            if (propostas.Count != 0)
-            {
-                contexto.Model.AddAtMostOne(propostas);
-            }
+            if (propostas.Count != 0) contexto.Model.AddAtMostOne(propostas);
         }
     }
 }

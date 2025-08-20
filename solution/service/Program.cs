@@ -1,13 +1,9 @@
-using GerarHorarioService;
 using GerarHorarioService.Extensions;
 using GerarHorarioService.Workers;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
+if (builder.Environment.IsDevelopment()) builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddSingleton<RabbitMqHelpers>();
 

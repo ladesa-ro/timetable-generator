@@ -9,32 +9,32 @@ public record RegraDisponibilidade(IRegraDisponibilidade[] Disponibilidades) : I
 {
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
-        return this.Disponibilidades.All(indisponibilidade =>
+        return Disponibilidades.All(indisponibilidade =>
         {
             return indisponibilidade.VerificarDisponibilidade(dataVerificacao, intervaloVerificacao);
         });
     }
 }
 
-public record RegraIndisponibilidadeDiaDaSemana(DayOfWeek DiaDaSemana, IntervaloDeTempo Intervalo) : IRegraDisponibilidade
+public record RegraIndisponibilidadeDiaDaSemana(DayOfWeek DiaDaSemana, IntervaloDeTempo Intervalo)
+    : IRegraDisponibilidade
 {
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
         if (DiaDaSemana == dataVerificacao.DayOfWeek)
-        {
             return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
-        }
 
         return true;
     }
 }
 
-public record RegraIndisponibilidadeDiasDaSemana(DayOfWeek[] DiasDaSemana, IntervaloDeTempo Intervalo) : IRegraDisponibilidade
+public record RegraIndisponibilidadeDiasDaSemana(DayOfWeek[] DiasDaSemana, IntervaloDeTempo Intervalo)
+    : IRegraDisponibilidade
 {
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
         return DiasDaSemana.Contains(dataVerificacao.DayOfWeek)
-            && IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
+               && IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
     }
 }
 
@@ -50,23 +50,19 @@ public record RegraIndisponibilidadeDataEspecifica(DateOnly Data, IntervaloDeTem
 {
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
-        if (dataVerificacao == Data)
-        {
-            return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
-        }
+        if (dataVerificacao == Data) return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
 
         return true;
     }
 }
 
-public record RegraIndisponibilidadePeriodoDatas(DateOnly DataInicio, DateOnly DataFim, IntervaloDeTempo Intervalo) : IRegraDisponibilidade
+public record RegraIndisponibilidadePeriodoDatas(DateOnly DataInicio, DateOnly DataFim, IntervaloDeTempo Intervalo)
+    : IRegraDisponibilidade
 {
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
         if (dataVerificacao >= DataInicio && dataVerificacao <= DataFim)
-        {
             return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
-        }
 
         return true;
     }
@@ -77,9 +73,7 @@ public record RegraIndisponibilidadeDiaDoMes(int DiaDoMes, IntervaloDeTempo Inte
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
         if (dataVerificacao.Day == DiaDoMes)
-        {
             return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
-        }
 
         return true;
     }
@@ -90,9 +84,7 @@ public record RegraIndisponibilidadeMesesDoAno(int[] Meses, IntervaloDeTempo Int
     public bool VerificarDisponibilidade(DateOnly dataVerificacao, IntervaloDeTempo intervaloVerificacao)
     {
         if (Meses.Contains(dataVerificacao.Month))
-        {
             return IntervaloDeTempo.VerificarIntervalo(Intervalo, intervaloVerificacao);
-        }
 
         return true;
     }

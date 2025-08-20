@@ -2,12 +2,12 @@ using Ladesa.TimetableGenerator.Core.Domain;
 
 namespace Ladesa.TimetableGenerator.Core;
 
-public partial class VerificarIntervaloEmDisponibilidades
+public class VerificarIntervaloEmDisponibilidades
 {
-    ///<summary>
-    /// UTILITÁRIO: Verifica que um (diaSemanaIso, intervalo)
-    /// pode ocorrer num conjunto de disponibilidades.
-    ///</summary>
+    /// <summary>
+    ///     UTILITÁRIO: Verifica que um (diaSemanaIso, intervalo)
+    ///     pode ocorrer num conjunto de disponibilidades.
+    /// </summary>
     public static bool Execute(
         IRegraDisponibilidade regraDisponibilidade,
         DateOnly data,

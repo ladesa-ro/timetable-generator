@@ -4,7 +4,7 @@ namespace GerarHorarioService.Extensions;
 
 public class RabbitMqHelpers
 {
-    IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
 
     public RabbitMqHelpers(IConfiguration config)
     {
@@ -26,15 +26,13 @@ public class RabbitMqHelpers
             || string.IsNullOrEmpty(userName)
             || string.IsNullOrEmpty(password)
         )
-        {
             throw new InvalidOperationException("HostName or UserName is missing.");
-        }
 
-        return new ConnectionFactory()
+        return new ConnectionFactory
         {
             HostName = hostName,
             UserName = userName,
-            Password = password,
+            Password = password
         };
     }
 }

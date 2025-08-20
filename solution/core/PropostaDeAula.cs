@@ -30,14 +30,15 @@ public class PropostaDeAula(
     {
         get
         {
-            if (this.CreatedModelBoolVar == null)
+            if (CreatedModelBoolVar == null)
             {
                 var propostaLabel =
-                    $"dia_{this.Data}::intervalo_{this.IntervaloIndex}::diario_{this.DiarioId}::turma_{this.TurmaId}";
-                this.CreatedModelBoolVar = this.Contexto.Model.NewBoolVar(propostaLabel);
+                    $"dia_{Data}::intervalo_{IntervaloIndex}::diario_{DiarioId}::turma_{TurmaId}";
+                CreatedModelBoolVar = Contexto.Model.NewBoolVar(propostaLabel);
             }
-            return this.CreatedModelBoolVar!;
+
+            return CreatedModelBoolVar!;
         }
-        set { this.CreatedModelBoolVar = value; }
+        set => CreatedModelBoolVar = value;
     }
-};
+}

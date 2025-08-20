@@ -11,7 +11,7 @@ public record IntervaloDeTempo(string HorarioInicio, string HorarioFim)
     {
         var horarioInicio = TimeSpan.Parse(intervaloDeTempo.HorarioInicio);
         var horarioFim = TimeSpan.Parse(intervaloDeTempo.HorarioFim);
-        return (horarioInicio <= horario) && (horario <= horarioFim);
+        return horarioInicio <= horario && horario <= horarioFim;
     }
 
     public static bool VerificarIntervalo(IntervaloDeTempo intervaloDeTempo, string horario)
@@ -23,6 +23,6 @@ public record IntervaloDeTempo(string HorarioInicio, string HorarioFim)
     public static bool VerificarIntervalo(IntervaloDeTempo intervaloDeTempo, IntervaloDeTempo intervalo2)
     {
         return VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioInicio)
-            && VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioFim);
+               && VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioFim);
     }
 }

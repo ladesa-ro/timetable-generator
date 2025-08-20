@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using Allure.NUnit;
-using Ladesa.TimetableGenerator.Core;
-using Ladesa.TimetableGenerator.Core.Domain;
+﻿using Ladesa.TimetableGenerator.Core;
 using Ladesa.TimetableGenerator.Core.Domain;
 
 public static class RestricoesTest
@@ -13,49 +10,43 @@ public static class RestricoesTest
     )
     {
         foreach (var professor in contexto.Options.Professores)
-        {
-            foreach (
-                var diaSemanaIso in Enumerable.Range(
-                    contexto.Options.DiaSemanaInicio,
-                    contexto.Options.DiaSemanaFim
-                )
+        foreach (
+            var diaSemanaIso in Enumerable.Range(
+                contexto.Options.DiaSemanaInicio,
+                contexto.Options.DiaSemanaFim
             )
+        )
+        {
+            var propostasManha =
+                from aula in horarioGerado
+                where
+                    aula.ProfessorId == professor.Id
+                    && aula.DiaDaSemanaIso == diaSemanaIso
+                    && (aula.IntervaloDeTempo >= 0 && aula.IntervaloDeTempo <= 4)
+                select aula;
+
+            var propostasTarde =
+                from aula in horarioGerado
+                where
+                    aula.ProfessorId == professor.Id
+                    && aula.DiaDaSemanaIso == diaSemanaIso
+                    && (aula.IntervaloDeTempo >= 5 && aula.IntervaloDeTempo <= 9)
+                select aula;
+
+            var propostasNoite =
+                from aula in horarioGerado
+                where
+                    aula.ProfessorId == professor.Id
+                    && aula.DiaDaSemanaIso == diaSemanaIso
+                    && (aula.IntervaloDeTempo >= 10 && aula.IntervaloDeTempo <= 14)
+                select aula;
+
+            if (propostasManha.Any() && propostasTarde.Any() && propostasNoite.Any())
             {
-                var propostasManha =
-                    from aula in horarioGerado
-                    where
-                        aula.ProfessorId == professor.Id
-                        && aula.DiaDaSemanaIso == diaSemanaIso
-                        && (aula.IntervaloDeTempo >= 0 && aula.IntervaloDeTempo <= 4)
-                    select aula;
-
-                var propostasTarde =
-                    from aula in horarioGerado
-                    where
-                        aula.ProfessorId == professor.Id
-                        && aula.DiaDaSemanaIso == diaSemanaIso
-                        && (aula.IntervaloDeTempo >= 5 && aula.IntervaloDeTempo <= 9)
-                    select aula;
-
-                var propostasNoite =
-                    from aula in horarioGerado
-                    where
-                        aula.ProfessorId == professor.Id
-                        && aula.DiaDaSemanaIso == diaSemanaIso
-                        && (aula.IntervaloDeTempo >= 10 && aula.IntervaloDeTempo <= 14)
-                    select aula;
-
                 if (propostasManha.Any() && propostasTarde.Any() && propostasNoite.Any())
-                {
-                    if (propostasManha.Any() && propostasTarde.Any() && propostasNoite.Any())
-                    {
-                        Assert.Fail("ERROR: PROFESSOR TRABALHA NOS 3 TURNOS");
-                    }
-                    else if (propostasManha.Any() && propostasNoite.Any())
-                    {
-                        Assert.Fail("ERROR: PROFESSOR TRABALHA NO TURNO MANHA E NOITE");
-                    }
-                }
+                    Assert.Fail("ERROR: PROFESSOR TRABALHA NOS 3 TURNOS");
+                else if (propostasManha.Any() && propostasNoite.Any())
+                    Assert.Fail("ERROR: PROFESSOR TRABALHA NO TURNO MANHA E NOITE");
             }
         }
     }
@@ -85,10 +76,7 @@ public static class RestricoesTest
                     )
                 select proposta;
 
-            if (propostaAulaTurma.Count() > 2)
-            {
-                Assert.Fail("ERROR: HORARIO DE ALMOÇO TURMA ERROR");
-            }
+            if (propostaAulaTurma.Count() > 2) Assert.Fail("ERROR: HORARIO DE ALMOÇO TURMA ERROR");
         }
     }
 
@@ -102,68 +90,58 @@ public static class RestricoesTest
         //Console.WriteLine("==========");
 
         foreach (var professor in contexto.Options.Professores)
-        {
-            foreach (
-                var diaSemanIso in Enumerable.Range(
-                    contexto.Options.DiaSemanaInicio,
-                    contexto.Options.DiaSemanaFim - 1
-                )
+        foreach (
+            var diaSemanIso in Enumerable.Range(
+                contexto.Options.DiaSemanaInicio,
+                contexto.Options.DiaSemanaFim - 1
             )
-            {
-                var propostaAulaNoiteProfessor = (
-                    from proposta in horarioGerado
-                    where
-                        (proposta.DiaDaSemanaIso == diaSemanIso)
-                        && horarioNoite.Contains(proposta.IntervaloDeTempo)
-                        && proposta.ProfessorId == professor.Id
-                    orderby proposta.DiaDaSemanaIso descending
-                    select proposta
-                ).FirstOrDefault();
+        )
+        {
+            var propostaAulaNoiteProfessor = (
+                from proposta in horarioGerado
+                where
+                    proposta.DiaDaSemanaIso == diaSemanIso
+                    && horarioNoite.Contains(proposta.IntervaloDeTempo)
+                    && proposta.ProfessorId == professor.Id
+                orderby proposta.DiaDaSemanaIso descending
+                select proposta
+            ).FirstOrDefault();
 
-                if (propostaAulaNoiteProfessor is null)
-                {
-                    //Console.WriteLine("Professor não deu aula a noite");
-                    continue;
-                }
+            if (propostaAulaNoiteProfessor is null)
+                //Console.WriteLine("Professor não deu aula a noite");
+                continue;
 
-                var propostaAulaDiaProfessor = (
-                    from proposta in horarioGerado
-                    where
-                        (proposta.DiaDaSemanaIso == diaSemanIso + 1)
-                        && proposta.ProfessorId == professor.Id
-                    select proposta
-                ).FirstOrDefault();
+            var propostaAulaDiaProfessor = (
+                from proposta in horarioGerado
+                where
+                    proposta.DiaDaSemanaIso == diaSemanIso + 1
+                    && proposta.ProfessorId == professor.Id
+                select proposta
+            ).FirstOrDefault();
 
-                if (propostaAulaDiaProfessor is null)
-                {
-                    //Console.WriteLine("Professor não deu aula no proximo dia");
+            if (propostaAulaDiaProfessor is null)
+                //Console.WriteLine("Professor não deu aula no proximo dia");
+                continue;
 
-                    continue;
-                }
-
-                if (
-                    propostaAulaNoiteProfessor.IntervaloDeTempo - 9
-                    > propostaAulaDiaProfessor.IntervaloDeTempo
-                )
-                {
-                    Assert.Fail("ERROR: INTERVALO DE 12H NÃO RESPEITADO ERROR");
-                }
-                /*
+            if (
+                propostaAulaNoiteProfessor.IntervaloDeTempo - 9
+                > propostaAulaDiaProfessor.IntervaloDeTempo
+            )
+                Assert.Fail("ERROR: INTERVALO DE 12H NÃO RESPEITADO ERROR");
+            /*
                                 Console.WriteLine(propostaAulaNoiteProfessor);
                                 Console.WriteLine(propostaAulaDiaProfessor);
 
 
                  */
-
-                /*
+            /*
                     10 => 1
                     11 => 2
                     12 => 3
                     13 => 4
                  */
-            }
-            //  Console.WriteLine("----------------------");
         }
+        //  Console.WriteLine("----------------------");
     }
 
     public static void HorarioAlmoçoProfessorTest(
@@ -190,10 +168,7 @@ public static class RestricoesTest
                     )
                 select proposta;
 
-            if (propostaAulaProfessor.Count() > 2)
-            {
-                Assert.Fail("ERROR: HORARIO DE ALMOÇO PROFESSOR ERROR");
-            }
+            if (propostaAulaProfessor.Count() > 2) Assert.Fail("ERROR: HORARIO DE ALMOÇO PROFESSOR ERROR");
         }
     }
 
@@ -213,11 +188,9 @@ public static class RestricoesTest
                 select proposta;
 
             if (propostaAulaProfessor.Any())
-            {
                 Assert.Fail(
                     $"ERROR: PROFESSOR TRABALHANDO NO SEU PRD \n Prova: Professor {professor.Id} esta trabalhando no dia {professor.DiaPRD}"
                 );
-            }
         }
     }
 
@@ -228,10 +201,9 @@ public static class RestricoesTest
     )
     {
         foreach (var professor in contexto.Options.Professores)
-        {
             if (professor.DiaAulaEscolhido != 0)
             {
-                System.Console.WriteLine(
+                Console.WriteLine(
                     "Testando o lançamento de aula do professor " + professor.Id
                 );
                 var propostaAulaProfessor =
@@ -239,24 +211,18 @@ public static class RestricoesTest
                     where
                         proposta.DiaDaSemanaIso == professor.DiaAulaEscolhido
                         && proposta.ProfessorId == professor.Id
-                        && (
-                            IntervaloDeTempo.VerificarIntervalo(
-                                new IntervaloDeTempo(
-                                    professor.IntervaloEscolhido.HorarioInicio,
-                                    professor.IntervaloEscolhido.HorarioFim
-                                ),
-                                contexto
-                                    .Options
-                                    .HorariosDeAula[proposta.IntervaloDeTempo]
-                                    .HorarioFim
-                            )
+                        && IntervaloDeTempo.VerificarIntervalo(
+                            new IntervaloDeTempo(
+                                professor.IntervaloEscolhido.HorarioInicio,
+                                professor.IntervaloEscolhido.HorarioFim
+                            ),
+                            contexto
+                                .Options
+                                .HorariosDeAula[proposta.IntervaloDeTempo]
+                                .HorarioFim
                         )
                     select proposta;
-                if (!propostaAulaProfessor.Any())
-                {
-                    Assert.Fail($"ERROR: ESCOLHER TURNO PROFESSOR");
-                }
+                if (!propostaAulaProfessor.Any()) Assert.Fail("ERROR: ESCOLHER TURNO PROFESSOR");
             }
-        }
     }
 }
