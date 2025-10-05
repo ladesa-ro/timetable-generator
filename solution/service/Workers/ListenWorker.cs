@@ -66,12 +66,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         consumer.ReceivedAsync += ListenResponseInGerarHorario;
 
-        await _channel.BasicConsumeAsync(
-            "gerar_horario",
-            true,
-            consumer,
-            stoppingToken
-        );
+        await _channel.BasicConsumeAsync("gerar_horario", true, consumer, stoppingToken);
 
         try
         {
@@ -94,11 +89,10 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(message));
 
-        var gerarHorarioOptions =
-            await JsonSerializer.DeserializeAsync<GerarHorarioOptions>(
-                stream,
-                serializationOptions
-            );
+        var gerarHorarioOptions = await JsonSerializer.DeserializeAsync<GerarHorarioOptions>(
+            stream,
+            serializationOptions
+        );
 
         var horarioGerado = Gerador.GerarHorario(gerarHorarioOptions);
 
@@ -111,11 +105,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
     {
         var body = Encoding.UTF8.GetBytes(horarioJson);
 
-        await _channel.BasicPublishAsync(
-            string.Empty,
-            "horario_gerado",
-            body
-        );
+        await _channel.BasicPublishAsync(string.Empty, "horario_gerado", body);
 
         logger.LogInformation($" [x] Horario Gerado {DateTime.Now}");
     }

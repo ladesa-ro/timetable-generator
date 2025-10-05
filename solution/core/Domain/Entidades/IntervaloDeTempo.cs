@@ -20,9 +20,12 @@ public record IntervaloDeTempo(string HorarioInicio, string HorarioFim)
         return VerificarIntervalo(intervaloDeTempo, horarioConvertido);
     }
 
-    public static bool VerificarIntervalo(IntervaloDeTempo intervaloDeTempo, IntervaloDeTempo intervalo2)
+    public static bool VerificarIntervalo(
+        IntervaloDeTempo intervaloDeTempo,
+        IntervaloDeTempo intervalo2
+    )
     {
         return VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioInicio)
-               && VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioFim);
+            && VerificarIntervalo(intervaloDeTempo, intervalo2.HorarioFim);
     }
 }

@@ -76,7 +76,8 @@ public static class RestricoesTest
                     )
                 select proposta;
 
-            if (propostaAulaTurma.Count() > 2) Assert.Fail("ERROR: HORARIO DE ALMOÇO TURMA ERROR");
+            if (propostaAulaTurma.Count() > 2)
+                Assert.Fail("ERROR: HORARIO DE ALMOÇO TURMA ERROR");
         }
     }
 
@@ -168,7 +169,8 @@ public static class RestricoesTest
                     )
                 select proposta;
 
-            if (propostaAulaProfessor.Count() > 2) Assert.Fail("ERROR: HORARIO DE ALMOÇO PROFESSOR ERROR");
+            if (propostaAulaProfessor.Count() > 2)
+                Assert.Fail("ERROR: HORARIO DE ALMOÇO PROFESSOR ERROR");
         }
     }
 
@@ -203,9 +205,7 @@ public static class RestricoesTest
         foreach (var professor in contexto.Options.Professores)
             if (professor.DiaAulaEscolhido != 0)
             {
-                Console.WriteLine(
-                    "Testando o lançamento de aula do professor " + professor.Id
-                );
+                Console.WriteLine("Testando o lançamento de aula do professor " + professor.Id);
                 var propostaAulaProfessor =
                     from proposta in horarioGerado
                     where
@@ -216,13 +216,11 @@ public static class RestricoesTest
                                 professor.IntervaloEscolhido.HorarioInicio,
                                 professor.IntervaloEscolhido.HorarioFim
                             ),
-                            contexto
-                                .Options
-                                .HorariosDeAula[proposta.IntervaloDeTempo]
-                                .HorarioFim
+                            contexto.Options.HorariosDeAula[proposta.IntervaloDeTempo].HorarioFim
                         )
                     select proposta;
-                if (!propostaAulaProfessor.Any()) Assert.Fail("ERROR: ESCOLHER TURNO PROFESSOR");
+                if (!propostaAulaProfessor.Any())
+                    Assert.Fail("ERROR: ESCOLHER TURNO PROFESSOR");
             }
     }
 }

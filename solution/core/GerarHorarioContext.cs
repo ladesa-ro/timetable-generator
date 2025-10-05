@@ -16,7 +16,8 @@ public class GerarHorarioContext
         Model = model ?? new CpModel();
         TodasAsPropostasDeAula = todasAsPropostasDeAula ?? [];
 
-        if (iniciarTodasAsPropostasDeAula) IniciarTodasAsPropostasDeAula();
+        if (iniciarTodasAsPropostasDeAula)
+            IniciarTodasAsPropostasDeAula();
     }
 
     public GerarHorarioOptions Options { get; init; }

@@ -11,7 +11,7 @@ using CombinacaoAula = (
     string TurmaId,
     string DiarioId,
     string ProfessorId
-    );
+);
 
 public class Gerador
 {
@@ -23,11 +23,7 @@ public class Gerador
         GerarHorarioOptions options
     )
     {
-        for (
-            var data = options.DataInicial;
-            data <= options.DataFinal;
-            data = data.AddDays(1)
-        )
+        for (var data = options.DataInicial; data <= options.DataFinal; data = data.AddDays(1))
         for (
             var intervaloIndex = 0;
             intervaloIndex < options.HorariosDeAula.Length;
@@ -56,16 +52,14 @@ public class Gerador
         GerarHorarioOptions options
     )
     {
-        var combinacoes = GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(
-            options
-        );
+        var combinacoes = GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(options);
 
-        foreach (
-            var combinacao in combinacoes
-        )
+        foreach (var combinacao in combinacoes)
         {
             // =====================================================================================
-            var intervaloDeTempo = options.HorarioDeAulaFindByIndexStrict(combinacao.IntervaloDeTempoIndex);
+            var intervaloDeTempo = options.HorarioDeAulaFindByIndexStrict(
+                combinacao.IntervaloDeTempoIndex
+            );
 
             var turma = options.TurmaFindByIdStrict(combinacao.TurmaId);
             var diario = options.DiarioFindByIdStrict(combinacao.DiarioId);
@@ -77,9 +71,10 @@ public class Gerador
 
             // =====================================================================================
 
-
-            var disponivelParaTurma =
-                turma.RegraDisponibilidade.VerificarDisponibilidade(combinacao.Data, intervaloDeTempo);
+            var disponivelParaTurma = turma.RegraDisponibilidade.VerificarDisponibilidade(
+                combinacao.Data,
+                intervaloDeTempo
+            );
 
             // ===================================
 
@@ -94,10 +89,10 @@ public class Gerador
 
             // =====================================================================================
 
-            if (disponivel) yield return combinacao;
+            if (disponivel)
+                yield return combinacao;
         }
     }
-
 
     /// <summary>
     ///     Ponto de partida que inicia, restringe e otimiza o modelo para
@@ -191,7 +186,8 @@ public class Gerador
                     }
                 );
 
-                if (previousScore != null) OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
+                if (previousScore != null)
+                    OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
@@ -216,7 +212,8 @@ public class Gerador
         {
             tickGenerated.WaitOne();
 
-            if (horarioGerado != null) yield return horarioGerado;
+            if (horarioGerado != null)
+                yield return horarioGerado;
         } while (horarioGerado != null);
 
         yield break;
@@ -238,7 +235,8 @@ public class Gerador
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
 
-        if (limiteScore != null) contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
+        if (limiteScore != null)
+            contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
 
         contexto.Model.Maximize(qualidade);
     }

@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <OutputType>library</OutputType>
-        <TargetFramework>net9.0</TargetFramework>
-        <RootNamespace>Ladesa.TimetableGenerator.Core</RootNamespace>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Google.OrTools" Version="9.14.6206"/>
-    </ItemGroup>
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Ladesa.TimetableGenerator.Core</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.OrTools" Version="9.14.6206" />
+  </ItemGroup>
 </Project>

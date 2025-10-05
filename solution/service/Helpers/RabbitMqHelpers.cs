@@ -32,7 +32,7 @@ public class RabbitMqHelpers
         {
             HostName = hostName,
             UserName = userName,
-            Password = password
+            Password = password,
         };
     }
 }

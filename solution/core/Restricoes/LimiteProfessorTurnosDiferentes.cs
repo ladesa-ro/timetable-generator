@@ -8,53 +8,58 @@ namespace Ladesa.TimetableGenerator.Core.Restricoes;
 /// </summary>
 public class LimiteProfessorTurnosDiferentes
 {
-    public static void Aplicar(
-        GerarHorarioContext contexto
-    )
+    public static void Aplicar(GerarHorarioContext contexto)
     {
         // Propostas de aula agrupadas por Professor e Data
-        var propostasAgrupadas = from proposta in contexto.TodasAsPropostasDeAula
-            group proposta by new { proposta.ProfessorId, proposta.Data }
-            into variantes
+        var propostasAgrupadas =
+            from proposta in contexto.TodasAsPropostasDeAula
+            group proposta by new { proposta.ProfessorId, proposta.Data } into variantes
             select new
             {
                 variantes.Key.ProfessorId,
                 variantes.Key.Data,
-                Propostas = variantes.AsEnumerable()
+                Propostas = variantes.AsEnumerable(),
             };
 
         foreach (var grupo in propostasAgrupadas)
         {
-            if (grupo == null) continue;
+            if (grupo == null)
+                continue;
 
             var propostas = grupo.Propostas.ToList();
 
-            if (propostas.Count == 0) continue;
+            if (propostas.Count == 0)
+                continue;
 
-            var propostasManha =
-                (from proposta in propostas
-                    where
-                        IntervaloDeTempo.VerificarIntervalo(
-                            contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                            new IntervaloDeTempo("00:00:00", "11:59:59"))
-                    select proposta.ModelBoolVar).ToList();
+            var propostasManha = (
+                from proposta in propostas
+                where
+                    IntervaloDeTempo.VerificarIntervalo(
+                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
+                        new IntervaloDeTempo("00:00:00", "11:59:59")
+                    )
+                select proposta.ModelBoolVar
+            ).ToList();
 
-            var propostasTarde =
-                (from proposta in propostas
-                    where
-                        IntervaloDeTempo.VerificarIntervalo(
-                            contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                            new IntervaloDeTempo("12:00:00", "17:59:59"))
-                    select proposta.ModelBoolVar).ToList();
+            var propostasTarde = (
+                from proposta in propostas
+                where
+                    IntervaloDeTempo.VerificarIntervalo(
+                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
+                        new IntervaloDeTempo("12:00:00", "17:59:59")
+                    )
+                select proposta.ModelBoolVar
+            ).ToList();
 
-            var propostasNoite =
-                (from proposta in propostas
-                    where
-                        IntervaloDeTempo.VerificarIntervalo(
-                            contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                            new IntervaloDeTempo("18:00:00", "23:59:59"))
-                    select proposta.ModelBoolVar
-                ).ToList();
+            var propostasNoite = (
+                from proposta in propostas
+                where
+                    IntervaloDeTempo.VerificarIntervalo(
+                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
+                        new IntervaloDeTempo("18:00:00", "23:59:59")
+                    )
+                select proposta.ModelBoolVar
+            ).ToList();
 
             /*
             Possibilidades
@@ -68,7 +73,8 @@ public class LimiteProfessorTurnosDiferentes
             |       manha e tarde  |  true |  true | false |
             |       tarde e noite  | false |  true |  true |
             */
-            if (propostasManha.Count == 0 || propostasTarde.Count == 0 || propostasNoite.Count == 0) continue;
+            if (propostasManha.Count == 0 || propostasTarde.Count == 0 || propostasNoite.Count == 0)
+                continue;
 
             //Console.WriteLine("toppp");
             long[,] possibilidadesPermitidas =
@@ -78,7 +84,7 @@ public class LimiteProfessorTurnosDiferentes
                 { 0, 1, 0 }, //dar aula so a tarde
                 { 0, 0, 1 }, //dar aula so a noite
                 { 1, 1, 0 }, //manha e tarde
-                { 0, 1, 1 } //tarde e noite
+                { 0, 1, 1 }, //tarde e noite
             };
 
             var prefixo = $"{grupo.ProfessorId}_{grupo.Data.ToString()}";
@@ -103,15 +109,9 @@ public class LimiteProfessorTurnosDiferentes
             contexto.Model.Add(qntAulasTarde == LinearExpr.Sum(propostasTarde));
             contexto.Model.Add(qntAulasNoite == LinearExpr.Sum(propostasNoite));
 
-            var algumaAulaManha = contexto.Model.NewBoolVar(
-                $"{prefixo}_Manha_Ativo"
-            );
-            var algumaAulaTarde = contexto.Model.NewBoolVar(
-                $"{prefixo}_Tarde_Ativo"
-            );
-            var algumaAulaNoite = contexto.Model.NewBoolVar(
-                $"{prefixo}_Noite_Ativo"
-            );
+            var algumaAulaManha = contexto.Model.NewBoolVar($"{prefixo}_Manha_Ativo");
+            var algumaAulaTarde = contexto.Model.NewBoolVar($"{prefixo}_Tarde_Ativo");
+            var algumaAulaNoite = contexto.Model.NewBoolVar($"{prefixo}_Noite_Ativo");
 
             contexto.Model.Add(qntAulasManha >= 1).OnlyEnforceIf(algumaAulaManha);
             contexto.Model.Add(qntAulasTarde >= 1).OnlyEnforceIf(algumaAulaTarde);
@@ -122,9 +122,7 @@ public class LimiteProfessorTurnosDiferentes
             contexto.Model.Add(qntAulasNoite < 1).OnlyEnforceIf(algumaAulaNoite.Not());
 
             contexto
-                .Model.AddAllowedAssignments(
-                    [algumaAulaManha, algumaAulaTarde, algumaAulaNoite]
-                )
+                .Model.AddAllowedAssignments([algumaAulaManha, algumaAulaTarde, algumaAulaNoite])
                 .AddTuples(possibilidadesPermitidas);
         }
     }

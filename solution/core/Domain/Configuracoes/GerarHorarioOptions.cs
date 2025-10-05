@@ -6,13 +6,14 @@ public record GerarHorarioOptions(
     Turma[] Turmas,
     Professor[] Professores,
     IntervaloDeTempo[] HorariosDeAula,
-    Diario[] Diarios)
+    Diario[] Diarios
+)
 {
     public IEnumerable<DateOnly> Datas()
     {
-        for (var data = DataInicial; data <= DataFinal; data = data.AddDays(1)) yield return data;
+        for (var data = DataInicial; data <= DataFinal; data = data.AddDays(1))
+            yield return data;
     }
-
 
     public Professor? ProfessorFindById(string professorId)
     {
@@ -24,7 +25,8 @@ public record GerarHorarioOptions(
     {
         var professor = ProfessorFindById(professorId);
 
-        if (professor == null) throw new Exception($"Professor não encontrado: {professorId}{exceptionContext}.");
+        if (professor == null)
+            throw new Exception($"Professor não encontrado: {professorId}{exceptionContext}.");
 
         return professor;
     }
@@ -39,7 +41,8 @@ public record GerarHorarioOptions(
     {
         var diario = DiarioFindById(diarioId);
 
-        if (diario == null) throw new Exception($"Diário não encontrado: {diarioId}{exceptionContext}.");
+        if (diario == null)
+            throw new Exception($"Diário não encontrado: {diarioId}{exceptionContext}.");
 
         return diario;
     }
@@ -48,7 +51,8 @@ public record GerarHorarioOptions(
     {
         var turma = TurmaFindById(turmaId);
 
-        if (turma == null) throw new Exception($"Diário não encontrado: {turmaId}{exceptionContext}.");
+        if (turma == null)
+            throw new Exception($"Diário não encontrado: {turmaId}{exceptionContext}.");
 
         return turma;
     }
@@ -72,7 +76,8 @@ public record GerarHorarioOptions(
     {
         var horarioDeAula = HorarioDeAulaByIndex(horarioDeAulaIndex);
 
-        if (horarioDeAula == null) throw new Exception($"Horário de aula não encontrado: índice {horarioDeAulaIndex}.");
+        if (horarioDeAula == null)
+            throw new Exception($"Horário de aula não encontrado: índice {horarioDeAulaIndex}.");
 
         return horarioDeAula;
     }
