@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Features.HorarioGerado;
 
-namespace Ladesa.TimetableGenerator.Core;
+namespace Ladesa.TimetableGenerator.Features.Gerador;
 
 public class GeradorSolutionCallback : CpSolverSolutionCallback
 {
@@ -24,13 +24,13 @@ public class GeradorSolutionCallback : CpSolverSolutionCallback
                 propostaAula.DiarioId,
                 propostaAula.ProfessorId,
                 propostaAula.Data,
-                propostaAula.IntervaloDeTempo
+                propostaAula.SlotDeTempo
             );
 
         var horarioGerado = new HorarioGerado(
-            Contexto.Options.DataInicial,
-            Contexto.Options.DataFinal,
-            Contexto.Options.HorariosDeAula,
+            Contexto.Payload.DataInicial,
+            Contexto.Payload.DataFinal,
+            Contexto.Payload.HorariosDeAula,
             propostasAtivas.ToArray()
         );
 

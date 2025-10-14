@@ -1,9 +1,11 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Features.HorarioGerado;
+using Ladesa.TimetableGenerator.Core.Features.Payload;
+using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 using Ladesa.TimetableGenerator.Core.Restricoes;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
-namespace Ladesa.TimetableGenerator.Core;
+namespace Ladesa.TimetableGenerator.Features.Gerador;
 
 using CombinacaoAula = (
     DateOnly Data,
@@ -11,7 +13,7 @@ using CombinacaoAula = (
     string TurmaId,
     string DiarioId,
     string ProfessorId
-);
+    );
 
 public class Gerador
 {
@@ -20,28 +22,28 @@ public class Gerador
     ///     sem respeitar nenhum critério.
     /// </summary>
     public static IEnumerable<CombinacaoAula> GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(
-        GerarHorarioOptions options
+        IGeradorPayload payload
     )
     {
-        for (var data = options.DataInicial; data <= options.DataFinal; data = data.AddDays(1))
-        for (
-            var intervaloIndex = 0;
-            intervaloIndex < options.HorariosDeAula.Length;
-            intervaloIndex++
-        )
-            foreach (var turma in options.Turmas)
-            foreach (var diario in options.DiariosByTurmaId(turma.Id))
-            {
-                var combinacaoAula = new CombinacaoAula(
-                    data,
-                    intervaloIndex,
-                    turma.Id,
-                    diario.Id,
-                    diario.ProfessorId
-                );
+        foreach (var data in HelperDatas.Datas(payload))
+            for (
+                var intervaloIndex = 0;
+                intervaloIndex < payload.HorariosDeAula.Length;
+                intervaloIndex++
+            )
+                foreach (var turma in payload.Turmas)
+                foreach (var diario in HelperDiarios.ByTurmaId(payload, turma.Id))
+                {
+                    var combinacaoAula = new CombinacaoAula(
+                        data,
+                        intervaloIndex,
+                        turma.Id,
+                        diario.Id,
+                        diario.ProfessorId
+                    );
 
-                yield return combinacaoAula;
-            }
+                    yield return combinacaoAula;
+                }
     }
 
     /// <summary>
@@ -49,24 +51,25 @@ public class Gerador
     ///     respeitando as disponibilidades da turma e disponibilidades do professor.
     /// </summary>
     public static IEnumerable<CombinacaoAula> GerarCombinacoesComDisponibilidade(
-        GerarHorarioOptions options
+        IGeradorPayload payload
     )
     {
-        var combinacoes = GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(options);
+        var combinacoes = GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(payload);
 
         foreach (var combinacao in combinacoes)
         {
             // =====================================================================================
-            var intervaloDeTempo = options.HorarioDeAulaFindByIndexStrict(
+            var intervaloDeTempo = HelperHorarioDeAula.ByIndexStrict(
+                payload,
                 combinacao.IntervaloDeTempoIndex
             );
 
-            var turma = options.TurmaFindByIdStrict(combinacao.TurmaId);
-            var diario = options.DiarioFindByIdStrict(combinacao.DiarioId);
+            var turma = HelperTurmas.FindByIdStrict(payload, combinacao.TurmaId);
+            var diario = HelperDiarios.FindByIdStrict(payload, combinacao.DiarioId);
 
-            var professor = options.ProfessorFindByIdStrict(
-                diario.ProfessorId,
-                $" (diário: {diario.Id}, turma: {turma.Id})"
+            var professor = HelperProfessores.FindByIdStrict(
+                payload,
+                diario.ProfessorId
             )!;
 
             // =====================================================================================
@@ -89,10 +92,7 @@ public class Gerador
 
             // =====================================================================================
 
-            if (disponivel)
-            {
-                yield return combinacao;
-            }
+            if (disponivel) yield return combinacao;
         }
     }
 
@@ -100,13 +100,10 @@ public class Gerador
     ///     Ponto de partida que inicia, restringe e otimiza o modelo para
     ///     solucionar o problema da geração de horário.
     /// </summary>
-    public static GerarHorarioContext PrepararModelComRestricoes(GerarHorarioOptions options)
+    public static GerarHorarioContext PrepararModelComRestricoes(IGeradorPayload payload)
     {
         // ====================================================================
-        // contexto.Model -> Google.OrTools.Sat.CpModel;
-        // contexto.Options -> GerarHorarioOptions;
-        // contexto.TodasAsPropostasDeAula -> List<PropostaDeAula>;
-        var contexto = new GerarHorarioContext(options, iniciarTodasAsPropostasDeAula: true);
+        var contexto = new GerarHorarioContext(payload);
         // ================================================
 
         // ====================================================================
@@ -158,10 +155,10 @@ public class Gerador
         return contexto;
     }
 
-    public static IEnumerable<HorarioGerado> GerarHorario(GerarHorarioOptions options)
+    public static IEnumerable<HorarioGerado> GerarHorario(IGeradorPayload payload)
     {
         // CRIA UM MODELO COM AS RESTRIÇÕES VINDAS DAS OPÇÕES
-        var contexto = PrepararModelComRestricoes(options);
+        var contexto = PrepararModelComRestricoes(payload);
 
         // ==============================================================
 
@@ -177,7 +174,10 @@ public class Gerador
 
             do
             {
-                var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
+                var solver = new CpSolver
+                {
+                    StringParameters = "enumerate_all_solutions:true"
+                };
 
                 var solutionPrinter = new GeradorSolutionCallback(
                     contexto,
@@ -188,11 +188,7 @@ public class Gerador
                     }
                 );
 
-                if (previousScore != null)
-                {
-                    OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
-                }
-                ;
+                if (previousScore != null) OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
@@ -217,10 +213,7 @@ public class Gerador
         {
             tickGenerated.WaitOne();
 
-            if (horarioGerado != null)
-            {
-                yield return horarioGerado;
-            }
+            if (horarioGerado != null) yield return horarioGerado;
         } while (horarioGerado != null);
 
         yield break;
@@ -240,14 +233,9 @@ public class Gerador
         var qualidade = LinearExpr.NewBuilder();
 
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
-        {
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
-        }
 
-        if (limiteScore != null)
-        {
-            contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
-        }
+        if (limiteScore != null) contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
 
         contexto.Model.Maximize(qualidade);
     }

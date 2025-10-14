@@ -1,3 +1,5 @@
+using Ladesa.TimetableGenerator.Features.Gerador;
+
 namespace Ladesa.TimetableGenerator.Core.Restricoes;
 
 /// <summary>
@@ -13,14 +15,15 @@ public class LimiteTurmaUmaAulaPorHorario
             {
                 proposta.Data,
                 proposta.TurmaId,
-                proposta.IntervaloIndex,
-            } into variantes
+                proposta.IntervaloIndex
+            }
+            into variantes
             select new
             {
                 variantes.Key.Data,
                 variantes.Key.TurmaId,
                 variantes.Key.IntervaloIndex,
-                Propostas = variantes.AsEnumerable(),
+                Propostas = variantes.AsEnumerable()
             };
 
         foreach (var grupo in grupos)

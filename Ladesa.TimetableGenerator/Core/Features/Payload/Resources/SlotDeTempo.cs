@@ -1,6 +1,5 @@
 namespace Ladesa.TimetableGenerator.Core.Features.Payload.Resources;
 
-
 public record SlotDeTempo(string HorarioInicio, string HorarioFim)
 {
     public override string ToString()
@@ -27,6 +26,6 @@ public record SlotDeTempo(string HorarioInicio, string HorarioFim)
     )
     {
         return VerificarIntervalo(slotDeTempo, intervalo2.HorarioInicio)
-            && VerificarIntervalo(slotDeTempo, intervalo2.HorarioFim);
+               && VerificarIntervalo(slotDeTempo, intervalo2.HorarioFim);
     }
 }

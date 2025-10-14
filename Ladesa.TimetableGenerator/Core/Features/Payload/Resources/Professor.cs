@@ -1,6 +1,6 @@
 namespace Ladesa.TimetableGenerator.Core.Features.Payload.Resources;
 
 public record Professor(
-    string Id, 
+    string Id,
     IRegraDisponibilidade RegraDisponibilidade
 );

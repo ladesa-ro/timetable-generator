@@ -1,5 +1,7 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
+using Ladesa.TimetableGenerator.Core.Features.Payload.Resources;
+using Ladesa.TimetableGenerator.Features.Gerador;
 
 namespace Ladesa.TimetableGenerator.Core.Restricoes;
 
@@ -13,12 +15,13 @@ public class LimiteProfessorTurnosDiferentes
         // Propostas de aula agrupadas por Professor e Data
         var propostasAgrupadas =
             from proposta in contexto.TodasAsPropostasDeAula
-            group proposta by new { proposta.ProfessorId, proposta.Data } into variantes
+            group proposta by new { proposta.ProfessorId, proposta.Data }
+            into variantes
             select new
             {
                 variantes.Key.ProfessorId,
                 variantes.Key.Data,
-                Propostas = variantes.AsEnumerable(),
+                Propostas = variantes.AsEnumerable()
             };
 
         foreach (var grupo in propostasAgrupadas)
@@ -34,9 +37,9 @@ public class LimiteProfessorTurnosDiferentes
             var propostasManha = (
                 from proposta in propostas
                 where
-                    IntervaloDeTempo.VerificarIntervalo(
-                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                        new IntervaloDeTempo("00:00:00", "11:59:59")
+                    SlotDeTempo.VerificarIntervalo(
+                        HelperHorarioDeAula.ByIndexStrict(contexto.Payload, proposta.IntervaloIndex),
+                        new SlotDeTempo("00:00:00", "11:59:59")
                     )
                 select proposta.ModelBoolVar
             ).ToList();
@@ -44,9 +47,9 @@ public class LimiteProfessorTurnosDiferentes
             var propostasTarde = (
                 from proposta in propostas
                 where
-                    IntervaloDeTempo.VerificarIntervalo(
-                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                        new IntervaloDeTempo("12:00:00", "17:59:59")
+                    SlotDeTempo.VerificarIntervalo(
+                        HelperHorarioDeAula.ByIndexStrict(contexto.Payload, proposta.IntervaloIndex),
+                        new SlotDeTempo("12:00:00", "17:59:59")
                     )
                 select proposta.ModelBoolVar
             ).ToList();
@@ -54,9 +57,9 @@ public class LimiteProfessorTurnosDiferentes
             var propostasNoite = (
                 from proposta in propostas
                 where
-                    IntervaloDeTempo.VerificarIntervalo(
-                        contexto.Options.HorarioDeAulaFindByIndexStrict(proposta.IntervaloIndex),
-                        new IntervaloDeTempo("18:00:00", "23:59:59")
+                    SlotDeTempo.VerificarIntervalo(
+                        HelperHorarioDeAula.ByIndexStrict(contexto.Payload, proposta.IntervaloIndex),
+                        new SlotDeTempo("18:00:00", "23:59:59")
                     )
                 select proposta.ModelBoolVar
             ).ToList();
@@ -84,7 +87,7 @@ public class LimiteProfessorTurnosDiferentes
                 { 0, 1, 0 }, //dar aula so a tarde
                 { 0, 0, 1 }, //dar aula so a noite
                 { 1, 1, 0 }, //manha e tarde
-                { 0, 1, 1 }, //tarde e noite
+                { 0, 1, 1 } //tarde e noite
             };
 
             var prefixo = $"{grupo.ProfessorId}_{grupo.Data.ToString()}";

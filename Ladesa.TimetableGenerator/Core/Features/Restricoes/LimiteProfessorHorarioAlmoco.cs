@@ -1,4 +1,5 @@
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Features.Payload.Resources;
+using Ladesa.TimetableGenerator.Features.Gerador;
 
 namespace Ladesa.TimetableGenerator.Core.Restricoes;
 
@@ -12,20 +13,21 @@ public class LimiteProfessorHorarioAlmoco
         var grupos =
             from proposta in contexto.TodasAsPropostasDeAula
             where
-                IntervaloDeTempo.VerificarIntervalo(
-                    new IntervaloDeTempo("11:30:00", "12:00:00"),
-                    proposta.IntervaloDeTempo.HorarioFim
+                SlotDeTempo.VerificarIntervalo(
+                    new SlotDeTempo("11:30:00", "12:00:00"),
+                    proposta.SlotDeTempo.HorarioFim
                 )
-                || IntervaloDeTempo.VerificarIntervalo(
-                    new IntervaloDeTempo("13:00:00", "13:30:00"),
-                    proposta.IntervaloDeTempo.HorarioInicio
+                || SlotDeTempo.VerificarIntervalo(
+                    new SlotDeTempo("13:00:00", "13:30:00"),
+                    proposta.SlotDeTempo.HorarioInicio
                 )
-            group proposta by new { proposta.Data, proposta.ProfessorId } into variantes
+            group proposta by new { proposta.Data, proposta.ProfessorId }
+            into variantes
             select new
             {
                 variantes.Key.Data,
                 variantes.Key.ProfessorId,
-                Propostas = variantes.AsEnumerable(),
+                Propostas = variantes.AsEnumerable()
             };
 
         foreach (var grupo in grupos)

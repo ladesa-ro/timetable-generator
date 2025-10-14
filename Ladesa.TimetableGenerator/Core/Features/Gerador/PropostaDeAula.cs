@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Features.Payload.Resources;
 
-namespace Ladesa.TimetableGenerator.Core;
+namespace Ladesa.TimetableGenerator.Features.Gerador;
 
 public class PropostaDeAula(
     GerarHorarioContext contexto,
@@ -10,7 +10,7 @@ public class PropostaDeAula(
     string professorId,
     DateOnly data,
     int intervaloIndex,
-    IntervaloDeTempo intervaloDeTempo,
+    SlotDeTempo slotDeTempo,
     BoolVar? modelBoolVar = null
 )
 {
@@ -23,7 +23,9 @@ public class PropostaDeAula(
     public DateOnly Data { get; set; } = data;
     public int IntervaloIndex { get; set; } = intervaloIndex;
 
-    public IntervaloDeTempo IntervaloDeTempo { get; set; } = intervaloDeTempo;
+    public SlotDeTempo SlotDeTempo { get; set; } = slotDeTempo;
+
+
     private BoolVar? CreatedModelBoolVar { get; set; } = modelBoolVar;
 
     public BoolVar ModelBoolVar
@@ -32,8 +34,14 @@ public class PropostaDeAula(
         {
             if (CreatedModelBoolVar == null)
             {
-                var propostaLabel =
-                    $"dia_{Data}::intervalo_{IntervaloIndex}::diario_{DiarioId}::turma_{TurmaId}";
+                var propostaLabel = string.Join("::", new[]
+                {
+                    $"dia_{Data}",
+                    $"intervalo_{IntervaloIndex}",
+                    $"diario_{DiarioId}",
+                    $"turma_{TurmaId}"
+                });
+
                 CreatedModelBoolVar = Contexto.Model.NewBoolVar(propostaLabel);
             }
 

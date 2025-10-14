@@ -4,7 +4,6 @@ namespace Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 
 public class HelperTurmas
 {
-    
     public static Turma? FindById(IGeradorPayload payload, string turmaId)
     {
         var turma = payload.Turmas.ToList().Find(turma => turma.Id == turmaId);
@@ -15,10 +14,7 @@ public class HelperTurmas
     {
         var turma = FindById(payload, turmaId);
 
-        if (turma == null)
-        {
-            throw new Exception($"Turma não encontrada: {turmaId}{exceptionContext}.");
-        }
+        if (turma == null) throw new Exception($"Turma não encontrada: {turmaId}{exceptionContext}.");
         ;
 
         return turma;

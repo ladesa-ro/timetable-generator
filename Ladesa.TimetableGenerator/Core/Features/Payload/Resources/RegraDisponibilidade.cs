@@ -51,7 +51,7 @@ public record RegraIndisponibilidadeDiasDaSemana(
     )
     {
         return DiasDaSemana.Contains(dataVerificacao.DayOfWeek)
-            && SlotDeTempo.VerificarIntervalo(Slot, slotVerificacao);
+               && SlotDeTempo.VerificarIntervalo(Slot, slotVerificacao);
     }
 }
 

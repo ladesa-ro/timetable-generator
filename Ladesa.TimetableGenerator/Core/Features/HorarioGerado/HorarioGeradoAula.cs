@@ -6,7 +6,6 @@ public record HorarioGeradoAula(
     string TurmaId,
     string DiarioId,
     string ProfessorId,
-    
     DateOnly Data,
     SlotDeTempo HorarioDeAula
 );
