@@ -34,7 +34,6 @@ RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj -c Release
 # =============================
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS timetable-generator-runtime
 
-USER happy
 WORKDIR /app
 
 COPY --from=build /app/publish .
