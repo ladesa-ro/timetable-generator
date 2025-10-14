@@ -21,8 +21,6 @@ FROM sdk AS devcontainer
 # =============================
 FROM sdk AS build
 
-USER happy
-
 WORKDIR /src
 COPY . .
 
