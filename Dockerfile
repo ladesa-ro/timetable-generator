@@ -9,7 +9,7 @@ RUN groupadd -r happy && useradd -r -g happy -m -d /home/happy -s /bin/bash happ
  && chown -R happy:happy /home/happy
 
 USER happy
-WORKDIR /src
+WORKDIR /home/happy/src
 
 # Variáveis de ambiente .NET
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -29,11 +29,13 @@ FROM sdk AS devcontainer
 # =============================
 FROM sdk AS build
 
-WORKDIR /src
-COPY . .
+USER happy
+
+WORKDIR /home/happy/src
+COPY --chown=happy:happy . .
 
 RUN dotnet restore ./Ladesa.TimetableGenerator/Ladesa.TimetableGenerator.slnx
-RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj -c Release -o /home/happy/app/publish /p:UseAppHost=false
 
 # =============================
 # Etapa 3: Runtime leve (Alpine)
@@ -47,10 +49,8 @@ RUN addgroup -S happy \
  && chown -R happy:happy /home/happy
 
 USER happy
-WORKDIR /app
+WORKDIR /home/happy/app
 
-# Copia publicação do build
-COPY --from=build /app/publish .
+COPY --from=build /home/happy/app/publish .
 
-EXPOSE 8080
 ENTRYPOINT ["dotnet", "Service.dll"]
