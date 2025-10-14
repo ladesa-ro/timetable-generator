@@ -9,4 +9,4 @@ up:
 	podman compose up -d --build;
 
 shell:
-	podman compose exec -u 1000:1000 timetable-generator-service bash;
+	podman compose exec -u root timetable-generator-service bash;

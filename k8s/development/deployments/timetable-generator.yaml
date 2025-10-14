@@ -20,16 +20,12 @@ spec:
     spec:
       containers:
         - name: ladesa-ro-timetable-generator
-#          envFrom:
-#            - secretRef:
-#                name: ladesa-ro-timetable-generator-config
-#                optional: false
+          envFrom:
+           - secretRef:
+               name: ladesa-ro-timetable-generator-config
+               optional: false
           image: ghcr.io/ladesa-ro/timetable-generator/timetable-generator:development
           imagePullPolicy: Always
-#          ports:
-#            - containerPort: 3000
-#              name: web-port
-#              protocol: TCP
           resources:
             limits:
               cpu: "1"

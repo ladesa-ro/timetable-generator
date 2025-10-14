@@ -2,6 +2,7 @@
 
 set -xeo pipefail;
 
+kubectl apply -f ./secrets/timetable-generator.yaml;
 kubectl apply -f ./deployments/timetable-generator.yaml;
 
 kubectl rollout restart \

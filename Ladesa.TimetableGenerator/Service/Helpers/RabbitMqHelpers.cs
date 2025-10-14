@@ -13,9 +13,9 @@ public class RabbitMqHelpers
 
     public ConnectionFactory RabbitMqConnectionFactory()
     {
-        var hostName = _configuration["HostName"];
-        var userName = _configuration["RabbitMQUserName"];
-        var password = _configuration["Password"];
+        var hostName = _configuration["TIMETABLE_SERVICE_BROKER_HOSTNAME"];
+        var userName = _configuration["TIMETABLE_SERVICE_BROKER_USERNAME"];
+        var password = _configuration["TIMETABLE_SERVICE_BROKER_PASSWORD"];
 
         Console.WriteLine(hostName);
         Console.WriteLine(userName);
@@ -26,7 +26,9 @@ public class RabbitMqHelpers
             || string.IsNullOrEmpty(userName)
             || string.IsNullOrEmpty(password)
         )
+        {
             throw new InvalidOperationException("HostName or UserName is missing.");
+        }
 
         return new ConnectionFactory
         {

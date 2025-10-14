@@ -9,25 +9,26 @@ services:
       target: devcontainer
 
     user: root
-    userns_mode: keep-id:uid=1000,gid=1000
-
     command: sleep infinity
 
     working_dir: /app/Ladesa.TimetableGenerator
+    
+    env_file:
+      - .env
 
     volumes:
       - .:/app:z
 
   message-broker:
-    image: docker.io/bitnami/rabbitmq:3.12
-    container_name: sisgea-message-broker
+    image: docker.io/rabbitmq:3.13-management-alpine
+    container_name: rabbitmq
     env_file:
       - .env
     volumes:
-      - "sisgea-message-broker-data:/bitnami/rabbitmq/mnesia"
+      - rabbitmq-data:/var/lib/rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 5672:5672    # Broker
+      - 15672:15672  # Management UI
 
 volumes:
-  sisgea-message-broker-data:
+  rabbitmq-data:

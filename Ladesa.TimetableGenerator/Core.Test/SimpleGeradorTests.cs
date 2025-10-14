@@ -1,6 +1,7 @@
 using System.Linq;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation;
 using Ladesa.TimetableGenerator.Features.Gerador;
 
 namespace Ladesa.TimetableGenerator.Test;
@@ -51,6 +52,8 @@ public class SimpleGeradorTests
         var data = new DateOnly(2025, 1, 6); // Monday
         var slot = new SlotDeTempo("08:00:00", "08:50:00");
         var payload = BuildBasicPayload(data, new[] { slot });
+
+        Console.WriteLine(TimetableJson.Stringify(payload));
 
         var horarios = Gerador.GerarHorario(payload);
         var primeiro = horarios.FirstOrDefault();

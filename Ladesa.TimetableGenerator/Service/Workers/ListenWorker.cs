@@ -1,8 +1,8 @@
 using System.Text;
-using System.Text.Json;
 using GerarHorarioService.Extensions;
-using Ladesa.TimetableGenerator.Core;
-using Ladesa.TimetableGenerator.Core.Domain;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Dtos;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation;
+using Ladesa.TimetableGenerator.Features.Gerador;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -11,15 +11,15 @@ namespace GerarHorarioService.Workers;
 public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMqHelpers)
     : BackgroundService
 {
-    private IChannel? _channel;
-    private IConnection? _connection;
-    private ConnectionFactory? _factory;
+    private IChannel? Channel;
+    private IConnection? Connection;
+    private ConnectionFactory? Factory;
 
     private async Task ConfigureQueue(CancellationToken stoppingToken)
     {
         try
         {
-            _factory = rabbitMqHelpers.RabbitMqConnectionFactory();
+            Factory = rabbitMqHelpers.RabbitMqConnectionFactory();
         }
         catch (InvalidOperationException e)
         {
@@ -27,17 +27,17 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
             await StopAsync(stoppingToken);
         }
 
-        if (_factory is null)
+        if (Factory is null)
         {
             logger.LogError("RabbitMQ connection factory could not be initialized.");
             return;
         }
 
-        var connection = await _factory.CreateConnectionAsync(stoppingToken);
+        var connection = await Factory.CreateConnectionAsync(stoppingToken);
         var channel = await connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
-        _channel = channel;
-        _connection = connection;
+        Channel = channel;
+        Connection = connection;
 
         await channel.QueueDeclareAsync(
             "gerar_horario",
@@ -62,11 +62,11 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
     {
         await ConfigureQueue(stoppingToken);
 
-        var consumer = new AsyncEventingBasicConsumer(_channel);
+        var consumer = new AsyncEventingBasicConsumer(Channel);
 
         consumer.ReceivedAsync += ListenResponseInGerarHorario;
 
-        await _channel.BasicConsumeAsync("gerar_horario", true, consumer, stoppingToken);
+        await Channel.BasicConsumeAsync("gerar_horario", true, consumer, stoppingToken);
 
         try
         {
@@ -85,18 +85,21 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         logger.LogInformation(" [x] Received ");
 
-        var serializationOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var payloadDto = TimetableJson.ParseGeradorPayload(message);
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(message));
+        if (payloadDto is null)
+        {
+            logger.LogError("Payload inválido: GeradorPayloadDto nulo.");
+            return;
+        }
 
-        var gerarHorarioOptions = await JsonSerializer.DeserializeAsync<GerarHorarioOptions>(
-            stream,
-            serializationOptions
-        );
+        var payload = GeradorPayloadMapper.ToDomain(payloadDto);
 
-        var horarioGerado = Gerador.GerarHorario(gerarHorarioOptions);
+        var horariosGerados = Gerador.GerarHorario(payload);
 
-        var horarioJson = JsonSerializer.Serialize(horarioGerado);
+        var horariosGeradosDto = horariosGerados.Select(HorarioGeradoMapper.ToDto).ToArray();
+
+        var horarioJson = TimetableJson.Stringify(horariosGeradosDto);
 
         await PublishResponseIntoHorarioGerado(horarioJson);
     }
@@ -105,7 +108,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
     {
         var body = Encoding.UTF8.GetBytes(horarioJson);
 
-        await _channel.BasicPublishAsync(string.Empty, "horario_gerado", body);
+        await Channel.BasicPublishAsync(string.Empty, "horario_gerado", body);
 
         logger.LogInformation($" [x] Horario Gerado {DateTime.Now}");
     }
@@ -113,8 +116,8 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("Encerrando o consumidor...");
-        _channel?.CloseAsync(stoppingToken);
-        _connection?.CloseAsync(stoppingToken);
+        Channel?.CloseAsync(stoppingToken);
+        Connection?.CloseAsync(stoppingToken);
         await base.StopAsync(stoppingToken);
     }
 }
