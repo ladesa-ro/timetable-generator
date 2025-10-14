@@ -90,7 +90,9 @@ public class Gerador
             // =====================================================================================
 
             if (disponivel)
+            {
                 yield return combinacao;
+            }
         }
     }
 
@@ -187,7 +189,10 @@ public class Gerador
                 );
 
                 if (previousScore != null)
+                {
                     OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
+                }
+                ;
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
@@ -213,7 +218,9 @@ public class Gerador
             tickGenerated.WaitOne();
 
             if (horarioGerado != null)
+            {
                 yield return horarioGerado;
+            }
         } while (horarioGerado != null);
 
         yield break;
@@ -233,10 +240,14 @@ public class Gerador
         var qualidade = LinearExpr.NewBuilder();
 
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
+        {
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
+        }
 
         if (limiteScore != null)
+        {
             contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
+        }
 
         contexto.Model.Maximize(qualidade);
     }

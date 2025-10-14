@@ -12,7 +12,9 @@ public record GerarHorarioOptions(
     public IEnumerable<DateOnly> Datas()
     {
         for (var data = DataInicial; data <= DataFinal; data = data.AddDays(1))
+        {
             yield return data;
+        }
     }
 
     public Professor? ProfessorFindById(string professorId)
@@ -26,7 +28,10 @@ public record GerarHorarioOptions(
         var professor = ProfessorFindById(professorId);
 
         if (professor == null)
+        {
             throw new Exception($"Professor não encontrado: {professorId}{exceptionContext}.");
+        }
+        ;
 
         return professor;
     }
@@ -42,7 +47,10 @@ public record GerarHorarioOptions(
         var diario = DiarioFindById(diarioId);
 
         if (diario == null)
+        {
             throw new Exception($"Diário não encontrado: {diarioId}{exceptionContext}.");
+        }
+        ;
 
         return diario;
     }

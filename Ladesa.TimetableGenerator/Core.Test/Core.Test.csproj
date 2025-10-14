@@ -22,7 +22,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\core\core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="NUnit.Framework" />

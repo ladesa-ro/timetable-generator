@@ -23,13 +23,13 @@ spec:
             - secretRef:
                 name: ladesa-ro-timetable-generator-config
                 optional: false
-          image: ghcr.io/ladesa-ro/web/web:development
+          image: ghcr.io/ladesa-ro/timetable-generator/timetable-generator:development
           imagePullPolicy: Always
           name: ladesa-ro-timetable-generator
-          ports:
-            - containerPort: 3000
-              name: web-port
-              protocol: TCP
+#          ports:
+#            - containerPort: 3000
+#              name: web-port
+#              protocol: TCP
           resources:
             limits:
               cpu: "1"

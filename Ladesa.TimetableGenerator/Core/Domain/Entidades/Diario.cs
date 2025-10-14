@@ -6,5 +6,5 @@ public record Diario(
     string ProfessorId,
     string DisciplinaId,
     int QuantidadeMaximaSemana,
-    int QuantidadeMaximaTotal
+    int QuantidadeMaximaTotal = 100
 );

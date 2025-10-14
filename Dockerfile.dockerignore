@@ -1,0 +1,9 @@
+Dockerfile
+Dockerfile.dockerignore
+docker-compose.yml
+.github
+.idea
+.git
+k8s
+publish
+*.env

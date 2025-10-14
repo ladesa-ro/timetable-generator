@@ -30,15 +30,17 @@ public class GerarHorarioContext
 
         foreach (var combinacao in Gerador.GerarCombinacoesComDisponibilidade(Options))
         {
-            var intervalo = Options.HorarioDeAulaFindByIndexStrict(combinacao.intervaloIndex);
+            var intervalo = Options.HorarioDeAulaFindByIndexStrict(
+                combinacao.IntervaloDeTempoIndex
+            );
 
             var propostaDeAula = new PropostaDeAula(
                 this,
-                combinacao.turmaId,
-                combinacao.diarioId,
-                combinacao.professorId,
-                combinacao.diaSemanaIso,
-                combinacao.intervaloIndex,
+                combinacao.TurmaId,
+                combinacao.DiarioId,
+                combinacao.ProfessorId,
+                combinacao.Data,
+                combinacao.IntervaloDeTempoIndex,
                 intervalo
             );
 

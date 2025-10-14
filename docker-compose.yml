@@ -1,0 +1,19 @@
+x-podman:
+  in_pod: false
+
+services:
+  timetable-generator-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: devcontainer
+
+    user: root
+    userns_mode: keep-id:uid=1000,gid=1000
+
+    command: sleep infinity
+
+    working_dir: /app/Ladesa.TimetableGenerator
+
+    volumes:
+      - .:/app:z
