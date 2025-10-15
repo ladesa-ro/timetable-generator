@@ -30,7 +30,7 @@ RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj -c Release
 # =============================
 # Etapa 3: Runtime leve (Alpine)
 # =============================
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS timetable-generator-runtime
+FROM mcr.microsoft.com/dotnet/runtime:9.0 AS timetable-generator-runtime
 
 WORKDIR /app
 
