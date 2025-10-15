@@ -28,9 +28,9 @@ RUN dotnet restore ./Ladesa.TimetableGenerator/Ladesa.TimetableGenerator.slnx
 RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 # =============================
-# Etapa 3: Runtime leve (Alpine)
+# Etapa 3: Runtime ASP.NET Core
 # =============================
-FROM mcr.microsoft.com/dotnet/runtime:9.0 AS timetable-generator-runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS timetable-generator-runtime
 
 WORKDIR /app
 

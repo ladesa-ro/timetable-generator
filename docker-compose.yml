@@ -18,6 +18,9 @@ services:
 
     volumes:
       - .:/app:z
+      
+    ports:
+      - 8080:8080
 
   message-broker:
     image: docker.io/rabbitmq:3.13-management-alpine

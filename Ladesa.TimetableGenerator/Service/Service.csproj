@@ -9,6 +9,10 @@
   <ItemGroup Label="Dependencies">
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+    <PackageReference Include="NJsonSchema" Version="11.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
