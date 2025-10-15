@@ -28,6 +28,9 @@ spec:
                optional: false
           image: ghcr.io/ladesa-ro/timetable-generator/timetable-generator:development
           imagePullPolicy: Always
+          ports:
+            - name: web-port
+              containerPort: 8080
           resources:
             limits:
               cpu: "1"
