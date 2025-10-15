@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 
-namespace Ladesa.TimetableGenerator.Core.Timetable.Logic;
+namespace Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
 
 public static class DisponibilidadeEvaluator
 {
@@ -12,7 +12,7 @@ public static class DisponibilidadeEvaluator
     {
         switch (regra)
         {
-            case RegraDisponibilidade regraDisponibilidade:
+            case RegraDisponibilidadeAnd regraDisponibilidade:
             {
                 return regraDisponibilidade.Regras.All(r => VerificarDisponibilidade(r, data, slot));
             }

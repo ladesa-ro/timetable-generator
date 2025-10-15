@@ -1,6 +1,7 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
+using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Features.Gerador;
 
@@ -17,6 +18,8 @@ public class GerarHorarioContext
     public GeradorPayload Payload { get; init; }
     public CpModel Model { get; init; } = new();
     public List<PropostaDeAula> TodasAsPropostasDeAula { get; init; } = [];
+    
+    public LinearExpr? Score { get; set; }
 
     public void IniciarTodasAsPropostasDeAula()
     {

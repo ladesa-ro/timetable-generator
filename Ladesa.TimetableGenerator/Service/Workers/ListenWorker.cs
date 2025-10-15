@@ -1,7 +1,9 @@
 using System.Text;
+using System.Text.Json;
 using GerarHorarioService.Extensions;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Dtos;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation.DTOs;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation.JsonSerialization;
+using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Mappers;
 using Ladesa.TimetableGenerator.Features.Gerador;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -85,7 +87,10 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         logger.LogInformation(" [x] Received ");
 
-        var payloadDto = TimetableJson.ParseGeradorPayload(message);
+        var payloadDto = GeradorPayloadSerializer.ToDto(message);
+        
+        Console.WriteLine($"message = {message}");
+        Console.WriteLine($"payloadDto = {payloadDto}");
 
         if (payloadDto is null)
         {
@@ -99,7 +104,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
         var horariosGeradosDto = horariosGerados.Select(HorarioGeradoMapper.ToDto).ToArray();
 
-        var horarioJson = TimetableJson.Stringify(horariosGeradosDto);
+        var horarioJson = GeradorPayloadSerializer.ToJson(horariosGeradosDto);
 
         await PublishResponseIntoHorarioGerado(horarioJson);
     }

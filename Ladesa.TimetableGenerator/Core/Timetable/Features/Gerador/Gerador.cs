@@ -2,7 +2,7 @@ using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 using Ladesa.TimetableGenerator.Core.Restricoes;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
-using Ladesa.TimetableGenerator.Core.Timetable.Logic;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Features.Gerador;
@@ -235,10 +235,17 @@ public class Gerador
         var qualidade = LinearExpr.NewBuilder();
 
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
+        {
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
+        }
 
-        if (limiteScore != null) contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
+        if (limiteScore != null)
+        {
+            contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
+        };
 
         contexto.Model.Maximize(qualidade);
+
+        contexto.Score = qualidade;
     }
 }

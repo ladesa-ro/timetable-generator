@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
-using Ladesa.TimetableGenerator.Core.Timetable.Logic;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
 using Ladesa.TimetableGenerator.Features.Gerador;
 
 namespace Ladesa.TimetableGenerator.Core.Restricoes;

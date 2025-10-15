@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 
-namespace Ladesa.TimetableGenerator.Core.Timetable.Logic;
+namespace Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
 
 public static class SlotDeTempoEvaluator
 {

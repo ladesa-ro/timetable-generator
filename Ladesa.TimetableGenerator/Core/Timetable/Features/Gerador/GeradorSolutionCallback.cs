@@ -27,11 +27,15 @@ public class GeradorSolutionCallback : CpSolverSolutionCallback
                 propostaAula.SlotDeTempo
             );
 
+        var scoreValue = (int)ObjectiveValue();
+
         var horarioGerado = new HorarioGerado(
+            Contexto.Payload.RequestId,
             Contexto.Payload.DataInicial,
             Contexto.Payload.DataFinal,
             Contexto.Payload.HorariosDeAula,
-            propostasAtivas.ToArray()
+            propostasAtivas.ToArray(),
+            scoreValue
         );
 
         Action(horarioGerado);

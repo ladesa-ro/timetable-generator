@@ -4,5 +4,5 @@ namespace Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
 
 public record Professor(
     string Id,
-    RegraDisponibilidade RegraDisponibilidade
+    IRegraDisponibilidade RegraDisponibilidade
 );
