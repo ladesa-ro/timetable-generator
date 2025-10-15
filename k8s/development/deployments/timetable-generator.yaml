@@ -38,4 +38,22 @@ spec:
             requests:
               cpu: 50m
               memory: 100Mi
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          startupProbe:
+            httpGet:
+              path: /health/
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
       restartPolicy: Always
