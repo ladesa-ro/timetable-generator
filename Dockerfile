@@ -56,6 +56,10 @@ RUN mkdir -p $DOTNET_TOOLS_PATH \
 
 ENV PATH="$PATH:$DOTNET_TOOLS_PATH"
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  protobuf-compiler \
+  && rm -rf /var/lib/apt/lists/*
+
 # =============================
 # Etapa 4: Devcontainer (ambiente completo)
 # =============================
@@ -65,17 +69,24 @@ ARG USERNAME=dev
 ARG USER_UID=1000
 ARG USER_GID=1000
 
+ENV HOME=/home/${USERNAME}
+ENV SHELL=/usr/bin/zsh
+
 # Cria o usuário de desenvolvimento não-root
-RUN groupadd --gid $USER_GID $USERNAME && \
-  useradd --uid $USER_UID --gid $USER_GID -m -s /usr/bin/zsh $USERNAME && \
-  chown -R $USERNAME:$USERNAME /src \
-  && mkdir -p /home/$USERNAME/.dotnet && chown -R $USERNAME:$USERNAME /home/$USERNAME/.dotnet
+RUN groupadd --gid $USER_GID ${USERNAME} && \
+  useradd --uid $USER_UID --gid $USER_GID -m -s /usr/bin/zsh ${USERNAME} && \
+  chown -R ${USERNAME}:${USERNAME} /src \
+  && mkdir -p ${HOME}/.dotnet && chown -R ${USERNAME}:${USERNAME} $HOME/.dotnet
 
 # Define home .NET do usuário dev
-ENV DOTNET_CLI_HOME=/home/$USERNAME/.dotnet
+ENV DOTNET_CLI_HOME=$HOME/.dotnet
 ENV PATH="$PATH:/usr/share/dotnet-tools"
 
-USER $USERNAME
+USER 1000:1000
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN sed -i 's/^ZSH_THEME=.*/ZSH_THEME="josh"/' ${HOME}/.zshrc
+
+USER ${USERNAME}
 WORKDIR /src
 
 # =============================
