@@ -1,0 +1,3 @@
+[submodule "vendors/ladesa-ro/ladesa-protobufs"]
+	path = vendors/ladesa-ro/ladesa-protobufs
+	url = git@github.com:ladesa-ro/ladesa-protobufs.git
