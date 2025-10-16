@@ -37,10 +37,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "YWJsZUdlbmVyYXRvci52MS5HZW5lcmF0ZWRUaW1ldGFibGVMZXNzb25EdG8S",
             "DQoFc2NvcmUYBiABKAViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.V1.TimeSlotDtoReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto), global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto.Parser, new[]{ "Date", "DiaryId", "TeacherId", "GroupId", "TimeSlot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto), global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto.Parser, new[]{ "RequestId", "DateStart", "DateEnd", "TimeSlots", "Schedules", "Score" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto.Parser, new[]{ "Date", "DiaryId", "TeacherId", "GroupId", "TimeSlot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto.Parser, new[]{ "RequestId", "DateStart", "DateEnd", "TimeSlots", "Schedules", "Score" }, null, null, null, null)
           }));
     }
     #endregion
@@ -61,7 +61,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDtoReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDtoReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -148,10 +148,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "time_slot" field.</summary>
     public const int TimeSlotFieldNumber = 5;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto timeSlot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto timeSlot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto TimeSlot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto TimeSlot {
       get { return timeSlot_; }
       set {
         timeSlot_ = value;
@@ -309,7 +309,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
       if (other.timeSlot_ != null) {
         if (timeSlot_ == null) {
-          TimeSlot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          TimeSlot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         TimeSlot.MergeFrom(other.TimeSlot);
       }
@@ -346,7 +346,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 42: {
             if (timeSlot_ == null) {
-              TimeSlot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              TimeSlot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(TimeSlot);
             break;
@@ -384,7 +384,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 42: {
             if (timeSlot_ == null) {
-              TimeSlot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              TimeSlot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(TimeSlot);
             break;
@@ -410,7 +410,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDtoReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDtoReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -483,23 +483,23 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "time_slots" field.</summary>
     public const int TimeSlotsFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> _repeated_timeSlots_codec
-        = pb::FieldCodec.ForMessage(34, global::Ladesa.TimetableGenerator.V1.TimeSlotDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> timeSlots_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> _repeated_timeSlots_codec
+        = pb::FieldCodec.ForMessage(34, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> timeSlots_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> TimeSlots {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> TimeSlots {
       get { return timeSlots_; }
     }
 
     /// <summary>Field number for the "schedules" field.</summary>
     public const int SchedulesFieldNumber = 5;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto> _repeated_schedules_codec
-        = pb::FieldCodec.ForMessage(42, global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto> schedules_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto> _repeated_schedules_codec
+        = pb::FieldCodec.ForMessage(42, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto> schedules_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableLessonDto> Schedules {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableLessonDto> Schedules {
       get { return schedules_; }
     }
 

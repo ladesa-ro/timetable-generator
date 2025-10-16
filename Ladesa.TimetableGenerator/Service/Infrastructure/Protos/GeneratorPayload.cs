@@ -37,9 +37,9 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "AygLMikuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5UaW1lU2xvdER0",
             "b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.V1.DiaryDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.V1.TeacherDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.V1.GroupDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.V1.TimeSlotDtoReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.GeneratorPayloadDto), global::Ladesa.TimetableGenerator.V1.GeneratorPayloadDto.Parser, new[]{ "RequestId", "DateStart", "DateEnd", "Diarys", "Teachers", "Groups", "TimeSlots" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorPayloadDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorPayloadDto.Parser, new[]{ "RequestId", "DateStart", "DateEnd", "Diarys", "Teachers", "Groups", "TimeSlots" }, null, null, null, null)
           }));
     }
     #endregion
@@ -60,7 +60,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.GeneratorPayloadReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorPayloadReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -143,45 +143,45 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "diarys" field.</summary>
     public const int DiarysFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.DiaryDto> _repeated_diarys_codec
-        = pb::FieldCodec.ForMessage(34, global::Ladesa.TimetableGenerator.V1.DiaryDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.DiaryDto> diarys_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.DiaryDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDto> _repeated_diarys_codec
+        = pb::FieldCodec.ForMessage(34, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDto> diarys_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.DiaryDto> Diarys {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.DiaryDto> Diarys {
       get { return diarys_; }
     }
 
     /// <summary>Field number for the "teachers" field.</summary>
     public const int TeachersFieldNumber = 5;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.TeacherDto> _repeated_teachers_codec
-        = pb::FieldCodec.ForMessage(42, global::Ladesa.TimetableGenerator.V1.TeacherDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TeacherDto> teachers_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TeacherDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDto> _repeated_teachers_codec
+        = pb::FieldCodec.ForMessage(42, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDto> teachers_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TeacherDto> Teachers {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TeacherDto> Teachers {
       get { return teachers_; }
     }
 
     /// <summary>Field number for the "groups" field.</summary>
     public const int GroupsFieldNumber = 6;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.GroupDto> _repeated_groups_codec
-        = pb::FieldCodec.ForMessage(50, global::Ladesa.TimetableGenerator.V1.GroupDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GroupDto> groups_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GroupDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto> _repeated_groups_codec
+        = pb::FieldCodec.ForMessage(50, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto> groups_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GroupDto> Groups {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto> Groups {
       get { return groups_; }
     }
 
     /// <summary>Field number for the "time_slots" field.</summary>
     public const int TimeSlotsFieldNumber = 7;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> _repeated_timeSlots_codec
-        = pb::FieldCodec.ForMessage(58, global::Ladesa.TimetableGenerator.V1.TimeSlotDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> timeSlots_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> _repeated_timeSlots_codec
+        = pb::FieldCodec.ForMessage(58, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> timeSlots_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.TimeSlotDto> TimeSlots {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto> TimeSlots {
       get { return timeSlots_; }
     }
 

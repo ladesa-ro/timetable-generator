@@ -30,9 +30,9 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "AiABKAsyLS5MYWRlc2EuVGltZXRhYmxlR2VuZXJhdG9yLnYxLkF2YWlsYWJp",
             "bGl0eUR0b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.GroupDto), global::Ladesa.TimetableGenerator.V1.GroupDto.Parser, new[]{ "Id", "Availability" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDto.Parser, new[]{ "Id", "Availability" }, null, null, null, null)
           }));
     }
     #endregion
@@ -53,7 +53,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.GroupDtoReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GroupDtoReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -98,10 +98,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "availability" field.</summary>
     public const int AvailabilityFieldNumber = 2;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityDto availability_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto availability_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityDto Availability {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto Availability {
       get { return availability_; }
       set {
         availability_ = value;
@@ -211,7 +211,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
       if (other.availability_ != null) {
         if (availability_ == null) {
-          Availability = new global::Ladesa.TimetableGenerator.V1.AvailabilityDto();
+          Availability = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto();
         }
         Availability.MergeFrom(other.Availability);
       }
@@ -236,7 +236,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 18: {
             if (availability_ == null) {
-              Availability = new global::Ladesa.TimetableGenerator.V1.AvailabilityDto();
+              Availability = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto();
             }
             input.ReadMessage(Availability);
             break;
@@ -262,7 +262,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 18: {
             if (availability_ == null) {
-              Availability = new global::Ladesa.TimetableGenerator.V1.AvailabilityDto();
+              Availability = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto();
             }
             input.ReadMessage(Availability);
             break;

@@ -86,17 +86,17 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "bmF2YWlsYWJsZURhdGVSYW5nZRAFEhcKE1VuYXZhaWxhYmxlTW9udGhEYXkQ",
             "BhIYChRVbmF2YWlhYmxlWWVhck1vbnRocxAHYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.V1.WeekDayDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.V1.TimeSlotDtoReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityDto), global::Ladesa.TimetableGenerator.V1.AvailabilityDto.Parser, new[]{ "Type", "Compount", "UnavailableWeekDay", "UnavailableWeekDays", "UnavailableTimeSlot", "UnavailableSpecificDate", "UnavailableDateRange", "UnavailableMonthDay", "UnavailableYearMonths" }, new[]{ "Regra" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto), global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto.Parser, new[]{ "Type", "Regras" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto.Parser, new[]{ "Type", "WeekDay", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto.Parser, new[]{ "Type", "WeekDays", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto.Parser, new[]{ "Type", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto.Parser, new[]{ "Type", "Date", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto.Parser, new[]{ "Type", "DateInicio", "DateFim", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto.Parser, new[]{ "Type", "MonthDay", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto), global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto.Parser, new[]{ "Type", "Months", "Slot" }, null, null, null, null)
+          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDtoReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto.Parser, new[]{ "Type", "Compount", "UnavailableWeekDay", "UnavailableWeekDays", "UnavailableTimeSlot", "UnavailableSpecificDate", "UnavailableDateRange", "UnavailableMonthDay", "UnavailableYearMonths" }, new[]{ "Regra" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto.Parser, new[]{ "Type", "Regras" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto.Parser, new[]{ "Type", "WeekDay", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto.Parser, new[]{ "Type", "WeekDays", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto.Parser, new[]{ "Type", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto.Parser, new[]{ "Type", "Date", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto.Parser, new[]{ "Type", "DateInicio", "DateFim", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto.Parser, new[]{ "Type", "MonthDay", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto.Parser, new[]{ "Type", "Months", "Slot" }, null, null, null, null)
           }));
     }
     #endregion
@@ -131,7 +131,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -190,10 +190,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -204,8 +204,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int CompountFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto Compount {
-      get { return regraCase_ == RegraOneofCase.Compount ? (global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto Compount {
+      get { return regraCase_ == RegraOneofCase.Compount ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.Compount;
@@ -216,8 +216,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableWeekDayFieldNumber = 3;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto UnavailableWeekDay {
-      get { return regraCase_ == RegraOneofCase.UnavailableWeekDay ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto UnavailableWeekDay {
+      get { return regraCase_ == RegraOneofCase.UnavailableWeekDay ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableWeekDay;
@@ -228,8 +228,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableWeekDaysFieldNumber = 4;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto UnavailableWeekDays {
-      get { return regraCase_ == RegraOneofCase.UnavailableWeekDays ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto UnavailableWeekDays {
+      get { return regraCase_ == RegraOneofCase.UnavailableWeekDays ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableWeekDays;
@@ -240,8 +240,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableTimeSlotFieldNumber = 5;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto UnavailableTimeSlot {
-      get { return regraCase_ == RegraOneofCase.UnavailableTimeSlot ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto UnavailableTimeSlot {
+      get { return regraCase_ == RegraOneofCase.UnavailableTimeSlot ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableTimeSlot;
@@ -252,8 +252,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableSpecificDateFieldNumber = 6;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto UnavailableSpecificDate {
-      get { return regraCase_ == RegraOneofCase.UnavailableSpecificDate ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto UnavailableSpecificDate {
+      get { return regraCase_ == RegraOneofCase.UnavailableSpecificDate ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableSpecificDate;
@@ -264,8 +264,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableDateRangeFieldNumber = 7;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto UnavailableDateRange {
-      get { return regraCase_ == RegraOneofCase.UnavailableDateRange ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto UnavailableDateRange {
+      get { return regraCase_ == RegraOneofCase.UnavailableDateRange ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableDateRange;
@@ -276,8 +276,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableMonthDayFieldNumber = 8;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto UnavailableMonthDay {
-      get { return regraCase_ == RegraOneofCase.UnavailableMonthDay ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto UnavailableMonthDay {
+      get { return regraCase_ == RegraOneofCase.UnavailableMonthDay ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableMonthDay;
@@ -288,8 +288,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public const int UnavailableYearMonthsFieldNumber = 9;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto UnavailableYearMonths {
-      get { return regraCase_ == RegraOneofCase.UnavailableYearMonths ? (global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto) regra_ : null; }
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto UnavailableYearMonths {
+      get { return regraCase_ == RegraOneofCase.UnavailableYearMonths ? (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto) regra_ : null; }
       set {
         regra_ = value;
         regraCase_ = value == null ? RegraOneofCase.None : RegraOneofCase.UnavailableYearMonths;
@@ -355,7 +355,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       if (regraCase_ == RegraOneofCase.Compount) hash ^= Compount.GetHashCode();
       if (regraCase_ == RegraOneofCase.UnavailableWeekDay) hash ^= UnavailableWeekDay.GetHashCode();
       if (regraCase_ == RegraOneofCase.UnavailableWeekDays) hash ^= UnavailableWeekDays.GetHashCode();
@@ -383,7 +383,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -429,7 +429,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -475,7 +475,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (regraCase_ == RegraOneofCase.Compount) {
@@ -514,55 +514,55 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       switch (other.RegraCase) {
         case RegraOneofCase.Compount:
           if (Compount == null) {
-            Compount = new global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto();
+            Compount = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto();
           }
           Compount.MergeFrom(other.Compount);
           break;
         case RegraOneofCase.UnavailableWeekDay:
           if (UnavailableWeekDay == null) {
-            UnavailableWeekDay = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto();
+            UnavailableWeekDay = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto();
           }
           UnavailableWeekDay.MergeFrom(other.UnavailableWeekDay);
           break;
         case RegraOneofCase.UnavailableWeekDays:
           if (UnavailableWeekDays == null) {
-            UnavailableWeekDays = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto();
+            UnavailableWeekDays = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto();
           }
           UnavailableWeekDays.MergeFrom(other.UnavailableWeekDays);
           break;
         case RegraOneofCase.UnavailableTimeSlot:
           if (UnavailableTimeSlot == null) {
-            UnavailableTimeSlot = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto();
+            UnavailableTimeSlot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto();
           }
           UnavailableTimeSlot.MergeFrom(other.UnavailableTimeSlot);
           break;
         case RegraOneofCase.UnavailableSpecificDate:
           if (UnavailableSpecificDate == null) {
-            UnavailableSpecificDate = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto();
+            UnavailableSpecificDate = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto();
           }
           UnavailableSpecificDate.MergeFrom(other.UnavailableSpecificDate);
           break;
         case RegraOneofCase.UnavailableDateRange:
           if (UnavailableDateRange == null) {
-            UnavailableDateRange = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto();
+            UnavailableDateRange = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto();
           }
           UnavailableDateRange.MergeFrom(other.UnavailableDateRange);
           break;
         case RegraOneofCase.UnavailableMonthDay:
           if (UnavailableMonthDay == null) {
-            UnavailableMonthDay = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto();
+            UnavailableMonthDay = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto();
           }
           UnavailableMonthDay.MergeFrom(other.UnavailableMonthDay);
           break;
         case RegraOneofCase.UnavailableYearMonths:
           if (UnavailableYearMonths == null) {
-            UnavailableYearMonths = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto();
+            UnavailableYearMonths = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto();
           }
           UnavailableYearMonths.MergeFrom(other.UnavailableYearMonths);
           break;
@@ -584,11 +584,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto();
             if (regraCase_ == RegraOneofCase.Compount) {
               subBuilder.MergeFrom(Compount);
             }
@@ -597,7 +597,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 26: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto();
             if (regraCase_ == RegraOneofCase.UnavailableWeekDay) {
               subBuilder.MergeFrom(UnavailableWeekDay);
             }
@@ -606,7 +606,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 34: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto();
             if (regraCase_ == RegraOneofCase.UnavailableWeekDays) {
               subBuilder.MergeFrom(UnavailableWeekDays);
             }
@@ -615,7 +615,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 42: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto();
             if (regraCase_ == RegraOneofCase.UnavailableTimeSlot) {
               subBuilder.MergeFrom(UnavailableTimeSlot);
             }
@@ -624,7 +624,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 50: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto();
             if (regraCase_ == RegraOneofCase.UnavailableSpecificDate) {
               subBuilder.MergeFrom(UnavailableSpecificDate);
             }
@@ -633,7 +633,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 58: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto();
             if (regraCase_ == RegraOneofCase.UnavailableDateRange) {
               subBuilder.MergeFrom(UnavailableDateRange);
             }
@@ -642,7 +642,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 66: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto();
             if (regraCase_ == RegraOneofCase.UnavailableMonthDay) {
               subBuilder.MergeFrom(UnavailableMonthDay);
             }
@@ -651,7 +651,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 74: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto();
             if (regraCase_ == RegraOneofCase.UnavailableYearMonths) {
               subBuilder.MergeFrom(UnavailableYearMonths);
             }
@@ -675,11 +675,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityCompoundDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto();
             if (regraCase_ == RegraOneofCase.Compount) {
               subBuilder.MergeFrom(Compount);
             }
@@ -688,7 +688,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 26: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDayDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto();
             if (regraCase_ == RegraOneofCase.UnavailableWeekDay) {
               subBuilder.MergeFrom(UnavailableWeekDay);
             }
@@ -697,7 +697,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 34: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableWeekDaysDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto();
             if (regraCase_ == RegraOneofCase.UnavailableWeekDays) {
               subBuilder.MergeFrom(UnavailableWeekDays);
             }
@@ -706,7 +706,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 42: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableTimeSlotDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto();
             if (regraCase_ == RegraOneofCase.UnavailableTimeSlot) {
               subBuilder.MergeFrom(UnavailableTimeSlot);
             }
@@ -715,7 +715,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 50: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableSpecificDateDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto();
             if (regraCase_ == RegraOneofCase.UnavailableSpecificDate) {
               subBuilder.MergeFrom(UnavailableSpecificDate);
             }
@@ -724,7 +724,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 58: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableDateRangeDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto();
             if (regraCase_ == RegraOneofCase.UnavailableDateRange) {
               subBuilder.MergeFrom(UnavailableDateRange);
             }
@@ -733,7 +733,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 66: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableMonthDayDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto();
             if (regraCase_ == RegraOneofCase.UnavailableMonthDay) {
               subBuilder.MergeFrom(UnavailableMonthDay);
             }
@@ -742,7 +742,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 74: {
-            global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto subBuilder = new global::Ladesa.TimetableGenerator.V1.AvailabilityUnavailableYearMonthsDto();
+            global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto subBuilder = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto();
             if (regraCase_ == RegraOneofCase.UnavailableYearMonths) {
               subBuilder.MergeFrom(UnavailableYearMonths);
             }
@@ -771,7 +771,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -804,10 +804,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -816,12 +816,12 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "regras" field.</summary>
     public const int RegrasFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.AvailabilityDto> _repeated_regras_codec
-        = pb::FieldCodec.ForMessage(18, global::Ladesa.TimetableGenerator.V1.AvailabilityDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.AvailabilityDto> regras_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.AvailabilityDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> _repeated_regras_codec
+        = pb::FieldCodec.ForMessage(18, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> regras_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.AvailabilityDto> Regras {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> Regras {
       get { return regras_; }
     }
 
@@ -849,7 +849,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       hash ^= regras_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -869,7 +869,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -884,7 +884,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -899,7 +899,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       size += regras_.CalculateSize(_repeated_regras_codec);
@@ -915,7 +915,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       regras_.Add(other.regras_);
@@ -935,7 +935,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -958,7 +958,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -986,7 +986,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1020,10 +1020,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -1032,10 +1032,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "week_day" field.</summary>
     public const int WeekDayFieldNumber = 2;
-    private global::Ladesa.TimetableGenerator.V1.WeekDayDto weekDay_ = global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto weekDay_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.WeekDayDto WeekDay {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto WeekDay {
       get { return weekDay_; }
       set {
         weekDay_ = value;
@@ -1044,10 +1044,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 3;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -1079,8 +1079,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
-      if (WeekDay != global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday) hash ^= WeekDay.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (WeekDay != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday) hash ^= WeekDay.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1100,11 +1100,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (WeekDay != global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday) {
+      if (WeekDay != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday) {
         output.WriteRawTag(16);
         output.WriteEnum((int) WeekDay);
       }
@@ -1122,11 +1122,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (WeekDay != global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday) {
+      if (WeekDay != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday) {
         output.WriteRawTag(16);
         output.WriteEnum((int) WeekDay);
       }
@@ -1144,10 +1144,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (WeekDay != global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday) {
+      if (WeekDay != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) WeekDay);
       }
       if (slot_ != null) {
@@ -1165,15 +1165,15 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
-      if (other.WeekDay != global::Ladesa.TimetableGenerator.V1.WeekDayDto.Sunday) {
+      if (other.WeekDay != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto.Sunday) {
         WeekDay = other.WeekDay;
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -1193,16 +1193,16 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 16: {
-            WeekDay = (global::Ladesa.TimetableGenerator.V1.WeekDayDto) input.ReadEnum();
+            WeekDay = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto) input.ReadEnum();
             break;
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1223,16 +1223,16 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 16: {
-            WeekDay = (global::Ladesa.TimetableGenerator.V1.WeekDayDto) input.ReadEnum();
+            WeekDay = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto) input.ReadEnum();
             break;
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1258,7 +1258,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1292,10 +1292,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -1304,21 +1304,21 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "week_days" field.</summary>
     public const int WeekDaysFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.WeekDayDto> _repeated_weekDays_codec
-        = pb::FieldCodec.ForEnum(18, x => (int) x, x => (global::Ladesa.TimetableGenerator.V1.WeekDayDto) x);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.WeekDayDto> weekDays_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.WeekDayDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto> _repeated_weekDays_codec
+        = pb::FieldCodec.ForEnum(18, x => (int) x, x => (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto) x);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto> weekDays_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.WeekDayDto> WeekDays {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto> WeekDays {
       get { return weekDays_; }
     }
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 3;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -1350,7 +1350,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       hash ^= weekDays_.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
@@ -1371,7 +1371,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1390,7 +1390,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1409,7 +1409,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       size += weekDays_.CalculateSize(_repeated_weekDays_codec);
@@ -1428,13 +1428,13 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       weekDays_.Add(other.weekDays_);
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -1454,7 +1454,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18:
@@ -1464,7 +1464,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1485,7 +1485,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18:
@@ -1495,7 +1495,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1521,7 +1521,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1554,10 +1554,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -1566,10 +1566,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 2;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -1600,7 +1600,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1620,7 +1620,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1638,7 +1638,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1656,7 +1656,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (slot_ != null) {
@@ -1674,12 +1674,12 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -1699,12 +1699,12 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1725,12 +1725,12 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1756,7 +1756,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1790,10 +1790,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -1817,10 +1817,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 3;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -1852,7 +1852,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       if (Date.Length != 0) hash ^= Date.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
@@ -1873,7 +1873,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1895,7 +1895,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1917,7 +1917,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (Date.Length != 0) {
@@ -1938,7 +1938,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       if (other.Date.Length != 0) {
@@ -1946,7 +1946,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -1966,7 +1966,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -1975,7 +1975,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -1996,7 +1996,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2005,7 +2005,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2031,7 +2031,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2066,10 +2066,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -2108,10 +2108,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 4;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -2144,7 +2144,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       if (DateInicio.Length != 0) hash ^= DateInicio.GetHashCode();
       if (DateFim.Length != 0) hash ^= DateFim.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
@@ -2166,7 +2166,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2192,7 +2192,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2218,7 +2218,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (DateInicio.Length != 0) {
@@ -2242,7 +2242,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       if (other.DateInicio.Length != 0) {
@@ -2253,7 +2253,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -2273,7 +2273,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2286,7 +2286,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 34: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2307,7 +2307,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18: {
@@ -2320,7 +2320,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 34: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2346,7 +2346,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2380,10 +2380,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -2404,10 +2404,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 3;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -2439,7 +2439,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       if (MonthDay != 0) hash ^= MonthDay.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
@@ -2460,7 +2460,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2482,7 +2482,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2504,7 +2504,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (MonthDay != 0) {
@@ -2525,7 +2525,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       if (other.MonthDay != 0) {
@@ -2533,7 +2533,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -2553,7 +2553,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 16: {
@@ -2562,7 +2562,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2583,7 +2583,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 16: {
@@ -2592,7 +2592,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2618,7 +2618,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.AvailabilityDtoReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDtoReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2652,10 +2652,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto type_ = global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto Type {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto Type {
       get { return type_; }
       set {
         type_ = value;
@@ -2675,10 +2675,10 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "slot" field.</summary>
     public const int SlotFieldNumber = 3;
-    private global::Ladesa.TimetableGenerator.V1.TimeSlotDto slot_;
+    private global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto slot_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Ladesa.TimetableGenerator.V1.TimeSlotDto Slot {
+    public global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto Slot {
       get { return slot_; }
       set {
         slot_ = value;
@@ -2710,7 +2710,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
       hash ^= months_.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
@@ -2731,7 +2731,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2750,7 +2750,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -2769,7 +2769,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       size += months_.CalculateSize(_repeated_months_codec);
@@ -2788,13 +2788,13 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto.Compound) {
+      if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
       months_.Add(other.months_);
       if (other.slot_ != null) {
         if (slot_ == null) {
-          Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+          Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
         }
         Slot.MergeFrom(other.Slot);
       }
@@ -2814,7 +2814,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18:
@@ -2824,7 +2824,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;
@@ -2845,7 +2845,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Ladesa.TimetableGenerator.V1.AvailabilityTypeDto) input.ReadEnum();
+            Type = (global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto) input.ReadEnum();
             break;
           }
           case 18:
@@ -2855,7 +2855,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
           }
           case 26: {
             if (slot_ == null) {
-              Slot = new global::Ladesa.TimetableGenerator.V1.TimeSlotDto();
+              Slot = new global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto();
             }
             input.ReadMessage(Slot);
             break;

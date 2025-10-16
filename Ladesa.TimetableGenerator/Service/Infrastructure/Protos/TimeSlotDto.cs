@@ -30,7 +30,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.TimeSlotDto), global::Ladesa.TimetableGenerator.V1.TimeSlotDto.Parser, new[]{ "Start", "End" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDto.Parser, new[]{ "Start", "End" }, null, null, null, null)
           }));
     }
     #endregion
@@ -51,7 +51,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.TimeSlotDtoReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDtoReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

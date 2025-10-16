@@ -30,7 +30,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "aHVyc2RheRAEEgoKBkZyaWRheRAFEgwKCFNhdHVyZGF5EAZiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Ladesa.TimetableGenerator.V1.WeekDayDto), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDto), }, null, null));
     }
     #endregion
 

@@ -4,6 +4,8 @@ set -e
 function generate_protos() {
   PROTO_SRC="./vendors/ladesa-ro/ladesa-protobufs/protos/timetable-generator-v1"
   OUT_DIR="./Ladesa.TimetableGenerator/Service/Infrastructure/Protos"
+
+  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.V1"
   TARGET_NAMESPACE="Ladesa.TimetableGenerator.Service.Infrastructure.Protos"
 
   rm -rf "$OUT_DIR"
@@ -17,7 +19,7 @@ function generate_protos() {
 
   echo "🔧 Ajustando namespaces nos arquivos gerados..."
   find "$OUT_DIR" -type f -name "*.cs" | while read -r file; do
-    sed -i -E "s|^namespace .*$|namespace $TARGET_NAMESPACE {|" "$file"
+    sed -i "s/$GENERATED_NAMESPACE/$TARGET_NAMESPACE/g" "$file"
   done
 
   csharpier format "$OUT_DIR"

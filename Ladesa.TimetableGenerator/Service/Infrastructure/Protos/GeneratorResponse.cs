@@ -31,9 +31,9 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "bWV0YWJsZXMYAyADKAsyMy5MYWRlc2EuVGltZXRhYmxlR2VuZXJhdG9yLnYx",
             "LkdlbmVyYXRlZFRpbWV0YWJsZUR0bxIMCgRkYXRlGAQgASgJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDtoReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.V1.GeneratorResponseDto), global::Ladesa.TimetableGenerator.V1.GeneratorResponseDto.Parser, new[]{ "Success", "Message", "GeneratedTimetables", "Date" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorResponseDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorResponseDto.Parser, new[]{ "Success", "Message", "GeneratedTimetables", "Date" }, null, null, null, null)
           }));
     }
     #endregion
@@ -54,7 +54,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Ladesa.TimetableGenerator.V1.GeneratorResponseReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratorResponseReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -113,12 +113,12 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
 
     /// <summary>Field number for the "generated_timetables" field.</summary>
     public const int GeneratedTimetablesFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto> _repeated_generatedTimetables_codec
-        = pb::FieldCodec.ForMessage(26, global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto> generatedTimetables_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto>();
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto> _repeated_generatedTimetables_codec
+        = pb::FieldCodec.ForMessage(26, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto.Parser);
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto> generatedTimetables_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.V1.GeneratedTimetableDto> GeneratedTimetables {
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.GeneratedTimetableDto> GeneratedTimetables {
       get { return generatedTimetables_; }
     }
 
