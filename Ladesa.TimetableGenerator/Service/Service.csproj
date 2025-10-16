@@ -7,6 +7,7 @@
     <RootNamespace>Ladesa.TimetableGenerator.Service</RootNamespace>
   </PropertyGroup>
   <ItemGroup Label="Dependencies">
+    <PackageReference Include="Google.Protobuf" Version="3.33.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
     <PackageReference Include="NJsonSchema" Version="11.0.0" />
