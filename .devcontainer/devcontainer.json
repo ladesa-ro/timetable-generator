@@ -31,5 +31,7 @@
 
   "remoteEnv": {
     "DOTNET_CLI_HOME": "/home/dev/.dotnet"
-  }
+  },
+
+  "forwardPorts": [8080, 5672, 15672]
 }

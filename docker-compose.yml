@@ -22,8 +22,8 @@ services:
     volumes:
       - .:/app:z
 
-    ports:
-      - 8080:8080
+    # ports:
+    #   - 8080:8080
 
   message-broker:
     image: docker.io/rabbitmq:3.13-management-alpine
@@ -32,9 +32,9 @@ services:
       - .env
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - 5672:5672 # Broker
-      - 15672:15672 # Management UI
+    # ports:
+    #   - 5672:5672 # Broker
+    #   - 15672:15672 # Management UI
 
 volumes:
   rabbitmq-data:
