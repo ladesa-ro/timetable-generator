@@ -2,6 +2,8 @@
 set -e
 
 function generate_protos() {
+  sync_submodules;
+
   PROTO_SRC="./vendors/ladesa-ro/ladesa-protobufs/protos/timetable-generator-v1"
   OUT_DIR="./Ladesa.TimetableGenerator/Service/Infrastructure/Protos"
 
@@ -23,11 +25,19 @@ function format() {
   csharpier format .
 }
 
+function sync_submodules() {
+  echo "🔄 Sincronizando e atualizando submodules..."
+  git submodule sync
+  git submodule update --init --recursive
+  echo "✅ Submodules sincronizados e atualizados."
+}
+
 function print_usage() {
   echo "Uso: $0 <comando>"
   echo "Comandos disponíveis:"
   echo "  generate_protos   Gera os arquivos C# a partir dos arquivos .proto"
   echo "  format            Formata o código usando csharpier"
+  echo "  sync_submodules   Sincroniza e atualiza os git submodules"
   echo "  help              Mostra esta mensagem de ajuda"
 }
 
@@ -38,6 +48,9 @@ case "$1" in
     ;;
   format)
     format
+    ;;
+  sync_submodules)
+    sync_submodules
     ;;
   help|"" )
     print_usage
