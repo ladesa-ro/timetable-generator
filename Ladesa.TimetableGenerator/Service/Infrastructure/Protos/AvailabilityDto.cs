@@ -46,55 +46,55 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             "YXRvci52MS5BdmFpbGFiaWxpdHlVbmF2YWlsYWJsZU1vbnRoRGF5RHRvSAAS",
             "ZQoXdW5hdmFpbGFibGVfeWVhcl9tb250aHMYCSABKAsyQi5MYWRlc2EuVGlt",
             "ZXRhYmxlR2VuZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVVuYXZhaWxhYmxlWWVh",
-            "ck1vbnRoc0R0b0gAQgcKBXJlZ3JhIpkBChdBdmFpbGFiaWxpdHlDb21wb3Vu",
+            "ck1vbnRoc0R0b0gAQgcKBXJlZ3JhIpgBChdBdmFpbGFiaWxpdHlDb21wb3Vu",
             "ZER0bxI/CgR0eXBlGAEgASgOMjEuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRv",
-            "ci52MS5BdmFpbGFiaWxpdHlUeXBlRHRvEj0KBnJlZ3JhcxgCIAMoCzItLkxh",
-            "ZGVzYS5UaW1ldGFibGVHZW5lcmF0b3IudjEuQXZhaWxhYmlsaXR5RHRvItkB",
-            "CiFBdmFpbGFiaWxpdHlVbmF2YWlsYWJsZVdlZWtEYXlEdG8SPwoEdHlwZRgB",
-            "IAEoDjIxLkxhZGVzYS5UaW1ldGFibGVHZW5lcmF0b3IudjEuQXZhaWxhYmls",
-            "aXR5VHlwZUR0bxI6Cgh3ZWVrX2RheRgCIAEoDjIoLkxhZGVzYS5UaW1ldGFi",
-            "bGVHZW5lcmF0b3IudjEuV2Vla0RheUR0bxI3CgRzbG90GAMgASgLMikuTGFk",
-            "ZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5UaW1lU2xvdER0byLbAQoiQXZh",
-            "aWxhYmlsaXR5VW5hdmFpbGFibGVXZWVrRGF5c0R0bxI/CgR0eXBlGAEgASgO",
-            "MjEuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5BdmFpbGFiaWxpdHlU",
-            "eXBlRHRvEjsKCXdlZWtfZGF5cxgCIAMoDjIoLkxhZGVzYS5UaW1ldGFibGVH",
-            "ZW5lcmF0b3IudjEuV2Vla0RheUR0bxI3CgRzbG90GAMgASgLMikuTGFkZXNh",
-            "LlRpbWV0YWJsZUdlbmVyYXRvci52MS5UaW1lU2xvdER0byKeAQoiQXZhaWxh",
-            "YmlsaXR5VW5hdmFpbGFibGVUaW1lU2xvdER0bxI/CgR0eXBlGAEgASgOMjEu",
-            "TGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5BdmFpbGFiaWxpdHlUeXBl",
-            "RHRvEjcKBHNsb3QYAiABKAsyKS5MYWRlc2EuVGltZXRhYmxlR2VuZXJhdG9y",
-            "LnYxLlRpbWVTbG90RHRvIrABCiZBdmFpbGFiaWxpdHlVbmF2YWlsYWJsZVNw",
-            "ZWNpZmljRGF0ZUR0bxI/CgR0eXBlGAEgASgOMjEuTGFkZXNhLlRpbWV0YWJs",
-            "ZUdlbmVyYXRvci52MS5BdmFpbGFiaWxpdHlUeXBlRHRvEgwKBGRhdGUYAiAB",
-            "KAkSNwoEc2xvdBgDIAEoCzIpLkxhZGVzYS5UaW1ldGFibGVHZW5lcmF0b3Iu",
-            "djEuVGltZVNsb3REdG8ixgEKI0F2YWlsYWJpbGl0eVVuYXZhaWxhYmxlRGF0",
-            "ZVJhbmdlRHRvEj8KBHR5cGUYASABKA4yMS5MYWRlc2EuVGltZXRhYmxlR2Vu",
-            "ZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVR5cGVEdG8SEwoLZGF0ZV9pbmljaW8Y",
-            "AiABKAkSEAoIZGF0ZV9maW0YAyABKAkSNwoEc2xvdBgEIAEoCzIpLkxhZGVz",
-            "YS5UaW1ldGFibGVHZW5lcmF0b3IudjEuVGltZVNsb3REdG8isQEKIkF2YWls",
-            "YWJpbGl0eVVuYXZhaWxhYmxlTW9udGhEYXlEdG8SPwoEdHlwZRgBIAEoDjIx",
+            "ci52MS5BdmFpbGFiaWxpdHlUeXBlRHRvEjwKBXJ1bGVzGAIgAygLMi0uTGFk",
+            "ZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5BdmFpbGFiaWxpdHlEdG8i2QEK",
+            "IUF2YWlsYWJpbGl0eVVuYXZhaWxhYmxlV2Vla0RheUR0bxI/CgR0eXBlGAEg",
+            "ASgOMjEuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5BdmFpbGFiaWxp",
+            "dHlUeXBlRHRvEjoKCHdlZWtfZGF5GAIgASgOMiguTGFkZXNhLlRpbWV0YWJs",
+            "ZUdlbmVyYXRvci52MS5XZWVrRGF5RHRvEjcKBHNsb3QYAyABKAsyKS5MYWRl",
+            "c2EuVGltZXRhYmxlR2VuZXJhdG9yLnYxLlRpbWVTbG90RHRvItsBCiJBdmFp",
+            "bGFiaWxpdHlVbmF2YWlsYWJsZVdlZWtEYXlzRHRvEj8KBHR5cGUYASABKA4y",
+            "MS5MYWRlc2EuVGltZXRhYmxlR2VuZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVR5",
+            "cGVEdG8SOwoJd2Vla19kYXlzGAIgAygOMiguTGFkZXNhLlRpbWV0YWJsZUdl",
+            "bmVyYXRvci52MS5XZWVrRGF5RHRvEjcKBHNsb3QYAyABKAsyKS5MYWRlc2Eu",
+            "VGltZXRhYmxlR2VuZXJhdG9yLnYxLlRpbWVTbG90RHRvIp4BCiJBdmFpbGFi",
+            "aWxpdHlVbmF2YWlsYWJsZVRpbWVTbG90RHRvEj8KBHR5cGUYASABKA4yMS5M",
+            "YWRlc2EuVGltZXRhYmxlR2VuZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVR5cGVE",
+            "dG8SNwoEc2xvdBgCIAEoCzIpLkxhZGVzYS5UaW1ldGFibGVHZW5lcmF0b3Iu",
+            "djEuVGltZVNsb3REdG8isAEKJkF2YWlsYWJpbGl0eVVuYXZhaWxhYmxlU3Bl",
+            "Y2lmaWNEYXRlRHRvEj8KBHR5cGUYASABKA4yMS5MYWRlc2EuVGltZXRhYmxl",
+            "R2VuZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVR5cGVEdG8SDAoEZGF0ZRgCIAEo",
+            "CRI3CgRzbG90GAMgASgLMikuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52",
+            "MS5UaW1lU2xvdER0byLFAQojQXZhaWxhYmlsaXR5VW5hdmFpbGFibGVEYXRl",
+            "UmFuZ2VEdG8SPwoEdHlwZRgBIAEoDjIxLkxhZGVzYS5UaW1ldGFibGVHZW5l",
+            "cmF0b3IudjEuQXZhaWxhYmlsaXR5VHlwZUR0bxISCgpkYXRlX3N0YXJ0GAIg",
+            "ASgJEhAKCGRhdGVfZW5kGAMgASgJEjcKBHNsb3QYBCABKAsyKS5MYWRlc2Eu",
+            "VGltZXRhYmxlR2VuZXJhdG9yLnYxLlRpbWVTbG90RHRvIrEBCiJBdmFpbGFi",
+            "aWxpdHlVbmF2YWlsYWJsZU1vbnRoRGF5RHRvEj8KBHR5cGUYASABKA4yMS5M",
+            "YWRlc2EuVGltZXRhYmxlR2VuZXJhdG9yLnYxLkF2YWlsYWJpbGl0eVR5cGVE",
+            "dG8SEQoJbW9udGhfZGF5GAIgASgFEjcKBHNsb3QYAyABKAsyKS5MYWRlc2Eu",
+            "VGltZXRhYmxlR2VuZXJhdG9yLnYxLlRpbWVTbG90RHRvIrABCiRBdmFpbGFi",
+            "aWxpdHlVbmF2YWlsYWJsZVllYXJNb250aHNEdG8SPwoEdHlwZRgBIAEoDjIx",
             "LkxhZGVzYS5UaW1ldGFibGVHZW5lcmF0b3IudjEuQXZhaWxhYmlsaXR5VHlw",
-            "ZUR0bxIRCgltb250aF9kYXkYAiABKAUSNwoEc2xvdBgDIAEoCzIpLkxhZGVz",
-            "YS5UaW1ldGFibGVHZW5lcmF0b3IudjEuVGltZVNsb3REdG8isAEKJEF2YWls",
-            "YWJpbGl0eVVuYXZhaWxhYmxlWWVhck1vbnRoc0R0bxI/CgR0eXBlGAEgASgO",
-            "MjEuTGFkZXNhLlRpbWV0YWJsZUdlbmVyYXRvci52MS5BdmFpbGFiaWxpdHlU",
-            "eXBlRHRvEg4KBm1vbnRocxgCIAMoBRI3CgRzbG90GAMgASgLMikuTGFkZXNh",
-            "LlRpbWV0YWJsZUdlbmVyYXRvci52MS5UaW1lU2xvdER0byrXAQoTQXZhaWxh",
-            "YmlsaXR5VHlwZUR0bxIMCghDb21wb3VuZBAAEhYKElVuYXZhaWxhYmxlV2Vl",
-            "a0RheRABEhcKE1VuYXZhaWxhYmxlV2Vla0RheXMQAhIXChNVbmF2YWlsYWJs",
-            "ZVRpbWVTbG90EAMSGwoXVW5hdmFpbGFibGVTcGVjaWZpY0RhdGUQBBIYChRV",
-            "bmF2YWlsYWJsZURhdGVSYW5nZRAFEhcKE1VuYXZhaWxhYmxlTW9udGhEYXkQ",
-            "BhIYChRVbmF2YWlhYmxlWWVhck1vbnRocxAHYgZwcm90bzM="));
+            "ZUR0bxIOCgZtb250aHMYAiADKAUSNwoEc2xvdBgDIAEoCzIpLkxhZGVzYS5U",
+            "aW1ldGFibGVHZW5lcmF0b3IudjEuVGltZVNsb3REdG8q1wEKE0F2YWlsYWJp",
+            "bGl0eVR5cGVEdG8SDAoIQ29tcG91bmQQABIWChJVbmF2YWlsYWJsZVdlZWtE",
+            "YXkQARIXChNVbmF2YWlsYWJsZVdlZWtEYXlzEAISFwoTVW5hdmFpbGFibGVU",
+            "aW1lU2xvdBADEhsKF1VuYXZhaWxhYmxlU3BlY2lmaWNEYXRlEAQSGAoUVW5h",
+            "dmFpbGFibGVEYXRlUmFuZ2UQBRIXChNVbmF2YWlsYWJsZU1vbnRoRGF5EAYS",
+            "GAoUVW5hdmFpYWJsZVllYXJNb250aHMQB2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.WeekDayDtoReflection.Descriptor, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.TimeSlotDtoReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto.Parser, new[]{ "Type", "Compount", "UnavailableWeekDay", "UnavailableWeekDays", "UnavailableTimeSlot", "UnavailableSpecificDate", "UnavailableDateRange", "UnavailableMonthDay", "UnavailableYearMonths" }, new[]{ "Regra" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto.Parser, new[]{ "Type", "Regras" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityCompoundDto.Parser, new[]{ "Type", "Rules" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDayDto.Parser, new[]{ "Type", "WeekDay", "Slot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableWeekDaysDto.Parser, new[]{ "Type", "WeekDays", "Slot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableTimeSlotDto.Parser, new[]{ "Type", "Slot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableSpecificDateDto.Parser, new[]{ "Type", "Date", "Slot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto.Parser, new[]{ "Type", "DateInicio", "DateFim", "Slot" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableDateRangeDto.Parser, new[]{ "Type", "DateStart", "DateEnd", "Slot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableMonthDayDto.Parser, new[]{ "Type", "MonthDay", "Slot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto), global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityUnavailableYearMonthsDto.Parser, new[]{ "Type", "Months", "Slot" }, null, null, null, null)
           }));
@@ -792,7 +792,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AvailabilityCompoundDto(AvailabilityCompoundDto other) : this() {
       type_ = other.type_;
-      regras_ = other.regras_.Clone();
+      rules_ = other.rules_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -814,15 +814,15 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
     }
 
-    /// <summary>Field number for the "regras" field.</summary>
-    public const int RegrasFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> _repeated_regras_codec
+    /// <summary>Field number for the "rules" field.</summary>
+    public const int RulesFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> _repeated_rules_codec
         = pb::FieldCodec.ForMessage(18, global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto.Parser);
-    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> regras_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto>();
+    private readonly pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> rules_ = new pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> Regras {
-      get { return regras_; }
+    public pbc::RepeatedField<global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityDto> Rules {
+      get { return rules_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -841,7 +841,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         return true;
       }
       if (Type != other.Type) return false;
-      if(!regras_.Equals(other.regras_)) return false;
+      if(!rules_.Equals(other.rules_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -850,7 +850,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public override int GetHashCode() {
       int hash = 1;
       if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
-      hash ^= regras_.GetHashCode();
+      hash ^= rules_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -873,7 +873,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      regras_.WriteTo(output, _repeated_regras_codec);
+      rules_.WriteTo(output, _repeated_rules_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -888,7 +888,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      regras_.WriteTo(ref output, _repeated_regras_codec);
+      rules_.WriteTo(ref output, _repeated_rules_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -902,7 +902,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      size += regras_.CalculateSize(_repeated_regras_codec);
+      size += rules_.CalculateSize(_repeated_rules_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -918,7 +918,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
-      regras_.Add(other.regras_);
+      rules_.Add(other.rules_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -939,7 +939,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 18: {
-            regras_.AddEntriesFrom(input, _repeated_regras_codec);
+            rules_.AddEntriesFrom(input, _repeated_rules_codec);
             break;
           }
         }
@@ -962,7 +962,7 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 18: {
-            regras_.AddEntriesFrom(ref input, _repeated_regras_codec);
+            rules_.AddEntriesFrom(ref input, _repeated_rules_codec);
             break;
           }
         }
@@ -2052,8 +2052,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AvailabilityUnavailableDateRangeDto(AvailabilityUnavailableDateRangeDto other) : this() {
       type_ = other.type_;
-      dateInicio_ = other.dateInicio_;
-      dateFim_ = other.dateFim_;
+      dateStart_ = other.dateStart_;
+      dateEnd_ = other.dateEnd_;
       slot_ = other.slot_ != null ? other.slot_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2076,33 +2076,33 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       }
     }
 
-    /// <summary>Field number for the "date_inicio" field.</summary>
-    public const int DateInicioFieldNumber = 2;
-    private string dateInicio_ = "";
+    /// <summary>Field number for the "date_start" field.</summary>
+    public const int DateStartFieldNumber = 2;
+    private string dateStart_ = "";
     /// <summary>
     /// date
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DateInicio {
-      get { return dateInicio_; }
+    public string DateStart {
+      get { return dateStart_; }
       set {
-        dateInicio_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        dateStart_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "date_fim" field.</summary>
-    public const int DateFimFieldNumber = 3;
-    private string dateFim_ = "";
+    /// <summary>Field number for the "date_end" field.</summary>
+    public const int DateEndFieldNumber = 3;
+    private string dateEnd_ = "";
     /// <summary>
     /// date
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DateFim {
-      get { return dateFim_; }
+    public string DateEnd {
+      get { return dateEnd_; }
       set {
-        dateFim_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        dateEnd_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2134,8 +2134,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         return true;
       }
       if (Type != other.Type) return false;
-      if (DateInicio != other.DateInicio) return false;
-      if (DateFim != other.DateFim) return false;
+      if (DateStart != other.DateStart) return false;
+      if (DateEnd != other.DateEnd) return false;
       if (!object.Equals(Slot, other.Slot)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2145,8 +2145,8 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
     public override int GetHashCode() {
       int hash = 1;
       if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) hash ^= Type.GetHashCode();
-      if (DateInicio.Length != 0) hash ^= DateInicio.GetHashCode();
-      if (DateFim.Length != 0) hash ^= DateFim.GetHashCode();
+      if (DateStart.Length != 0) hash ^= DateStart.GetHashCode();
+      if (DateEnd.Length != 0) hash ^= DateEnd.GetHashCode();
       if (slot_ != null) hash ^= Slot.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2170,13 +2170,13 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (DateInicio.Length != 0) {
+      if (DateStart.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(DateInicio);
+        output.WriteString(DateStart);
       }
-      if (DateFim.Length != 0) {
+      if (DateEnd.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(DateFim);
+        output.WriteString(DateEnd);
       }
       if (slot_ != null) {
         output.WriteRawTag(34);
@@ -2196,13 +2196,13 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (DateInicio.Length != 0) {
+      if (DateStart.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(DateInicio);
+        output.WriteString(DateStart);
       }
-      if (DateFim.Length != 0) {
+      if (DateEnd.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(DateFim);
+        output.WriteString(DateEnd);
       }
       if (slot_ != null) {
         output.WriteRawTag(34);
@@ -2221,11 +2221,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (DateInicio.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DateInicio);
+      if (DateStart.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DateStart);
       }
-      if (DateFim.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DateFim);
+      if (DateEnd.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DateEnd);
       }
       if (slot_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Slot);
@@ -2245,11 +2245,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
       if (other.Type != global::Ladesa.TimetableGenerator.Service.Infrastructure.Protos.AvailabilityTypeDto.Compound) {
         Type = other.Type;
       }
-      if (other.DateInicio.Length != 0) {
-        DateInicio = other.DateInicio;
+      if (other.DateStart.Length != 0) {
+        DateStart = other.DateStart;
       }
-      if (other.DateFim.Length != 0) {
-        DateFim = other.DateFim;
+      if (other.DateEnd.Length != 0) {
+        DateEnd = other.DateEnd;
       }
       if (other.slot_ != null) {
         if (slot_ == null) {
@@ -2277,11 +2277,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 18: {
-            DateInicio = input.ReadString();
+            DateStart = input.ReadString();
             break;
           }
           case 26: {
-            DateFim = input.ReadString();
+            DateEnd = input.ReadString();
             break;
           }
           case 34: {
@@ -2311,11 +2311,11 @@ namespace Ladesa.TimetableGenerator.Service.Infrastructure.Protos {
             break;
           }
           case 18: {
-            DateInicio = input.ReadString();
+            DateStart = input.ReadString();
             break;
           }
           case 26: {
-            DateFim = input.ReadString();
+            DateEnd = input.ReadString();
             break;
           }
           case 34: {

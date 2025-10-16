@@ -1,6 +1,6 @@
 x-podman:
   in_pod: false
-  pod_args: --replace true
+  pod_args: --replace
 
 services:
   timetable-generator-service:

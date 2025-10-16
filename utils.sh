@@ -2,7 +2,7 @@
 set -e
 
 function generate_protos() {
-  PROTO_SRC="./vendors/ladesa-ro/ladesa-protobufs/protos/timetable-generator-v1"
+  PROTO_SRC="./vendors/ladesa-ro/protobufs/protos/timetable-generator-v1"
   OUT_DIR="./Ladesa.TimetableGenerator/Service/Infrastructure/Protos"
 
   GENERATED_NAMESPACE="Ladesa.TimetableGenerator.V1"

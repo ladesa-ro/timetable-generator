@@ -5,8 +5,9 @@ down:
 	podman compose down;
 
 up:
-	make down;
 	podman compose up -d --build;
 
 shell:
-	podman compose exec -u root timetable-generator-service bash;
+	make up;
+	podman compose exec -u 1000 timetable-generator-service bash;
+
