@@ -1,24 +1,27 @@
 x-podman:
   in_pod: false
+  pod_args: --replace true
 
 services:
   timetable-generator-service:
+    user: root
+
     build:
       context: .
       dockerfile: Dockerfile
       target: devcontainer
 
-    user: root
-    command: sleep infinity
+    command: bash -c 'echo "Container Iniciado! Entre com shell rodando podman compose exec timetable-generator-service bash"; sleep infinity;'
 
     working_dir: /app/Ladesa.TimetableGenerator
-    
+    userns_mode: keep-id:uid=1000,gid=1000
+
     env_file:
       - .env
 
     volumes:
       - .:/app:z
-      
+
     ports:
       - 8080:8080
 
@@ -30,8 +33,8 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
     ports:
-      - 5672:5672    # Broker
-      - 15672:15672  # Management UI
+      - 5672:5672 # Broker
+      - 15672:15672 # Management UI
 
 volumes:
   rabbitmq-data:
