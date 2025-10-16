@@ -5,23 +5,17 @@ x-podman:
 services:
   timetable-generator-service:
     user: root
-
+    working_dir: /app/
+    userns_mode: keep-id:uid=1000,gid=1000
     build:
       context: .
       dockerfile: Dockerfile
       target: devcontainer
-
     command: bash -c 'echo "Container Iniciado! Entre com shell rodando podman compose exec timetable-generator-service bash"; sleep infinity;'
-
-    working_dir: /app/Ladesa.TimetableGenerator
-    userns_mode: keep-id:uid=1000,gid=1000
-
     env_file:
       - .env
-
     volumes:
       - .:/app:z
-
     # ports:
     #   - 8080:8080
 
