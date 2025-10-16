@@ -121,7 +121,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     sucesso = false,
                     payload = new object(),
                     mensagem = "Falha ao interpretar o payload (parse_error)",
-                    contexto = new { type = "parse_error", details = ex.Message, timestamp = DateTimeOffset.UtcNow }
+                    contexto = new
+                    {
+                        type = "parse_error",
+                        details = ex.Message,
+                        timestamp = DateTimeOffset.UtcNow,
+                    },
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
@@ -132,14 +137,23 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
             if (payloadDto is null)
             {
-                await PublishErrorAsync("validation_error", "Payload inválido: GeradorPayloadDto nulo.", message);
+                await PublishErrorAsync(
+                    "validation_error",
+                    "Payload inválido: GeradorPayloadDto nulo.",
+                    message
+                );
                 var failEnvelope = new
                 {
                     request_id = requestIdStr,
                     sucesso = false,
                     payload = new object(),
                     mensagem = "Payload inválido: GeradorPayloadDto nulo.",
-                    contexto = new { type = "validation_error", details = "dto nulo", timestamp = DateTimeOffset.UtcNow }
+                    contexto = new
+                    {
+                        type = "validation_error",
+                        details = "dto nulo",
+                        timestamp = DateTimeOffset.UtcNow,
+                    },
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
                 logger.LogError("Payload inválido: GeradorPayloadDto nulo.");
@@ -150,39 +164,63 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
             var validationErrors = ValidatePayload(payloadDto);
             if (validationErrors.Count > 0)
             {
-                await PublishErrorAsync("validation_error", string.Join("; ", validationErrors), message);
+                await PublishErrorAsync(
+                    "validation_error",
+                    string.Join("; ", validationErrors),
+                    message
+                );
                 var failEnvelope = new
                 {
                     request_id = requestIdStr,
                     sucesso = false,
                     payload = payloadDto,
                     mensagem = "Falha de validação do payload.",
-                    contexto = new { type = "validation_error", details = validationErrors, timestamp = DateTimeOffset.UtcNow }
+                    contexto = new
+                    {
+                        type = "validation_error",
+                        details = validationErrors,
+                        timestamp = DateTimeOffset.UtcNow,
+                    },
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
                 await _channel.BasicAckAsync(deliveryTag, multiple: false);
                 return;
             }
 
-            var processingTask = Task.Run(() =>
-            {
-                var payload = GeradorPayloadMapper.ToDomain(payloadDto);
-                var horariosGerados = Gerador.GerarHorario(payload);
-                var horariosGeradosDto = horariosGerados.Select(HorarioGeradoMapper.ToDto).ToArray();
-                return horariosGeradosDto;
-            }, token);
+            var processingTask = Task.Run(
+                () =>
+                {
+                    var payload = GeradorPayloadMapper.ToDomain(payloadDto);
+                    var horariosGerados = Gerador.GerarHorario(payload);
+                    var horariosGeradosDto = horariosGerados
+                        .Select(HorarioGeradoMapper.ToDto)
+                        .ToArray();
+                    return horariosGeradosDto;
+                },
+                token
+            );
 
-            var completed = await Task.WhenAny(processingTask, Task.Delay(Timeout.InfiniteTimeSpan, token));
+            var completed = await Task.WhenAny(
+                processingTask,
+                Task.Delay(Timeout.InfiniteTimeSpan, token)
+            );
             if (completed != processingTask)
             {
-                logger.LogWarning("Tempo limite (10min) excedido na geração de horário. Nack e requeue.");
+                logger.LogWarning(
+                    "Tempo limite (10min) excedido na geração de horário. Nack e requeue."
+                );
                 var failEnvelope = new
                 {
                     request_id = requestIdStr,
                     sucesso = false,
                     payload = payloadDto,
                     mensagem = "Tempo limite excedido para geração (timeout)",
-                    contexto = new { type = "timeout", details = "10min excedidos", timestamp = DateTimeOffset.UtcNow }
+                    contexto = new
+                    {
+                        type = "timeout",
+                        details = "10min excedidos",
+                        timestamp = DateTimeOffset.UtcNow,
+                    },
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
@@ -192,7 +230,9 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
 
             if (processingTask.IsFaulted)
             {
-                var ex = processingTask.Exception?.GetBaseException() ?? new Exception("Erro desconhecido na geração");
+                var ex =
+                    processingTask.Exception?.GetBaseException()
+                    ?? new Exception("Erro desconhecido na geração");
                 await PublishErrorAsync("generation_error", ex.Message, message);
 
                 var failEnvelope = new
@@ -201,7 +241,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     sucesso = false,
                     payload = payloadDto,
                     mensagem = "Erro ao gerar horário",
-                    contexto = new { type = "generation_error", details = ex.Message, timestamp = DateTimeOffset.UtcNow }
+                    contexto = new
+                    {
+                        type = "generation_error",
+                        details = ex.Message,
+                        timestamp = DateTimeOffset.UtcNow,
+                    },
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
@@ -228,7 +273,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                 sucesso = false,
                 payload = new object(),
                 mensagem = "Operação cancelada",
-                contexto = new { type = "timeout", details = "cancellation token", timestamp = DateTimeOffset.UtcNow }
+                contexto = new
+                {
+                    type = "timeout",
+                    details = "cancellation token",
+                    timestamp = DateTimeOffset.UtcNow,
+                },
             };
             await PublishResponseEnvelopeAsync(failEnvelope);
             await _channel.BasicNackAsync(deliveryTag, multiple: false, requeue: true);
@@ -242,7 +292,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                 sucesso = false,
                 payload = new object(),
                 mensagem = "Erro inesperado ao processar a mensagem",
-                contexto = new { type = "unexpected_error", details = ex.Message, timestamp = DateTimeOffset.UtcNow }
+                contexto = new
+                {
+                    type = "unexpected_error",
+                    details = ex.Message,
+                    timestamp = DateTimeOffset.UtcNow,
+                },
             };
             await PublishResponseEnvelopeAsync(failEnvelope);
             logger.LogError(ex, "Erro inesperado ao processar mensagem");
@@ -257,7 +312,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
             type,
             details,
             timestamp = DateTimeOffset.UtcNow,
-            original = originalMessage
+            original = originalMessage,
         };
         var json = BaseJsonSerializer<object>.ToJson(payload);
         var body = Encoding.UTF8.GetBytes(json);

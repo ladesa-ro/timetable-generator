@@ -1,9 +1,9 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Mappers;
 using Ladesa.TimetableGenerator.Features.Gerador;
-using System.Text.Json.Serialization;
 
 namespace Ladesa.TimetableGenerator.Test;
 
@@ -55,14 +55,17 @@ public class SimpleGeradorTests
         var slot = new SlotDeTempo("08:00:00", "08:50:00");
         var payload = BuildBasicPayload(data, new[] { slot });
 
-
         Console.WriteLine(JsonSerializer.Serialize(GeradorPayloadMapper.ToDto(payload)));
 
         var horarios = Gerador.GerarHorario(payload);
         var primeiro = horarios.FirstOrDefault();
 
         Assert.That(primeiro, Is.Not.Null, "Deveria gerar ao menos um horário");
-        Assert.That(primeiro!.Aulas.Length, Is.EqualTo(1), "Deveria agendar 1 aula no cenário básico");
+        Assert.That(
+            primeiro!.Aulas.Length,
+            Is.EqualTo(1),
+            "Deveria agendar 1 aula no cenário básico"
+        );
 
         var aula = primeiro.Aulas[0];
         Assert.Multiple(() =>
@@ -81,10 +84,15 @@ public class SimpleGeradorTests
         var data = new DateOnly(2025, 1, 6); // Monday
         var slot = new SlotDeTempo("08:00:00", "08:50:00");
 
-        var indisponibilidadeDiaTodo = new RegraDisponibilidadeAnd(new IRegraDisponibilidade[]
-        {
-            new RegraIndisponibilidadeDiaDaSemana(DayOfWeek.Monday, new SlotDeTempo("00:00:00","23:59:59"))
-        });
+        var indisponibilidadeDiaTodo = new RegraDisponibilidadeAnd(
+            new IRegraDisponibilidade[]
+            {
+                new RegraIndisponibilidadeDiaDaSemana(
+                    DayOfWeek.Monday,
+                    new SlotDeTempo("00:00:00", "23:59:59")
+                ),
+            }
+        );
 
         // Professor com regra de "indisponibilidade" na segunda o dia todo.
         // O comportamento atual do avaliador considera true quando o slot está dentro da janela configurada.
@@ -100,6 +108,10 @@ public class SimpleGeradorTests
         var primeiro = horarios.FirstOrDefault();
 
         Assert.That(primeiro, Is.Not.Null, "Deveria gerar um horário");
-        Assert.That(primeiro!.Aulas.Length, Is.EqualTo(1), "Comportamento atual permite agendamento dentro da janela marcada como 'indisponível'");
+        Assert.That(
+            primeiro!.Aulas.Length,
+            Is.EqualTo(1),
+            "Comportamento atual permite agendamento dentro da janela marcada como 'indisponível'"
+        );
     }
 }

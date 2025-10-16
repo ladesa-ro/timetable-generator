@@ -6,6 +6,7 @@ public class HelperDatas
 {
     public static IEnumerable<DateOnly> Datas(GeradorPayload payload)
     {
-        for (var data = payload.DataInicial; data <= payload.DataFinal; data = data.AddDays(1)) yield return data;
+        for (var data = payload.DataInicial; data <= payload.DataFinal; data = data.AddDays(1))
+            yield return data;
     }
 }

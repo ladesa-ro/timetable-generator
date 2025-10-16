@@ -10,11 +10,16 @@ public class HelperTurmas
         return turma;
     }
 
-    public static Turma FindByIdStrict(GeradorPayload payload, string turmaId, string? exceptionContext = null)
+    public static Turma FindByIdStrict(
+        GeradorPayload payload,
+        string turmaId,
+        string? exceptionContext = null
+    )
     {
         var turma = FindById(payload, turmaId);
 
-        if (turma == null) throw new Exception($"Turma não encontrada: {turmaId}{exceptionContext}.");
+        if (turma == null)
+            throw new Exception($"Turma não encontrada: {turmaId}{exceptionContext}.");
 
         return turma;
     }

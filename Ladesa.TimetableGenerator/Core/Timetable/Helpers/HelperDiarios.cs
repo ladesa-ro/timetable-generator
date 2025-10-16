@@ -10,11 +10,16 @@ public class HelperDiarios
         return diario;
     }
 
-    public static Diario FindByIdStrict(GeradorPayload payload, string diarioId, string? exceptionContext = null)
+    public static Diario FindByIdStrict(
+        GeradorPayload payload,
+        string diarioId,
+        string? exceptionContext = null
+    )
     {
         var diario = FindById(payload, diarioId);
 
-        if (diario == null) throw new Exception($"Diário não encontrado: {diarioId}{exceptionContext}.");
+        if (diario == null)
+            throw new Exception($"Diário não encontrado: {diarioId}{exceptionContext}.");
         ;
 
         return diario;

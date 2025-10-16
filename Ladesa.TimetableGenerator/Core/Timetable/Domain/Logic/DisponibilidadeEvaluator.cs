@@ -14,7 +14,9 @@ public static class DisponibilidadeEvaluator
         {
             case RegraDisponibilidadeAnd regraDisponibilidade:
             {
-                return regraDisponibilidade.Regras.All(r => VerificarDisponibilidade(r, data, slot));
+                return regraDisponibilidade.Regras.All(r =>
+                    VerificarDisponibilidade(r, data, slot)
+                );
             }
 
             case RegraIndisponibilidadeDiaDaSemana regraDisponibilidade:
@@ -28,7 +30,7 @@ public static class DisponibilidadeEvaluator
             case RegraIndisponibilidadeDiasDaSemana regraDisponibilidade:
             {
                 return regraDisponibilidade.DiasDaSemana.Contains(data.DayOfWeek)
-                       && SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                    && SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
             }
             case RegraIndisponibilidadeHorario regraDisponibilidade:
             {

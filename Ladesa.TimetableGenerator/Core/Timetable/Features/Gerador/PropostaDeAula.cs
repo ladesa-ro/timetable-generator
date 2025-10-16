@@ -25,7 +25,6 @@ public class PropostaDeAula(
 
     public SlotDeTempo SlotDeTempo { get; set; } = slotDeTempo;
 
-
     private BoolVar? CreatedModelBoolVar { get; set; } = modelBoolVar;
 
     public BoolVar ModelBoolVar
@@ -34,13 +33,16 @@ public class PropostaDeAula(
         {
             if (CreatedModelBoolVar == null)
             {
-                var propostaLabel = string.Join("::", new[]
-                {
-                    $"dia_{Data}",
-                    $"intervalo_{IntervaloIndex}",
-                    $"diario_{DiarioId}",
-                    $"turma_{TurmaId}"
-                });
+                var propostaLabel = string.Join(
+                    "::",
+                    new[]
+                    {
+                        $"dia_{Data}",
+                        $"intervalo_{IntervaloIndex}",
+                        $"diario_{DiarioId}",
+                        $"turma_{TurmaId}",
+                    }
+                );
 
                 CreatedModelBoolVar = Contexto.Model.NewBoolVar(propostaLabel);
             }

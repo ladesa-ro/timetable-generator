@@ -11,14 +11,12 @@ public class HelperHorarioDeAula
         return horarioDeAula;
     }
 
-    public static SlotDeTempo ByIndexStrict(
-        GeradorPayload payload,
-        int horarioDeAulaIndex
-    )
+    public static SlotDeTempo ByIndexStrict(GeradorPayload payload, int horarioDeAulaIndex)
     {
         var horarioDeAula = ByIndex(payload, horarioDeAulaIndex);
 
-        if (horarioDeAula == null) throw new Exception($"Horário de aula não encontrado: índice {horarioDeAulaIndex}.");
+        if (horarioDeAula == null)
+            throw new Exception($"Horário de aula não encontrado: índice {horarioDeAulaIndex}.");
 
         return horarioDeAula;
     }

@@ -8,9 +8,7 @@ namespace Ladesa.TimetableGenerator.Core.Restricoes;
 /// </summary>
 public class LimiteProfessorTurnos12Horas
 {
-    public static void Aplicar(
-        GerarHorarioContext contexto
-    )
+    public static void Aplicar(GerarHorarioContext contexto)
     {
         foreach (var data in HelperDatas.Datas(contexto.Payload))
         foreach (var professor in contexto.Payload.Professores)
@@ -36,9 +34,7 @@ public class LimiteProfessorTurnos12Horas
                         && proposta.ProfessorId == propostaNoite.ProfessorId
                         && proposta.IntervaloIndex >= 0
                         && proposta.IntervaloIndex <= 4 //SELECIONA OS INTERVALOS DE 0 A 4
-                        && proposta.IntervaloIndex <=
-                        propostaNoite.IntervaloIndex -
-                        10 //DIMUI 10 DO ULTIMO INTERVALO QUE SERA IGUAL AO INTERVALO QUE DEVERA SER REMOVIDO
+                        && proposta.IntervaloIndex <= propostaNoite.IntervaloIndex - 10 //DIMUI 10 DO ULTIMO INTERVALO QUE SERA IGUAL AO INTERVALO QUE DEVERA SER REMOVIDO
                     select proposta.ModelBoolVar;
 
                 var negatedVariables = propostasConflitantesManhaSeguinte

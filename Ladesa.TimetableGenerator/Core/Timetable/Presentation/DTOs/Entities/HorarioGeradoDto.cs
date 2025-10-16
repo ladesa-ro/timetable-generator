@@ -18,7 +18,7 @@ public partial class HorarioGeradoDto
 
     [JsonPropertyName("request_id")]
     public required Guid RequestId { get; init; }
-    
+
     [JsonPropertyName("score")]
     public required int? Score { get; init; }
 }

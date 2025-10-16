@@ -28,7 +28,7 @@ public static class GeradorPayloadMapper
             Turmas = domain.Turmas.Select(TurmaMapper.ToDto).ToArray(),
             Professores = domain.Professores.Select(ProfessorMapper.ToDto).ToArray(),
             Diarios = domain.Diarios.Select(DiarioMapper.ToDto).ToArray(),
-            HorariosDeAula = domain.HorariosDeAula.Select(SlotDeTempoMapper.ToDto).ToArray()
+            HorariosDeAula = domain.HorariosDeAula.Select(SlotDeTempoMapper.ToDto).ToArray(),
         };
     }
 }

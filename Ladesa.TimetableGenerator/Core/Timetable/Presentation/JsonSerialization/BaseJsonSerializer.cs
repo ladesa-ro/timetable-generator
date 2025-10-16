@@ -6,9 +6,9 @@ public class BaseJsonSerializer<TDto>
 {
     public static JsonSerializerOptions options = new JsonSerializerOptions
     {
-        WriteIndented = true
+        WriteIndented = true,
     };
-    
+
     public static TDto ToDto(string jsonString)
     {
         var asDto = JsonSerializer.Deserialize<TDto>(jsonString);

@@ -17,12 +17,9 @@ public static class SlotDeTempoEvaluator
         return VerificarIntervalo(slotDeTempo, horarioConvertido);
     }
 
-    public static bool VerificarIntervalo(
-        SlotDeTempo slotDeTempo,
-        SlotDeTempo intervalo2
-    )
+    public static bool VerificarIntervalo(SlotDeTempo slotDeTempo, SlotDeTempo intervalo2)
     {
         return VerificarIntervalo(slotDeTempo, intervalo2.HorarioInicio)
-               && VerificarIntervalo(slotDeTempo, intervalo2.HorarioFim);
+            && VerificarIntervalo(slotDeTempo, intervalo2.HorarioFim);
     }
 }

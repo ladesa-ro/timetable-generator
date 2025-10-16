@@ -9,9 +9,7 @@ namespace Ladesa.TimetableGenerator.Core.Restricoes;
 /// </summary>
 public class LimiteDiarioAulasNaSemana
 {
-    public static void Aplicar(
-        GerarHorarioContext contexto
-    )
+    public static void Aplicar(GerarHorarioContext contexto)
     {
         foreach (var turma in contexto.Payload.Turmas)
         foreach (var diario in HelperDiarios.ByTurmaId(contexto.Payload, turma.Id))

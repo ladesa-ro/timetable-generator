@@ -1,5 +1,5 @@
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Features.Gerador;
 
 namespace Ladesa.TimetableGenerator.Core.Restricoes;
@@ -22,13 +22,12 @@ public class LimiteProfessorHorarioAlmoco
                     new SlotDeTempo("13:00:00", "13:30:00"),
                     proposta.SlotDeTempo.HorarioInicio
                 )
-            group proposta by new { proposta.Data, proposta.ProfessorId }
-            into variantes
+            group proposta by new { proposta.Data, proposta.ProfessorId } into variantes
             select new
             {
                 variantes.Key.Data,
                 variantes.Key.ProfessorId,
-                Propostas = variantes.AsEnumerable()
+                Propostas = variantes.AsEnumerable(),
             };
 
         foreach (var grupo in grupos)

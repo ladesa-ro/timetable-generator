@@ -7,9 +7,7 @@ namespace Ladesa.TimetableGenerator.Features.Gerador;
 
 public class GerarHorarioContext
 {
-    public GerarHorarioContext(
-        GeradorPayload payload
-    )
+    public GerarHorarioContext(GeradorPayload payload)
     {
         Payload = payload;
         IniciarTodasAsPropostasDeAula();
@@ -18,7 +16,7 @@ public class GerarHorarioContext
     public GeradorPayload Payload { get; init; }
     public CpModel Model { get; init; } = new();
     public List<PropostaDeAula> TodasAsPropostasDeAula { get; init; } = [];
-    
+
     public LinearExpr? Score { get; set; }
 
     public void IniciarTodasAsPropostasDeAula()

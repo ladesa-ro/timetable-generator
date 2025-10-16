@@ -13,10 +13,6 @@ public static class SlotDeTempoMapper
 
     public static SlotDeTempoDto ToDto(SlotDeTempo domain)
     {
-        return new SlotDeTempoDto()
-        {
-            Inicio = domain.HorarioInicio,
-            Fim = domain.HorarioFim,
-        };
+        return new SlotDeTempoDto() { Inicio = domain.HorarioInicio, Fim = domain.HorarioFim };
     }
 }

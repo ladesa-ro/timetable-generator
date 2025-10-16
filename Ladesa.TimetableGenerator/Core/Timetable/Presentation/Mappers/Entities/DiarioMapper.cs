@@ -26,7 +26,7 @@ public static class DiarioMapper
             ProfessorId = domain.ProfessorId,
             DisciplinaId = domain.DisciplinaId,
             QuantidadeMaximaSemana = domain.QuantidadeMaximaSemana,
-            QuantidadeMaximaTotal = domain.QuantidadeMaximaTotal
+            QuantidadeMaximaTotal = domain.QuantidadeMaximaTotal,
         };
     }
 }

@@ -6,10 +6,18 @@ using Ladesa.TimetableGenerator.Core.Timetable.Presentation.DTOs;
 
 public class JsonStringEnumMemberConverter : JsonConverter<TipoRegraDisponibilidadeDto>
 {
-    public override TipoRegraDisponibilidadeDto Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override TipoRegraDisponibilidadeDto Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
         var enumText = reader.GetString();
-        foreach (var field in typeof(TipoRegraDisponibilidadeDto).GetFields(BindingFlags.Public | BindingFlags.Static))
+        foreach (
+            var field in typeof(TipoRegraDisponibilidadeDto).GetFields(
+                BindingFlags.Public | BindingFlags.Static
+            )
+        )
         {
             var enumMember = field.GetCustomAttribute<EnumMemberAttribute>();
             if (enumMember?.Value == enumText)
@@ -18,9 +26,14 @@ public class JsonStringEnumMemberConverter : JsonConverter<TipoRegraDisponibilid
         throw new JsonException($"Valor inválido para TipoRegraDisponibilidadeDto: {enumText}");
     }
 
-    public override void Write(Utf8JsonWriter writer, TipoRegraDisponibilidadeDto value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        TipoRegraDisponibilidadeDto value,
+        JsonSerializerOptions options
+    )
     {
-        var enumMember = value.GetType()
+        var enumMember = value
+            .GetType()
             .GetField(value.ToString())
             ?.GetCustomAttribute<EnumMemberAttribute>();
 
@@ -28,7 +41,6 @@ public class JsonStringEnumMemberConverter : JsonConverter<TipoRegraDisponibilid
         writer.WriteStringValue(enumText);
     }
 }
-
 
 [JsonConverter(typeof(JsonStringEnumMemberConverter))]
 public enum TipoRegraDisponibilidadeDto
@@ -55,24 +67,38 @@ public enum TipoRegraDisponibilidadeDto
     RegraIndisponibilidadeDiaDoMes,
 
     [EnumMember(Value = "regra_indisponibilidade_meses_do_ano")]
-    RegraIndisponibilidadeMesesDoAno
+    RegraIndisponibilidadeMesesDoAno,
 }
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "tipo")]
 [JsonDerivedType(typeof(RegraDisponibilidadeAndDto), "regra_disponibilidade_and")]
-[JsonDerivedType(typeof(RegraIndisponibilidadeDiaDaSemanaDto), "regra_indisponibilidade_dia_da_semana")]
-[JsonDerivedType(typeof(RegraIndisponibilidadeDiasDaSemanaDto), "regra_indisponibilidade_dias_da_semana")]
+[JsonDerivedType(
+    typeof(RegraIndisponibilidadeDiaDaSemanaDto),
+    "regra_indisponibilidade_dia_da_semana"
+)]
+[JsonDerivedType(
+    typeof(RegraIndisponibilidadeDiasDaSemanaDto),
+    "regra_indisponibilidade_dias_da_semana"
+)]
 [JsonDerivedType(typeof(RegraIndisponibilidadeHorarioDto), "regra_indisponibilidade_horario")]
-[JsonDerivedType(typeof(RegraIndisponibilidadeDataEspecificaDto), "regra_indisponibilidade_data_especifica")]
-[JsonDerivedType(typeof(RegraIndisponibilidadePeriodoDatasDto), "regra_indisponibilidade_periodo_datas")]
+[JsonDerivedType(
+    typeof(RegraIndisponibilidadeDataEspecificaDto),
+    "regra_indisponibilidade_data_especifica"
+)]
+[JsonDerivedType(
+    typeof(RegraIndisponibilidadePeriodoDatasDto),
+    "regra_indisponibilidade_periodo_datas"
+)]
 [JsonDerivedType(typeof(RegraIndisponibilidadeDiaDoMesDto), "regra_indisponibilidade_dia_do_mes")]
-[JsonDerivedType(typeof(RegraIndisponibilidadeMesesDoAnoDto), "regra_indisponibilidade_meses_do_ano")]
+[JsonDerivedType(
+    typeof(RegraIndisponibilidadeMesesDoAnoDto),
+    "regra_indisponibilidade_meses_do_ano"
+)]
 public interface IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
     TipoRegraDisponibilidadeDto Tipo { get; }
 }
-
 
 public record RegraDisponibilidadeAndDto(
     [property: JsonPropertyName("regras")] IRegraDisponibilidadeDto[] Regras
@@ -88,7 +114,8 @@ public record RegraIndisponibilidadeDiaDaSemanaDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiaDaSemana;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiaDaSemana;
 }
 
 public record RegraIndisponibilidadeDiasDaSemanaDto(
@@ -97,7 +124,8 @@ public record RegraIndisponibilidadeDiasDaSemanaDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiasDaSemana;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiasDaSemana;
 }
 
 public record RegraIndisponibilidadeHorarioDto(
@@ -105,7 +133,8 @@ public record RegraIndisponibilidadeHorarioDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeHorario;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeHorario;
 }
 
 public record RegraIndisponibilidadeDataEspecificaDto(
@@ -114,7 +143,8 @@ public record RegraIndisponibilidadeDataEspecificaDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDataEspecifica;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDataEspecifica;
 }
 
 public record RegraIndisponibilidadePeriodoDatasDto(
@@ -124,7 +154,8 @@ public record RegraIndisponibilidadePeriodoDatasDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadePeriodoDatas;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadePeriodoDatas;
 }
 
 public record RegraIndisponibilidadeDiaDoMesDto(
@@ -133,7 +164,8 @@ public record RegraIndisponibilidadeDiaDoMesDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiaDoMes;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeDiaDoMes;
 }
 
 public record RegraIndisponibilidadeMesesDoAnoDto(
@@ -142,5 +174,6 @@ public record RegraIndisponibilidadeMesesDoAnoDto(
 ) : IRegraDisponibilidadeDto
 {
     [JsonPropertyName("tipo")]
-    public TipoRegraDisponibilidadeDto Tipo => TipoRegraDisponibilidadeDto.RegraIndisponibilidadeMesesDoAno;
+    public TipoRegraDisponibilidadeDto Tipo =>
+        TipoRegraDisponibilidadeDto.RegraIndisponibilidadeMesesDoAno;
 }

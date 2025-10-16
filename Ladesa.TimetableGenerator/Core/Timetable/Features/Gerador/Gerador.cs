@@ -13,7 +13,7 @@ using CombinacaoAula = (
     string TurmaId,
     string DiarioId,
     string ProfessorId
-    );
+);
 
 public class Gerador
 {
@@ -67,10 +67,7 @@ public class Gerador
             var turma = HelperTurmas.FindByIdStrict(payload, combinacao.TurmaId);
             var diario = HelperDiarios.FindByIdStrict(payload, combinacao.DiarioId);
 
-            var professor = HelperProfessores.FindByIdStrict(
-                payload,
-                diario.ProfessorId
-            )!;
+            var professor = HelperProfessores.FindByIdStrict(payload, diario.ProfessorId)!;
 
             // =====================================================================================
 
@@ -94,7 +91,8 @@ public class Gerador
 
             // =====================================================================================
 
-            if (disponivel) yield return combinacao;
+            if (disponivel)
+                yield return combinacao;
         }
     }
 
@@ -176,10 +174,7 @@ public class Gerador
 
             do
             {
-                var solver = new CpSolver
-                {
-                    StringParameters = "enumerate_all_solutions:true"
-                };
+                var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
 
                 var solutionPrinter = new GeradorSolutionCallback(
                     contexto,
@@ -190,7 +185,8 @@ public class Gerador
                     }
                 );
 
-                if (previousScore != null) OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
+                if (previousScore != null)
+                    OtimizarResultadoDeAcordoComAsPreferencias(contexto, previousScore - 1);
 
                 var sat = solver.Solve(contexto.Model, solutionPrinter);
 
@@ -215,7 +211,8 @@ public class Gerador
         {
             tickGenerated.WaitOne();
 
-            if (horarioGerado != null) yield return horarioGerado;
+            if (horarioGerado != null)
+                yield return horarioGerado;
         } while (horarioGerado != null);
 
         yield break;
@@ -242,7 +239,8 @@ public class Gerador
         if (limiteScore != null)
         {
             contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
-        };
+        }
+        ;
 
         contexto.Model.Maximize(qualidade);
 

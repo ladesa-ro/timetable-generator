@@ -15,15 +15,14 @@ public class LimiteProfessorUmaAulaPorHorario
             {
                 proposta.Data,
                 proposta.ProfessorId,
-                proposta.IntervaloIndex
-            }
-            into variantes
+                proposta.IntervaloIndex,
+            } into variantes
             select new
             {
                 variantes.Key.Data,
                 variantes.Key.ProfessorId,
                 variantes.Key.IntervaloIndex,
-                Propostas = variantes.AsEnumerable()
+                Propostas = variantes.AsEnumerable(),
             };
 
         foreach (var grupo in grupos)

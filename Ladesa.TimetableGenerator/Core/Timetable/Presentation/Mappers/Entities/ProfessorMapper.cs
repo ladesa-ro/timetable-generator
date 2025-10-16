@@ -15,7 +15,7 @@ public static class ProfessorMapper
         return new ProfessorDto()
         {
             Id = domain.Id,
-            RegraDisponibilidade = RegraDisponibilidadeMapper.ToDto(domain.RegraDisponibilidade)
+            RegraDisponibilidade = RegraDisponibilidadeMapper.ToDto(domain.RegraDisponibilidade),
         };
     }
 }

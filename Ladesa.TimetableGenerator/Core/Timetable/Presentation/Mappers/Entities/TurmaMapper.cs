@@ -15,7 +15,7 @@ public static class TurmaMapper
         return new TurmaDto()
         {
             Id = domain.Id,
-            RegraDisponibilidade = RegraDisponibilidadeMapper.ToDto(domain.RegraDisponibilidade)
+            RegraDisponibilidade = RegraDisponibilidadeMapper.ToDto(domain.RegraDisponibilidade),
         };
     }
 }

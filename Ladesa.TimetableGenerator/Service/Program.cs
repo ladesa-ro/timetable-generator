@@ -17,22 +17,28 @@ builder.Services.AddHostedService<ListenWorker>();
 
 var app = builder.Build();
 
-app.MapGet("/health", () =>
-{
-    var status = new
+app.MapGet(
+    "/health",
+    () =>
     {
-        status = "ok",
-        service = "timetable-generator",
-        timestamp = DateTimeOffset.UtcNow
-    };
+        var status = new
+        {
+            status = "ok",
+            service = "timetable-generator",
+            timestamp = DateTimeOffset.UtcNow,
+        };
 
-    return Results.Ok(status);
-});
+        return Results.Ok(status);
+    }
+);
 
-app.MapGet("/schemas", async () =>
-{
-    var schema = await DtoSchemaProvider.GetJsonSchema();
-    return Results.Json(JsonSerializer.Deserialize<object>(schema));
-});
+app.MapGet(
+    "/schemas",
+    async () =>
+    {
+        var schema = await DtoSchemaProvider.GetJsonSchema();
+        return Results.Json(JsonSerializer.Deserialize<object>(schema));
+    }
+);
 
 app.Run();

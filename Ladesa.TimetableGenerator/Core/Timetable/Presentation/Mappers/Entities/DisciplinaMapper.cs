@@ -12,10 +12,6 @@ public class DisciplinaMapper
 
     public static DisciplinaDto ToDto(Disciplina domain)
     {
-        return new DisciplinaDto()
-        {
-            Id = domain.Id,
-            Nome = domain.Nome,
-        };
+        return new DisciplinaDto() { Id = domain.Id, Nome = domain.Nome };
     }
 }

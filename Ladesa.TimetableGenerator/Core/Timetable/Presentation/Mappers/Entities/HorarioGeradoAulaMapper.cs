@@ -24,7 +24,7 @@ public static class HorarioGeradoAulaMapper
             DiarioId = domain.DiarioId,
             ProfessorId = domain.ProfessorId,
             Data = domain.Data.ToDateTime(TimeOnly.MinValue),
-            HorarioDeAula = SlotDeTempoMapper.ToDto(domain.HorarioDeAula)
+            HorarioDeAula = SlotDeTempoMapper.ToDto(domain.HorarioDeAula),
         };
     }
 }

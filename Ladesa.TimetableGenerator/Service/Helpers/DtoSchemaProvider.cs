@@ -1,5 +1,5 @@
-using NJsonSchema;
 using Ladesa.TimetableGenerator.Core.Timetable.Presentation.DTOs;
+using NJsonSchema;
 
 namespace GerarHorarioService.Helpers;
 
@@ -7,9 +7,8 @@ public static class DtoSchemaProvider
 {
     public static async Task<string> GetJsonSchema()
     {
-
         var rootSchema = new JsonSchema();
-        
+
         var DiarioSchema = JsonSchema.FromType<DiarioDto>();
         rootSchema.Definitions["Diario"] = DiarioSchema;
 
@@ -33,7 +32,7 @@ public static class DtoSchemaProvider
 
         var SlotDeTempoSchema = JsonSchema.FromType<SlotDeTempoDto>();
         rootSchema.Definitions["SlotDeTempo"] = SlotDeTempoSchema;
-        
+
         rootSchema.Type = JsonObjectType.None;
         rootSchema.Properties.Clear();
 

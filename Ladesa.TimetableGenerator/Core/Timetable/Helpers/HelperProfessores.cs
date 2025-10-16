@@ -14,7 +14,8 @@ public class HelperProfessores
     {
         var professor = FindById(payload, professorId);
 
-        if (professor == null) throw new Exception($"Professor não encontrado: {professorId}.");
+        if (professor == null)
+            throw new Exception($"Professor não encontrado: {professorId}.");
 
         return professor;
     }
