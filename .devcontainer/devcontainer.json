@@ -1,0 +1,35 @@
+{
+  "name": "Timetable Generator Devcontainer",
+
+  "dockerComposeFile": ["../docker-compose.yml"],
+
+  "service": "timetable-generator-service",
+  "workspaceFolder": "/app/Ladesa.TimetableGenerator",
+
+  "shutdownAction": "stopCompose",
+  "remoteUser": "dev",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/usr/bin/zsh",
+        "dotnet.defaultSolution": "/app/Ladesa.TimetableGenerator/Ladesa.TimetableGenerator.slnx"
+      },
+
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+
+  "postStartCommand": "echo 'Devcontainer pronto! Entre no container com `podman compose exec timetable-generator-service bash` se precisar de shell.'",
+
+  "mounts": ["source=${localWorkspaceFolder},target=/app,z"],
+
+  "remoteEnv": {
+    "DOTNET_CLI_HOME": "/home/dev/.dotnet"
+  }
+}

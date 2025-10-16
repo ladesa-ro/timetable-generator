@@ -1,19 +1,29 @@
 # =============================
-# Etapa 1: Base Debian + .NET SDK (para build e dev)
+# Etapa 1: Base Debian
 # =============================
-FROM docker.io/debian:bookworm-slim AS sdk-base
+FROM docker.io/debian:bookworm-slim AS os-slim
+
+# =============================
+# Etapa 2: Base Debian para SDK
+# =============================
+FROM os-slim AS os-sdk-base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-
-WORKDIR /src
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl ca-certificates libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl3 libstdc++6 zlib1g \
   git vim zsh less procps locales \
   && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen \
   && rm -rf /var/lib/apt/lists/*
+
+# =============================
+# Etapa 3: Base Debian + .NET SDK (para build e dev)
+# =============================
+FROM os-sdk-base AS sdk-base
+
+WORKDIR /src
 
 # =============================
 # Configurações do .NET
@@ -47,7 +57,7 @@ RUN mkdir -p $DOTNET_TOOLS_PATH \
 ENV PATH="$PATH:$DOTNET_TOOLS_PATH"
 
 # =============================
-# Etapa 2: Devcontainer (ambiente completo)
+# Etapa 4: Devcontainer (ambiente completo)
 # =============================
 FROM sdk-base AS devcontainer
 
@@ -69,7 +79,7 @@ USER $USERNAME
 WORKDIR /src
 
 # =============================
-# Etapa 3: Build da aplicação
+# Etapa 5: Build da aplicação
 # =============================
 FROM sdk-base AS build
 
@@ -91,9 +101,9 @@ RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj \
   -c Release -o /app/publish /p:UseAppHost=false
 
 # =============================
-# Etapa 4: Runtime leve (não-root)
+# Etapa 5: Runtime leve (não-root)
 # =============================
-FROM docker.io/debian:bookworm-slim AS timetable-generator-runtime
+FROM os-slim AS timetable-generator-runtime
 
 ENV DOTNET_CHANNEL=9.0
 ENV DOTNET_ROOT=/usr/share/dotnet
