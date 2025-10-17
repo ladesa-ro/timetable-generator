@@ -2,31 +2,24 @@ using RabbitMQ.Client;
 
 namespace GerarHorarioService.Extensions;
 
-public class RabbitMqHelpers
+public class RabbitMqHelpers(IConfiguration config)
 {
-    private readonly IConfiguration _configuration;
-
-    public RabbitMqHelpers(IConfiguration config)
-    {
-        _configuration = config;
-    }
-
     public ConnectionFactory RabbitMqConnectionFactory()
     {
-        var hostName = _configuration["TIMETABLE_SERVICE_BROKER_HOSTNAME"];
-        var userName = _configuration["TIMETABLE_SERVICE_BROKER_USERNAME"];
-        var password = _configuration["TIMETABLE_SERVICE_BROKER_PASSWORD"];
-
-        Console.WriteLine(hostName);
-        Console.WriteLine(userName);
-        Console.WriteLine(password);
+        var hostName = config["TIMETABLE_SERVICE_BROKER_HOSTNAME"];
+        var userName = config["TIMETABLE_SERVICE_BROKER_USERNAME"];
+        var password = config["TIMETABLE_SERVICE_BROKER_PASSWORD"];
 
         if (
             string.IsNullOrEmpty(hostName)
             || string.IsNullOrEmpty(userName)
             || string.IsNullOrEmpty(password)
         )
-            throw new InvalidOperationException("HostName or UserName is missing.");
+        {
+            throw new InvalidOperationException(
+                "RabbitMqConnectionFactory: TIMETABLE_SERVICE_BROKER_HOSTNAME, TIMETABLE_SERVICE_BROKER_USERNAME or TIMETABLE_SERVICE_BROKER_PASSWORD is missing."
+                );
+        }
 
         return new ConnectionFactory
         {

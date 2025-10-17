@@ -13,8 +13,8 @@ public static class SwaggerModule
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Timetable Generator API",
                 Version = "v1",
+                Title = "Timetable Generator API",
                 Description = "API para geração de horários e serviços relacionados"
             });
         });
@@ -22,9 +22,10 @@ public static class SwaggerModule
         return services;
     }
 
-    public static IApplicationBuilder UseAppSwagger(this IApplicationBuilder app)
+    public static WebApplication UseAppSwagger(this WebApplication app)
     {
         app.UseSwagger();
+
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "Timetable Generator API v1");

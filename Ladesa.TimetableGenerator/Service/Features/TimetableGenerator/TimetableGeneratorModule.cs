@@ -8,7 +8,7 @@ public static class TimetableGeneratorModule
     public static IServiceCollection AddTimetableGeneratorModule(this IServiceCollection services)
     {
         services.AddSingleton<RabbitMqHelpers>();
-        services.AddHostedService<ListenWorker>();
+        services.AddHostedService<TimetableGeneratorListenWorker>();
 
         return services;
     }

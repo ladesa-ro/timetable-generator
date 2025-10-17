@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 
 namespace Ladesa.TimetableGenerator.Service.Workers;
 
-public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMqHelpers)
+public class TimetableGeneratorListenWorker(ILogger<TimetableGeneratorListenWorker> logger, RabbitMqHelpers rabbitMqHelpers)
     : BackgroundService
 {
     private IChannel? _channel;

@@ -1,6 +1,7 @@
-using Ladesa.TimetableGenerator.Service.Features.Health;
-using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.Swagger;
+using Ladesa.TimetableGenerator.Service.Features;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -8,34 +9,16 @@ var builder = WebApplication.CreateSlimBuilder(args);
 
 if (builder.Environment.IsDevelopment()) builder.Configuration.AddUserSecrets<Program>();
 
-#endregion
-
-#region Registro de módulos e serviços
-
-builder.Services.AddSwaggerModule();
-builder.Services.AddHealthModule();
-builder.Services.AddTimetableGeneratorModule();
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.SetParameterPolicy<RegexInlineRouteConstraint>("regex");
+});
 
 #endregion
 
-#region Controllers
-
-builder.Services.AddControllers();
-
-#endregion
+builder.Services.AddFeaturesModule();
 
 var app = builder.Build();
-
-#region Middlewares
-
-app.UseAppSwagger();
-
-#endregion
-
-#region Rotas
-
-app.MapControllers();
-
-#endregion
+app.UseAppFeatures();
 
 app.Run();
