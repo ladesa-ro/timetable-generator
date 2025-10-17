@@ -1,51 +1,41 @@
-using GerarHorarioService.Extensions;
-using Ladesa.TimetableGenerator.Service.Features.Health.Services;
-using Ladesa.TimetableGenerator.Service.Workers;
+using Ladesa.TimetableGenerator.Service.Features.Health;
+using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.Swagger;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-// Configuração de ambiente
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-};
+#region Configuração de ambiente
 
-// --- SWAGGER ---
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo()
-    {
-        Title = "Timetable Generator API",
-        Version = "v1",
-        Description = "API para geração de horários e serviços relacionados"
-    });
-});
+if (builder.Environment.IsDevelopment()) builder.Configuration.AddUserSecrets<Program>();
 
+#endregion
 
-// --- DEPENDÊNCIAS ---
-builder.Services.AddSingleton<RabbitMqHelpers>();
-builder.Services.AddHostedService<ListenWorker>();
-builder.Services.AddSingleton<IHealthService, HealthService>();
+#region Registro de módulos e serviços
 
-// --- CONTROLLERS ---
+builder.Services.AddSwaggerModule();
+builder.Services.AddHealthModule();
+builder.Services.AddTimetableGeneratorModule();
+
+#endregion
+
+#region Controllers
+
 builder.Services.AddControllers();
+
+#endregion
 
 var app = builder.Build();
 
-app.UseSwagger();
+#region Middlewares
 
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Timetable Generator API v1");
-    options.RoutePrefix = "api/v1/docs/swagger";
-});
+app.UseAppSwagger();
 
+#endregion
 
-// --- ROTAS ---
+#region Rotas
+
 app.MapControllers();
+
+#endregion
 
 app.Run();

@@ -1,6 +1,6 @@
 namespace Ladesa.TimetableGenerator.Service.Features.Health.Services;
 
-public class HealthService: IHealthService
+public class HealthService : IHealthService
 {
     public object GetStatus()
     {
