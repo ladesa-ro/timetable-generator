@@ -1,6 +1,4 @@
-using System.Text.Json;
 using GerarHorarioService.Extensions;
-using GerarHorarioService.Helpers;
 using Ladesa.TimetableGenerator.Service.Workers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,15 +24,6 @@ app.MapGet(
         };
 
         return Results.Ok(status);
-    }
-);
-
-app.MapGet(
-    "/schemas",
-    async () =>
-    {
-        var schema = await DtoSchemaProvider.GetJsonSchema();
-        return Results.Json(JsonSerializer.Deserialize<object>(schema));
     }
 );
 
