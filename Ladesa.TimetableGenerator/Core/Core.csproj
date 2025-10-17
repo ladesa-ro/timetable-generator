@@ -10,17 +10,11 @@
         <PackageReference Include="Google.OrTools" Version="9.14.6206"/>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Timetable\Presentation\Mappers\"/>
-    </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Timetable\Domain\ValueObjects\SlotDeTempo.cs" />
     <Compile Remove="Timetable\Presentation\DTOs\Entities\GeradorPayloadDto.cs" />
     <Compile Remove="Timetable\Presentation\DTOs\Entities\HorarioGeradoDto.cs" />
     <Compile Remove="Timetable\Presentation\DTOs\ValueObjects\RegraDisponibilidadeDto.cs" />
     <Compile Remove="Timetable\Presentation\Mappers\Entities\HorarioGeradoAulaMapper.cs" />
     <Compile Remove="Timetable\Presentation\Mappers\ValueObjects\RegraDisponibilidadeMapper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Timetable\Presentation\DTOs\ValueObjects\" />
   </ItemGroup>
 </Project>
