@@ -1,17 +1,18 @@
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
 
 namespace Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 
 public class HelperDiarios
 {
-    public static Diario? FindById(GeradorPayload payload, string diarioId)
+    public static Diary? FindById(GeneratorPayload payload, string diarioId)
     {
-        var diario = payload.Diarios.ToList().Find(diario => diario.Id == diarioId);
+        var diario = payload.Diaries.ToList().Find(diario => diario.Id == diarioId);
         return diario;
     }
 
-    public static Diario FindByIdStrict(
-        GeradorPayload payload,
+    public static Diary FindByIdStrict(
+        GeneratorPayload payload,
         string diarioId,
         string? exceptionContext = null
     )
@@ -25,8 +26,8 @@ public class HelperDiarios
         return diario;
     }
 
-    public static IEnumerable<Diario> ByTurmaId(GeradorPayload payload, string turmaId)
+    public static IEnumerable<Diary> ByTurmaId(GeneratorPayload payload, string turmaId)
     {
-        return payload.Diarios.Where(diario => diario.TurmaId == turmaId).ToList();
+        return payload.Diaries.Where(diario => diario.GroupId == turmaId).ToList();
     }
 }

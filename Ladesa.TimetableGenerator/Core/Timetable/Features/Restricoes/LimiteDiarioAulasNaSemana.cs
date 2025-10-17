@@ -11,7 +11,7 @@ public class LimiteDiarioAulasNaSemana
 {
     public static void Aplicar(GerarHorarioContext contexto)
     {
-        foreach (var turma in contexto.Payload.Turmas)
+        foreach (var turma in contexto.Payload.Groups)
         foreach (var diario in HelperDiarios.ByTurmaId(contexto.Payload, turma.Id))
         {
             var propostasDoDiario =
@@ -20,11 +20,9 @@ public class LimiteDiarioAulasNaSemana
                 select propostaAula.ModelBoolVar;
 
             if (propostasDoDiario.Any())
-            {
                 contexto.Model.Add(
-                    LinearExpr.Sum(propostasDoDiario) <= diario.QuantidadeMaximaSemana
+                    LinearExpr.Sum(propostasDoDiario) <= diario.WeekLimit
                 );
-            }
         }
     }
 }

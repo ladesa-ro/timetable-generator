@@ -1,16 +1,13 @@
 using System.Text.Json;
 using GerarHorarioService.Extensions;
 using GerarHorarioService.Helpers;
-using GerarHorarioService.Workers;
+using Ladesa.TimetableGenerator.Service.Workers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
+if (builder.Environment.IsDevelopment()) builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddSingleton<RabbitMqHelpers>();
 builder.Services.AddHostedService<ListenWorker>();
@@ -25,7 +22,7 @@ app.MapGet(
         {
             status = "ok",
             service = "timetable-generator",
-            timestamp = DateTimeOffset.UtcNow,
+            timestamp = DateTimeOffset.UtcNow
         };
 
         return Results.Ok(status);

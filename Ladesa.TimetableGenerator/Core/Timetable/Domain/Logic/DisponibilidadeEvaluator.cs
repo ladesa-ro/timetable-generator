@@ -5,59 +5,59 @@ namespace Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
 public static class DisponibilidadeEvaluator
 {
     public static bool VerificarDisponibilidade(
-        IRegraDisponibilidade regra,
+        AvailabilityRule regra,
         DateOnly data,
-        SlotDeTempo slot
+        TimeSlot timeSlot
     )
     {
         switch (regra)
         {
-            case RegraDisponibilidadeAnd regraDisponibilidade:
+            case AvailabilityRuleCompound regraDisponibilidade:
             {
-                return regraDisponibilidade.Regras.All(r =>
-                    VerificarDisponibilidade(r, data, slot)
+                return regraDisponibilidade.Rules.All(r =>
+                    VerificarDisponibilidade(r, data, timeSlot)
                 );
             }
 
-            case RegraIndisponibilidadeDiaDaSemana regraDisponibilidade:
+            case AvailabilityRuleUnavailableWeekDay regraDisponibilidade:
             {
-                if (regraDisponibilidade.DiaDaSemana == data.DayOfWeek)
-                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                if (regraDisponibilidade.WeekDay == data.DayOfWeek)
+                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
 
                 return true;
             }
 
-            case RegraIndisponibilidadeDiasDaSemana regraDisponibilidade:
+            case AvailabilityRuleUnavailableWeekDays regraDisponibilidade:
             {
-                return regraDisponibilidade.DiasDaSemana.Contains(data.DayOfWeek)
-                    && SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                return regraDisponibilidade.WeekDays.Contains(data.DayOfWeek)
+                       && SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
             }
-            case RegraIndisponibilidadeHorario regraDisponibilidade:
+            case AvailabilityRuleUnavailableTimeSlot regraDisponibilidade:
             {
-                return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
             }
-            case RegraIndisponibilidadeDataEspecifica regraDisponibilidade:
+            case AvailabilityRuleUnavailableSpecificDate regraDisponibilidade:
             {
-                if (data == regraDisponibilidade.Data)
-                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                if (data == regraDisponibilidade.Date)
+                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
                 return true;
             }
-            case RegraIndisponibilidadePeriodoDatas regraDisponibilidade:
+            case AvailabilityRuleUnavailableDateRange regraDisponibilidade:
             {
-                if (data >= regraDisponibilidade.DataInicio && data <= regraDisponibilidade.DataFim)
-                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                if (data >= regraDisponibilidade.Start && data <= regraDisponibilidade.End)
+                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
                 return true;
             }
-            case RegraIndisponibilidadeDiaDoMes regraDisponibilidade:
+            case AvailabilityRuleUnavailableMonthDay regraDisponibilidade:
             {
-                if (data.Day == regraDisponibilidade.DiaDoMes)
-                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                if (data.Day == regraDisponibilidade.MonthDay)
+                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
                 return true;
             }
-            case RegraIndisponibilidadeMesesDoAno regraDisponibilidade:
+            case AvailabilityRuleUnavailableYearMonths regraDisponibilidade:
             {
-                if (regraDisponibilidade.Meses.Contains(data.Month))
-                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.Slot, slot);
+                if (regraDisponibilidade.Months.Contains(data.Month))
+                    return SlotDeTempoEvaluator.VerificarIntervalo(regraDisponibilidade.TimeSlot, timeSlot);
 
                 return true;
             }

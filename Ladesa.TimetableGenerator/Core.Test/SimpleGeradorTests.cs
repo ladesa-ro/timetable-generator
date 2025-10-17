@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Mappers;
 using Ladesa.TimetableGenerator.Features.Gerador;
@@ -10,41 +11,41 @@ namespace Ladesa.TimetableGenerator.Test;
 [TestFixture]
 public class SimpleGeradorTests
 {
-    private static GeradorPayload BuildBasicPayload(
+    private static GeneratorPayload BuildBasicPayload(
         DateOnly data,
-        SlotDeTempo[] slots,
-        IRegraDisponibilidade? turmaDisponibilidade = null,
-        IRegraDisponibilidade? profDisponibilidade = null,
+        TimeSlot[] slots,
+        AvailabilityRule? turmaDisponibilidade = null,
+        AvailabilityRule? profDisponibilidade = null,
         int maxAulasSemana = 1
     )
     {
-        var turma = new Turma(
-            Id: "turma:1",
-            RegraDisponibilidade: turmaDisponibilidade ?? new RegraDisponibilidadeAnd([])
+        var turma = new Group(
+            "turma:1",
+            turmaDisponibilidade ?? new AvailabilityRuleCompound([])
         );
 
-        var professor = new Professor(
-            Id: "prof:1",
-            RegraDisponibilidade: profDisponibilidade ?? new RegraDisponibilidadeAnd([])
+        var professor = new Teacher(
+            "prof:1",
+            profDisponibilidade ?? new AvailabilityRuleCompound([])
         );
 
-        var diario = new Diario(
-            Id: "diario:1",
-            TurmaId: turma.Id,
-            ProfessorId: professor.Id,
-            DisciplinaId: "disc:1",
-            QuantidadeMaximaSemana: maxAulasSemana,
-            QuantidadeMaximaTotal: 100
+        var diario = new Diary(
+            "diario:1",
+            turma.Id,
+            professor.Id,
+            "disc:1",
+            maxAulasSemana,
+            100
         );
 
-        return new GeradorPayload(
-            RequestId: Guid.NewGuid(),
-            DataInicial: data,
-            DataFinal: data,
-            Turmas: new[] { turma },
-            Professores: new[] { professor },
-            Diarios: new[] { diario },
-            HorariosDeAula: slots
+        return new GeneratorPayload(
+            Guid.NewGuid(),
+            data,
+            data,
+            new[] { turma },
+            new[] { professor },
+            new[] { diario },
+            slots
         );
     }
 
@@ -52,7 +53,7 @@ public class SimpleGeradorTests
     public void GerarHorario_SimpleCase_ReturnsOneAula()
     {
         var data = new DateOnly(2025, 1, 6); // Monday
-        var slot = new SlotDeTempo("08:00:00", "08:50:00");
+        var slot = new TimeSlot("08:00:00", "08:50:00");
         var payload = BuildBasicPayload(data, new[] { slot });
 
         Console.WriteLine(JsonSerializer.Serialize(GeradorPayloadMapper.ToDto(payload)));
@@ -62,19 +63,19 @@ public class SimpleGeradorTests
 
         Assert.That(primeiro, Is.Not.Null, "Deveria gerar ao menos um horário");
         Assert.That(
-            primeiro!.Aulas.Length,
+            primeiro!.Schedules.Length,
             Is.EqualTo(1),
             "Deveria agendar 1 aula no cenário básico"
         );
 
-        var aula = primeiro.Aulas[0];
+        var aula = primeiro.Schedules[0];
         Assert.Multiple(() =>
         {
-            Assert.That(aula.TurmaId, Is.EqualTo("turma:1"));
-            Assert.That(aula.DiarioId, Is.EqualTo("diario:1"));
-            Assert.That(aula.ProfessorId, Is.EqualTo("prof:1"));
-            Assert.That(aula.Data, Is.EqualTo(data));
-            Assert.That(aula.HorarioDeAula, Is.EqualTo(slot));
+            Assert.That(aula.GroupId, Is.EqualTo("turma:1"));
+            Assert.That(aula.DiaryId, Is.EqualTo("diario:1"));
+            Assert.That(aula.TeacherId, Is.EqualTo("prof:1"));
+            Assert.That(aula.Date, Is.EqualTo(data));
+            Assert.That(aula.TimeSlot, Is.EqualTo(slot));
         });
     }
 
@@ -82,15 +83,15 @@ public class SimpleGeradorTests
     public void GerarHorario_IndisponibilidadeDiaDaSemana_CurrentBehavior_AllowsAula()
     {
         var data = new DateOnly(2025, 1, 6); // Monday
-        var slot = new SlotDeTempo("08:00:00", "08:50:00");
+        var slot = new TimeSlot("08:00:00", "08:50:00");
 
-        var indisponibilidadeDiaTodo = new RegraDisponibilidadeAnd(
-            new IRegraDisponibilidade[]
+        var indisponibilidadeDiaTodo = new AvailabilityRuleCompound(
+            new AvailabilityRule[]
             {
-                new RegraIndisponibilidadeDiaDaSemana(
+                new AvailabilityRuleUnavailableWeekDay(
                     DayOfWeek.Monday,
-                    new SlotDeTempo("00:00:00", "23:59:59")
-                ),
+                    new TimeSlot("00:00:00", "23:59:59")
+                )
             }
         );
 
@@ -99,9 +100,9 @@ public class SimpleGeradorTests
         var payload = BuildBasicPayload(
             data,
             new[] { slot },
-            turmaDisponibilidade: new RegraDisponibilidadeAnd(Array.Empty<IRegraDisponibilidade>()),
-            profDisponibilidade: indisponibilidadeDiaTodo,
-            maxAulasSemana: 1
+            new AvailabilityRuleCompound(Array.Empty<AvailabilityRule>()),
+            indisponibilidadeDiaTodo,
+            1
         );
 
         var horarios = Gerador.GerarHorario(payload);
@@ -109,7 +110,7 @@ public class SimpleGeradorTests
 
         Assert.That(primeiro, Is.Not.Null, "Deveria gerar um horário");
         Assert.That(
-            primeiro!.Aulas.Length,
+            primeiro!.Schedules.Length,
             Is.EqualTo(1),
             "Comportamento atual permite agendamento dentro da janela marcada como 'indisponível'"
         );

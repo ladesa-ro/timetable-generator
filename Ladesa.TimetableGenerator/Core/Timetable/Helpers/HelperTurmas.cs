@@ -1,17 +1,18 @@
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
 
 namespace Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 
 public class HelperTurmas
 {
-    public static Turma? FindById(GeradorPayload payload, string turmaId)
+    public static Group? FindById(GeneratorPayload payload, string turmaId)
     {
-        var turma = payload.Turmas.ToList().Find(turma => turma.Id == turmaId);
+        var turma = payload.Groups.ToList().Find(turma => turma.Id == turmaId);
         return turma;
     }
 
-    public static Turma FindByIdStrict(
-        GeradorPayload payload,
+    public static Group FindByIdStrict(
+        GeneratorPayload payload,
         string turmaId,
         string? exceptionContext = null
     )

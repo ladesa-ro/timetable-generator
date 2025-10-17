@@ -5,13 +5,13 @@ namespace Ladesa.TimetableGenerator.Features.Gerador;
 
 public class GeradorSolutionCallback : CpSolverSolutionCallback
 {
-    public GeradorSolutionCallback(GerarHorarioContext contexto, Action<HorarioGerado> action)
+    public GeradorSolutionCallback(GerarHorarioContext contexto, Action<GeneratedTimetable> action)
     {
         Contexto = contexto;
         Action = action;
     }
 
-    public Action<HorarioGerado> Action { get; }
+    public Action<GeneratedTimetable> Action { get; }
     public GerarHorarioContext Contexto { get; init; }
 
     public override void OnSolutionCallback()
@@ -19,21 +19,21 @@ public class GeradorSolutionCallback : CpSolverSolutionCallback
         var propostasAtivas =
             from propostaAula in Contexto.TodasAsPropostasDeAula
             where BooleanValue(propostaAula.ModelBoolVar)
-            select new HorarioGeradoAula(
+            select new GeneratedTimetableLesson(
                 propostaAula.TurmaId,
                 propostaAula.DiarioId,
                 propostaAula.ProfessorId,
                 propostaAula.Data,
-                propostaAula.SlotDeTempo
+                propostaAula.TimeSlot
             );
 
         var scoreValue = (int)ObjectiveValue();
 
-        var horarioGerado = new HorarioGerado(
+        var horarioGerado = new GeneratedTimetable(
             Contexto.Payload.RequestId,
-            Contexto.Payload.DataInicial,
-            Contexto.Payload.DataFinal,
-            Contexto.Payload.HorariosDeAula,
+            Contexto.Payload.DateStart,
+            Contexto.Payload.DateEnd,
+            Contexto.Payload.TimeSlots,
             propostasAtivas.ToArray(),
             scoreValue
         );

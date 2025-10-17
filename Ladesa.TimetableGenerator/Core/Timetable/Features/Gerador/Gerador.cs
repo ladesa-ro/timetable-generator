@@ -3,6 +3,7 @@ using Ladesa.TimetableGenerator.Core.Features.Payload.Helpers;
 using Ladesa.TimetableGenerator.Core.Restricoes;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
 using Ladesa.TimetableGenerator.Core.Timetable.Domain.Logic;
+using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Features.Gerador;
@@ -13,7 +14,7 @@ using CombinacaoAula = (
     string TurmaId,
     string DiarioId,
     string ProfessorId
-);
+    );
 
 public class Gerador
 {
@@ -22,16 +23,16 @@ public class Gerador
     ///     sem respeitar nenhum critério.
     /// </summary>
     public static IEnumerable<CombinacaoAula> GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(
-        GeradorPayload payload
+        GeneratorPayload payload
     )
     {
         foreach (var data in HelperDatas.Datas(payload))
             for (
                 var intervaloIndex = 0;
-                intervaloIndex < payload.HorariosDeAula.Length;
+                intervaloIndex < payload.TimeSlots.Length;
                 intervaloIndex++
             )
-                foreach (var turma in payload.Turmas)
+                foreach (var turma in payload.Groups)
                 foreach (var diario in HelperDiarios.ByTurmaId(payload, turma.Id))
                 {
                     var combinacaoAula = new CombinacaoAula(
@@ -39,7 +40,7 @@ public class Gerador
                         intervaloIndex,
                         turma.Id,
                         diario.Id,
-                        diario.ProfessorId
+                        diario.TeacherId
                     );
 
                     yield return combinacaoAula;
@@ -51,7 +52,7 @@ public class Gerador
     ///     respeitando as disponibilidades da turma e disponibilidades do professor.
     /// </summary>
     public static IEnumerable<CombinacaoAula> GerarCombinacoesComDisponibilidade(
-        GeradorPayload payload
+        GeneratorPayload payload
     )
     {
         var combinacoes = GerarTodasAsCombinacoesPossiveisInclusiveIndisponiveis(payload);
@@ -67,12 +68,12 @@ public class Gerador
             var turma = HelperTurmas.FindByIdStrict(payload, combinacao.TurmaId);
             var diario = HelperDiarios.FindByIdStrict(payload, combinacao.DiarioId);
 
-            var professor = HelperProfessores.FindByIdStrict(payload, diario.ProfessorId)!;
+            var professor = HelperProfessores.FindByIdStrict(payload, diario.TeacherId)!;
 
             // =====================================================================================
 
             var disponivelParaTurma = DisponibilidadeEvaluator.VerificarDisponibilidade(
-                turma.RegraDisponibilidade,
+                turma.AvailabilityRule,
                 combinacao.Data,
                 intervaloDeTempo
             );
@@ -80,7 +81,7 @@ public class Gerador
             // ===================================
 
             var disponivelParaProfessor = DisponibilidadeEvaluator.VerificarDisponibilidade(
-                professor.RegraDisponibilidade,
+                professor.Availability,
                 combinacao.Data,
                 intervaloDeTempo
             );
@@ -100,7 +101,7 @@ public class Gerador
     ///     Ponto de partida que inicia, restringe e otimiza o modelo para
     ///     solucionar o problema da geração de horário.
     /// </summary>
-    public static GerarHorarioContext PrepararModelComRestricoes(GeradorPayload payload)
+    public static GerarHorarioContext PrepararModelComRestricoes(GeneratorPayload payload)
     {
         // ====================================================================
         var contexto = new GerarHorarioContext(payload);
@@ -155,7 +156,7 @@ public class Gerador
         return contexto;
     }
 
-    public static IEnumerable<HorarioGerado> GerarHorario(GeradorPayload payload)
+    public static IEnumerable<GeneratedTimetable> GerarHorario(GeneratorPayload payload)
     {
         // CRIA UM MODELO COM AS RESTRIÇÕES VINDAS DAS OPÇÕES
         var contexto = PrepararModelComRestricoes(payload);
@@ -165,7 +166,7 @@ public class Gerador
         // Gatilho para quando "um horário foi gerado".
         var tickGenerated = new AutoResetEvent(false);
 
-        HorarioGerado? horarioGerado = null;
+        GeneratedTimetable? horarioGerado = null;
 
         // thread de solução de horário para essa requisição
         var solutionGeneratorThread = new Thread(() =>
@@ -232,14 +233,9 @@ public class Gerador
         var qualidade = LinearExpr.NewBuilder();
 
         foreach (var propostaDeAula in contexto.TodasAsPropostasDeAula)
-        {
             qualidade.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
-        }
 
-        if (limiteScore != null)
-        {
-            contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
-        }
+        if (limiteScore != null) contexto.Model.Add(qualidade <= contexto.Model.NewConstant((long)limiteScore));
         ;
 
         contexto.Model.Maximize(qualidade);

@@ -10,7 +10,7 @@ public class PropostaDeAula(
     string professorId,
     DateOnly data,
     int intervaloIndex,
-    SlotDeTempo slotDeTempo,
+    TimeSlot timeSlot,
     BoolVar? modelBoolVar = null
 )
 {
@@ -23,7 +23,7 @@ public class PropostaDeAula(
     public DateOnly Data { get; set; } = data;
     public int IntervaloIndex { get; set; } = intervaloIndex;
 
-    public SlotDeTempo SlotDeTempo { get; set; } = slotDeTempo;
+    public TimeSlot TimeSlot { get; set; } = timeSlot;
 
     private BoolVar? CreatedModelBoolVar { get; set; } = modelBoolVar;
 
@@ -40,7 +40,7 @@ public class PropostaDeAula(
                         $"dia_{Data}",
                         $"intervalo_{IntervaloIndex}",
                         $"diario_{DiarioId}",
-                        $"turma_{TurmaId}",
+                        $"turma_{TurmaId}"
                     }
                 );
 

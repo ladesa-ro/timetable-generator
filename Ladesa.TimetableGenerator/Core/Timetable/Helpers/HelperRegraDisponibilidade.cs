@@ -10,15 +10,15 @@ public class HelperRegraDisponibilidade
     ///     pode ocorrer num conjunto de disponibilidades.
     /// </summary>
     public static bool Execute(
-        RegraDisponibilidadeAnd regraDisponibilidadeAndAnd,
+        AvailabilityRuleCompound availabilityRuleCompoundCompound,
         DateOnly data,
-        SlotDeTempo slotDeTempo
+        TimeSlot timeSlot
     )
     {
         return DisponibilidadeEvaluator.VerificarDisponibilidade(
-            regraDisponibilidadeAndAnd,
+            availabilityRuleCompoundCompound,
             data,
-            slotDeTempo
+            timeSlot
         );
     }
 }

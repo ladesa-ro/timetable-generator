@@ -1,14 +1,12 @@
 using System.Text;
-using System.Text.Json;
 using GerarHorarioService.Extensions;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation.DTOs;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation.JsonSerialization;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Mappers;
 using Ladesa.TimetableGenerator.Features.Gerador;
+using Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Entities;
+using Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Messages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace GerarHorarioService.Workers;
+namespace Ladesa.TimetableGenerator.Service.Workers;
 
 public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMqHelpers)
     : BackgroundService
@@ -104,7 +102,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
         try
         {
             GeradorPayloadDto? payloadDto = null;
-            string requestIdStr = string.Empty;
+            var requestIdStr = string.Empty;
             try
             {
                 payloadDto = GeradorPayloadSerializer.ToDto(message);
@@ -125,13 +123,13 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     {
                         type = "parse_error",
                         details = ex.Message,
-                        timestamp = DateTimeOffset.UtcNow,
-                    },
+                        timestamp = DateTimeOffset.UtcNow
+                    }
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
                 logger.LogError(ex, "Erro ao fazer parse do payload");
-                await _channel.BasicAckAsync(deliveryTag, multiple: false);
+                await _channel.BasicAckAsync(deliveryTag, false);
                 return;
             }
 
@@ -152,12 +150,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     {
                         type = "validation_error",
                         details = "dto nulo",
-                        timestamp = DateTimeOffset.UtcNow,
-                    },
+                        timestamp = DateTimeOffset.UtcNow
+                    }
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
                 logger.LogError("Payload inválido: GeradorPayloadDto nulo.");
-                await _channel.BasicAckAsync(deliveryTag, multiple: false);
+                await _channel.BasicAckAsync(deliveryTag, false);
                 return;
             }
 
@@ -179,21 +177,21 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     {
                         type = "validation_error",
                         details = validationErrors,
-                        timestamp = DateTimeOffset.UtcNow,
-                    },
+                        timestamp = DateTimeOffset.UtcNow
+                    }
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
-                await _channel.BasicAckAsync(deliveryTag, multiple: false);
+                await _channel.BasicAckAsync(deliveryTag, false);
                 return;
             }
 
             var processingTask = Task.Run(
                 () =>
                 {
-                    var payload = GeradorPayloadMapper.ToDomain(payloadDto);
+                    var payload = GeneratorPayloadMapper.ToDomain(payloadDto);
                     var horariosGerados = Gerador.GerarHorario(payload);
                     var horariosGeradosDto = horariosGerados
-                        .Select(HorarioGeradoMapper.ToDto)
+                        .Select(GeneratedTimetableMapper.ToDto)
                         .ToArray();
                     return horariosGeradosDto;
                 },
@@ -219,12 +217,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     {
                         type = "timeout",
                         details = "10min excedidos",
-                        timestamp = DateTimeOffset.UtcNow,
-                    },
+                        timestamp = DateTimeOffset.UtcNow
+                    }
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
-                await _channel.BasicNackAsync(deliveryTag, multiple: false, requeue: true);
+                await _channel.BasicNackAsync(deliveryTag, false, true);
                 return;
             }
 
@@ -245,13 +243,13 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                     {
                         type = "generation_error",
                         details = ex.Message,
-                        timestamp = DateTimeOffset.UtcNow,
-                    },
+                        timestamp = DateTimeOffset.UtcNow
+                    }
                 };
                 await PublishResponseEnvelopeAsync(failEnvelope);
 
                 logger.LogError(ex, "Erro ao gerar horário");
-                await _channel.BasicAckAsync(deliveryTag, multiple: false);
+                await _channel.BasicAckAsync(deliveryTag, false);
                 return;
             }
 
@@ -260,10 +258,10 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
             {
                 request_id = requestIdStr,
                 sucesso = true,
-                resultados = horariosGeradosDtoResult,
+                resultados = horariosGeradosDtoResult
             };
             await PublishResponseEnvelopeAsync(successEnvelope);
-            await _channel.BasicAckAsync(deliveryTag, multiple: false);
+            await _channel.BasicAckAsync(deliveryTag, false);
         }
         catch (OperationCanceledException)
         {
@@ -277,11 +275,11 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                 {
                     type = "timeout",
                     details = "cancellation token",
-                    timestamp = DateTimeOffset.UtcNow,
-                },
+                    timestamp = DateTimeOffset.UtcNow
+                }
             };
             await PublishResponseEnvelopeAsync(failEnvelope);
-            await _channel.BasicNackAsync(deliveryTag, multiple: false, requeue: true);
+            await _channel.BasicNackAsync(deliveryTag, false, true);
         }
         catch (Exception ex)
         {
@@ -296,12 +294,12 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
                 {
                     type = "unexpected_error",
                     details = ex.Message,
-                    timestamp = DateTimeOffset.UtcNow,
-                },
+                    timestamp = DateTimeOffset.UtcNow
+                }
             };
             await PublishResponseEnvelopeAsync(failEnvelope);
             logger.LogError(ex, "Erro inesperado ao processar mensagem");
-            await _channel.BasicAckAsync(deliveryTag, multiple: false);
+            await _channel.BasicAckAsync(deliveryTag, false);
         }
     }
 
@@ -312,7 +310,7 @@ public class ListenWorker(ILogger<ListenWorker> logger, RabbitMqHelpers rabbitMq
             type,
             details,
             timestamp = DateTimeOffset.UtcNow,
-            original = originalMessage,
+            original = originalMessage
         };
         var json = BaseJsonSerializer<object>.ToJson(payload);
         var body = Encoding.UTF8.GetBytes(json);

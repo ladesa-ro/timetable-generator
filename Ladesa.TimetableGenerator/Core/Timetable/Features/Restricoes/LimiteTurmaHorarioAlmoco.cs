@@ -15,19 +15,20 @@ public class LimiteTurmaHorarioAlmoco
             from proposta in contexto.TodasAsPropostasDeAula
             where
                 SlotDeTempoEvaluator.VerificarIntervalo(
-                    new SlotDeTempo("11:30:00", "12:00:00"),
-                    proposta.SlotDeTempo.HorarioFim
+                    new TimeSlot("11:30:00", "12:00:00"),
+                    proposta.TimeSlot.End
                 )
                 || SlotDeTempoEvaluator.VerificarIntervalo(
-                    new SlotDeTempo("13:00:00", "13:30:00"),
-                    proposta.SlotDeTempo.HorarioInicio
+                    new TimeSlot("13:00:00", "13:30:00"),
+                    proposta.TimeSlot.Start
                 )
-            group proposta by new { proposta.Data, proposta.TurmaId } into variantes
+            group proposta by new { proposta.Data, proposta.TurmaId }
+            into variantes
             select new
             {
                 variantes.Key.Data,
                 variantes.Key.TurmaId,
-                Propostas = variantes.AsEnumerable(),
+                Propostas = variantes.AsEnumerable()
             };
 
         foreach (var grupo in grupos)
