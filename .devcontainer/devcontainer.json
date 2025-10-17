@@ -1,13 +1,23 @@
 {
-  "name": "Timetable Generator Devcontainer",
+  "name": "Timetable Generator DevContainer",
 
-  "dockerComposeFile": ["../docker-compose.yml"],
-
-  "service": "timetable-generator-service",
-  "workspaceFolder": "/app/Ladesa.TimetableGenerator",
-
-  "shutdownAction": "stopCompose",
+  "service": "timetable-generator",
   "remoteUser": "dev",
+  "workspaceFolder": "/app/",
+  "dockerComposeFile": [
+    "../docker-compose.devcontainer.yml"
+  ],
+  "postStartCommand": "clear; echo 'DevContainer pronto!'",
+  "shutdownAction": "stopCompose",
+
+  "remoteEnv": {
+  },
+
+  "forwardPorts": [
+    8080,
+    5672,
+    15672
+  ],
 
   "customizations": {
     "vscode": {
@@ -18,20 +28,9 @@
 
       "extensions": [
         "ms-dotnettools.csharp",
-        "esbenp.prettier-vscode",
-        "eamodio.gitlens",
-        "ms-azuretools.vscode-docker"
       ]
+    },
+    "jetbrains": {
     }
   },
-
-  "postStartCommand": "echo 'Devcontainer pronto! Entre no container com `podman compose exec timetable-generator-service bash` se precisar de shell.'",
-
-  "mounts": ["source=${localWorkspaceFolder},target=/app,z"],
-
-  "remoteEnv": {
-    "DOTNET_CLI_HOME": "/home/dev/.dotnet"
-  },
-
-  "forwardPorts": [8080, 5672, 15672]
 }

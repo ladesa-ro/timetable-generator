@@ -9,5 +9,5 @@ up:
 
 shell:
 	make up;
-	podman compose exec -u 1000 timetable-generator-service bash;
+	podman compose exec -u 1000 timetable-generator bash;
 

@@ -9,15 +9,11 @@ services:
       context: .
       dockerfile: Dockerfile
       target: devcontainer
-    command: bash -c 'echo "Container Iniciado!"; sleep infinity;'
+    command: bash -c 'sleep infinity;'
     working_dir: /app/
     userns_mode: keep-id:uid=1000,gid=1000
     env_file:
       - .env
-    volumes:
-      - .:/app:z
-    ports:
-      - 8080:8080
 
   message-broker:
     image: docker.io/rabbitmq:3.13-management-alpine
@@ -26,9 +22,6 @@ services:
       - .env
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
-    ports:
-      - 5672:5672 # Broker
-      - 15672:15672 # Management UI
 
 volumes:
   rabbitmq-data:
