@@ -3,10 +3,10 @@ set -e
 
 function generate_protos() {
   PROTO_SRC="./vendors/ladesa-ro/protobufs/protos/timetable-generator-v1"
-  OUT_DIR="./Ladesa.TimetableGenerator/Service/Features/TimetableGenerator/Infrastructure/Protos"
+  OUT_DIR="./Ladesa.TimetableGenerator.v1/Service/Features/TimetableGenerator/Infrastructure/Protos"
 
-  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.V1"
-  TARGET_NAMESPACE="Ladesa.TimetableGenerator.Service.Infrastructure.Protos"
+  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.v1.Protos"
+  TARGET_NAMESPACE="Ladesa.TimetableGenerator.v1.Service.Infrastructure.Protos"
 
   rm -rf "$OUT_DIR"
   mkdir -p "$OUT_DIR"
@@ -34,6 +34,7 @@ function sync_submodules() {
   echo "🔄 Sincronizando e atualizando submodules..."
   git submodule sync
   git submodule update --init --recursive
+  git submodule update --remote --merge
   echo "✅ Submodules sincronizados e atualizados."
 }
 
