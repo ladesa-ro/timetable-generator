@@ -1,7 +1,7 @@
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
+using Ladesa.TimetableGenerator.Core.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.ValueObjects;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.ValueObjects;
 
 public static class TimeSlotMapper
 {

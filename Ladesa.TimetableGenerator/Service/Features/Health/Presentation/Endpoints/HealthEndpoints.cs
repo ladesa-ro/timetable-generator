@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Service.Features.Health.Services;
+using Ladesa.TimetableGenerator.Service.Features.Health.Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 

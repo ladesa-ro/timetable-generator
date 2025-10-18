@@ -1,4 +1,4 @@
-namespace Ladesa.TimetableGenerator.Service.Features.Health.Services;
+namespace Ladesa.TimetableGenerator.Service.Features.Health.Application;
 
 public class HealthService : IHealthService
 {

@@ -1,12 +1,11 @@
-using System.Xml;
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.ValueObjects;
+using Ladesa.TimetableGenerator.Core.Domain.ValueObjects;
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.ValueObjects;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.ValueObjects;
 
 public static class AvailabilityMapper
 {
-    public static AvailabilityRule ToDomain(AvailabilityDto dto)
+    public static IAvailabilityRule ToDomain(AvailabilityDto dto)
     {
         switch (dto.RegraCase)
         {
@@ -81,7 +80,7 @@ public static class AvailabilityMapper
         }
     }
 
-    public static AvailabilityDto ToDto(AvailabilityRule domain)
+    public static AvailabilityDto ToDto(IAvailabilityRule domain)
     {
         switch (domain)
         {

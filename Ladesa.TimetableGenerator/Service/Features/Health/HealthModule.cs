@@ -1,5 +1,5 @@
+using Ladesa.TimetableGenerator.Service.Features.Health.Application;
 using Ladesa.TimetableGenerator.Service.Features.Health.Presentation.Endpoints;
-using Ladesa.TimetableGenerator.Service.Features.Health.Services;
 using Microsoft.AspNetCore.Builder;
 
 namespace Ladesa.TimetableGenerator.Service.Features.Health;

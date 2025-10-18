@@ -1,6 +1,7 @@
 using Ladesa.TimetableGenerator.Service.Features.Health;
 using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.RabbitMq;
 using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.Swagger;
+using Ladesa.TimetableGenerator.Service.Features.TimetableGenerator;
 using Microsoft.AspNetCore.Builder;
 
 namespace Ladesa.TimetableGenerator.Service.Features;

@@ -1,10 +1,10 @@
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
-using Ladesa.TimetableGenerator.Features.Gerador;
+using Ladesa.TimetableGenerator.Core.Application.DTOs;
+using Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
 using Ladesa.TimetableGenerator.Service.Features.Shared.Application.Ports;
-using Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Messages;
+using Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.Messages;
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Workers;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Application.Workers;
 
 public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueuePublisher queuePublisher) : BackgroundService
 {
@@ -21,10 +21,10 @@ public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueue
                     
                     var generatorPayload = GeneratorPayloadMapper.ToDomain(dto);
 
-                    var horariosIterable = Gerador.GerarHorario(generatorPayload);
+                    var horariosIterable = Generator.GenerateTimetables(generatorPayload);
                     var horarios = horariosIterable.Take(1).ToArray();
 
-                    var response = new GeneratorResponse(
+                    var response = new GenerateResponse(
                         Success: true,
                         Message: "Successfully generated timetable",
                         GeneratedTimetables: horarios,
@@ -47,7 +47,7 @@ public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueue
                 catch (Exception ex)
                 {
                     // Cria mensagem de erro para enviar de volta ou logar
-                    var errorResponse = new GeneratorResponse(
+                    var errorResponse = new GenerateResponse(
                         Success: false,
                         Message: $"Erro ao processar a mensagem: {ex.Message}",
                         GeneratedTimetables: [],

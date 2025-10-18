@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.ValueObjects;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.ValueObjects;
 
 public static class WeekDayMapper
 {

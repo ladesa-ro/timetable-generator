@@ -1,7 +1,7 @@
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.Entities;
+using Ladesa.TimetableGenerator.Core.Domain.Entities;
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Entities;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.Entities;
 
 public class SubjectMapper
 {

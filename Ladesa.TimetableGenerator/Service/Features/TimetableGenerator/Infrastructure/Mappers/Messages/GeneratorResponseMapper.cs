@@ -1,16 +1,14 @@
-using Ladesa.TimetableGenerator.Core.Timetable.Domain.Messages;
-using Ladesa.TimetableGenerator.Core.Timetable.Presentation.Mappers;
-using Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Entities;
-using Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.ValueObjects;
+using Ladesa.TimetableGenerator.Core.Application.DTOs;
+using Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.Entities;
 using Ladesa.TimetableGenerator.Service.Infrastructure.Protos;
 
-namespace Ladesa.TimetableGenerator.Service.Infrastructure.Mappers.Messages;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Infrastructure.Mappers.Messages;
 
 public static class GeneratorResponseMapper
 {
-    public static GeneratorResponse ToDomain(GeneratorResponseDto dto)
+    public static GenerateResponse ToDomain(GeneratorResponseDto dto)
     {
-        return new GeneratorResponse(
+        return new GenerateResponse(
             dto.Success,
             dto.Message,
             dto.GeneratedTimetables.Select(GeneratedTimetableMapper.ToDomain).ToArray(),
@@ -18,7 +16,7 @@ public static class GeneratorResponseMapper
         );
     }
 
-    public static GeneratorResponseDto ToDto(GeneratorResponse domain)
+    public static GeneratorResponseDto ToDto(GenerateResponse domain)
     {
         var dto = new GeneratorResponseDto
         {

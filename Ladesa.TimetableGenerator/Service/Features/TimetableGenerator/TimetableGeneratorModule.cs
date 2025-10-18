@@ -1,6 +1,6 @@
-using Ladesa.TimetableGenerator.Service.Workers;
+using Ladesa.TimetableGenerator.Service.Features.TimetableGenerator.Application.Workers;
 
-namespace Ladesa.TimetableGenerator.Service.Features.Health;
+namespace Ladesa.TimetableGenerator.Service.Features.TimetableGenerator;
 
 public static class TimetableGeneratorModule
 {
