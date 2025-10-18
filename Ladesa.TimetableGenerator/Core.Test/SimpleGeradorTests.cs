@@ -1,6 +1,6 @@
 using System.Text.Json;
+using Ladesa.TimetableGenerator.Core.Application.DTOs;
 using Ladesa.TimetableGenerator.Core.Domain.Entities;
-using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequest;
 using Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
 using Ladesa.TimetableGenerator.Core.Domain.ValueObjects;
 
@@ -37,7 +37,6 @@ public class SimpleGeradorTests
         );
 
         return new GenerateRequest(
-            Guid.NewGuid(),
             date,
             date,
             [group],

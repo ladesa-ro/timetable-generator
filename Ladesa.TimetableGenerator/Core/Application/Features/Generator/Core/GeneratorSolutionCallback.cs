@@ -31,9 +31,9 @@ public class GeneratorSolutionCallback(
             GenerationContext.GenerateRequest.TimeSlots,
             timetableGridSchedules.ToArray()
         );
-        
+
         var scoreValue = (int)ObjectiveValue();
-        
+
 
         var generatedTimetable = new GeneratedTimetable(
             timetableGrid,

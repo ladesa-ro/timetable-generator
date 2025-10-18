@@ -4,5 +4,5 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 
 public interface IGeneratorConstraint
 {
-    public static abstract void Apply(GenerationContext context);
+    public static abstract void Apply(GenerationContext generationContext);
 }

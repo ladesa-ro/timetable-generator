@@ -5,7 +5,7 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     RESTRIÇÃO: Group - no more than one schedule at the same time.
 /// </summary>
-public class ConstraintGroupOneScheduleAtSameTime: IGeneratorConstraint
+public abstract class ConstraintGroupOneScheduleAtSameTime : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
@@ -31,7 +31,8 @@ public class ConstraintGroupOneScheduleAtSameTime: IGeneratorConstraint
             if (schedulesProposalsByDateGroupIdTimeSlot == null)
                 continue;
 
-            var proposalsBoolVars = schedulesProposalsByDateGroupIdTimeSlot.Proposals.Select(proposal => proposal.ModelBoolVar).ToArray();
+            var proposalsBoolVars = schedulesProposalsByDateGroupIdTimeSlot.Proposals
+                .Select(proposal => proposal.ModelBoolVar).ToArray();
 
             if (proposalsBoolVars.Length == 0) continue;
             generationContext.CpModel.AddAtMostOne(proposalsBoolVars);

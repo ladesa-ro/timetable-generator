@@ -1,5 +1,5 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequest;
+using Ladesa.TimetableGenerator.Core.Application.DTOs;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
@@ -16,9 +16,9 @@ public class GenerationContext
     public CpModel CpModel { get; } = new();
     public List<GenerationContextScheduleProposal> AllProposals { get; } = [];
 
-    public LinearExpr? Score { get; set; }
+    public LinearExpr? Score { set; get; }
 
-    public void InitializeProposals()
+    private void InitializeProposals()
     {
         AllProposals.Clear();
 
@@ -36,6 +36,7 @@ public class GenerationContext
             AllProposals.Add(propostaDeAula);
         }
 
-        Console.WriteLine($"--> Quantidade máxima de possíveis combinações de aula: {AllProposals.Count} (desconsiderando restrições ou disponibilidades)");
+        Console.WriteLine(
+            $"--> Quantidade máxima de possíveis combinações de aula: {AllProposals.Count} (desconsiderando restrições ou disponibilidades)");
     }
 }

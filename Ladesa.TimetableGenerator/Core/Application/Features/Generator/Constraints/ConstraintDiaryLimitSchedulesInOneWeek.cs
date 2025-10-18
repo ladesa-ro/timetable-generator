@@ -1,5 +1,5 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequest;
+using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequestExtensions;
 using Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
 
 namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constraints;
@@ -7,7 +7,7 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     CONSTRAINT: Diary - limit how many schedules can be in one week.
 /// </summary>
-public class ConstraintDiaryLimitSchedulesInOneWeek: IGeneratorConstraint
+public abstract class ConstraintDiaryLimitSchedulesInOneWeek : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
@@ -18,11 +18,14 @@ public class ConstraintDiaryLimitSchedulesInOneWeek: IGeneratorConstraint
                 from scheduleProposal in generationContext.AllProposals
                 where scheduleProposal.DiaryId == diary.Id
                 select scheduleProposal.ModelBoolVar;
+            
+            var diaryProposalsArray = diaryProposals.ToArray();
 
-            if (diaryProposals.Any())
-                generationContext.CpModel.Add(
-                    LinearExpr.Sum(diaryProposals) <= diary.WeekLimit
-                );
+            if (diaryProposalsArray.Length == 0) continue;
+            
+            generationContext.CpModel.Add(
+                LinearExpr.Sum(diaryProposalsArray) <= diary.WeekLimit
+            );
         }
     }
 }

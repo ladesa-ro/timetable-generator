@@ -45,6 +45,5 @@ public class GenerationContextScheduleProposal(
             CreatedModelBoolVar = GenerationContext.CpModel.NewBoolVar(propostaLabel);
             return CreatedModelBoolVar!;
         }
-        set => CreatedModelBoolVar = value;
     }
 }

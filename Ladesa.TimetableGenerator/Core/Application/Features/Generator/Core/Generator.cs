@@ -1,26 +1,26 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Core.Application.DTOs;
-using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequest;
+using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequestExtensions;
 using Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constraints;
 using Ladesa.TimetableGenerator.Core.Domain.Entities;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
 
-public class Generator
+public static class Generator
 {
     /// <summary>
     ///     UTILITÁRIO: Gera uma lista com todas as combinações de aula possíveis
     ///     sem respeitar nenhum critério.
     /// </summary>
     private static IEnumerable<GenerationScheduleCombination> GetAllPossibleCombinations(
-        GenerateRequest payload
+        GenerateRequest request
     )
     {
-        var allPossibleCombinations = from data in payload.GetDates()
-            from timeSlot in payload.TimeSlots
-            from @group in payload.Groups
-            from diary in payload.DiaryFindByGroupId(@group.Id)
+        var allPossibleCombinations = from data in request.GetDates()
+            from timeSlot in request.TimeSlots
+            from @group in request.Groups
+            from diary in request.DiaryFindByGroupId(@group.Id)
             select new GenerationScheduleCombination(
                 data,
                 timeSlot,
@@ -28,7 +28,7 @@ public class Generator
                 diary.Id,
                 diary.TeacherId
             );
-            
+
         return allPossibleCombinations;
     }
 
@@ -45,7 +45,7 @@ public class Generator
         foreach (var scheduleCombination in scheduleCombinations)
         {
             var timeSlot = scheduleCombination.TimeSlot;
-            
+
             // =====================================================================================
             var group = generateRequest.GroupFindByIdStrict(scheduleCombination.GroupId);
             var availableForGroup = group.AvailabilityRule.Verify(
@@ -71,9 +71,9 @@ public class Generator
     ///     Ponto de partida que inicia, restringe e otimiza o modelo para
     ///     solucionar o problema da geração de horário.
     /// </summary>
-    private static GenerationContext CreateContextWithRestrictionsApplied(GenerateRequest payload)
+    private static GenerationContext CreateContextWithRestrictionsApplied(GenerateRequest request)
     {
-        var generationContext = new GenerationContext(payload);
+        var generationContext = new GenerationContext(request);
 
         ConstraintGroupOneScheduleAtSameTime.Apply(generationContext);
         ConstraintTeacherOneScheduleAtSameTime.Apply(generationContext);
@@ -91,9 +91,9 @@ public class Generator
         return generationContext;
     }
 
-    public static IEnumerable<GeneratedTimetable> GenerateTimetables(GenerateRequest payload)
+    public static IEnumerable<GeneratedTimetable> GenerateTimetables(GenerateRequest request)
     {
-        var generationContext = CreateContextWithRestrictionsApplied(payload);
+        var generationContext = CreateContextWithRestrictionsApplied(request);
 
         // ==============================================================
 
@@ -148,8 +148,6 @@ public class Generator
             if (generatedTimetable != null)
                 yield return generatedTimetable;
         } while (generatedTimetable != null);
-
-        yield break;
     }
 
     /// <summary>
@@ -158,7 +156,7 @@ public class Generator
     ///     as preferências de agrupamento da turma e preferências
     ///     de cada professor.
     /// </summary>
-    public static void OptimizeResult(
+    private static void OptimizeResult(
         GenerationContext contexto,
         long? limiteScore = null
     )

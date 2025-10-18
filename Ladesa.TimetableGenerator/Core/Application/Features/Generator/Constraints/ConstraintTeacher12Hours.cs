@@ -1,3 +1,4 @@
+using Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequestExtensions;
 using Ladesa.TimetableGenerator.Core.Application.Features.Generator.Core;
 using Ladesa.TimetableGenerator.Core.Domain.ValueObjects;
 
@@ -6,19 +7,18 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     CONSTRAINT: Teacher - no more than 12 hours in a day.
 /// </summary>
-public class ConstraintTeacher12Hours: IGeneratorConstraint
+public abstract class ConstraintTeacher12Hours : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
         var timeSpan12 = new TimeSpan(12, 0, 0);
-        
+
         foreach (var date in generationContext.GenerateRequest.GetDates())
         {
             var nextDay = date.AddDays(1);
-            
+
             foreach (var teacher in generationContext.GenerateRequest.Teachers)
             {
-            
                 var nightProposals =
                     from scheduleProposal in generationContext.AllProposals
                     where
@@ -26,7 +26,7 @@ public class ConstraintTeacher12Hours: IGeneratorConstraint
                         && scheduleProposal.Date == date
                         && scheduleProposal.TimeSlot.Verify(new TimeSlot("18:00:00", "23:59:59"))
                     select scheduleProposal;
-            
+
                 foreach (var nightProposal in nightProposals)
                 {
                     var timeSpanAfter12 = TimeSpan.Parse(nightProposal.TimeSlot.End).Add(timeSpan12);

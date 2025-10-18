@@ -7,7 +7,7 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     CONSTRAINT: Teacher - no opposite turns on the same day.
 /// </summary>
-public class ConstraintTeacherNoOppositeTurns: IGeneratorConstraint
+public abstract class ConstraintTeacherNoOppositeTurns : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
@@ -15,7 +15,7 @@ public class ConstraintTeacherNoOppositeTurns: IGeneratorConstraint
             from scheduleProposal in generationContext.AllProposals
             group scheduleProposal by new
             {
-                scheduleProposal.TeacherId, 
+                scheduleProposal.TeacherId,
                 scheduleProposal.Date
             }
             into schedulesProposalsByTeacherIdDate
@@ -89,21 +89,22 @@ public class ConstraintTeacherNoOppositeTurns: IGeneratorConstraint
                 { 0, 1, 1 } //tarde e noite
             };
 
-            var prefix = $"{schedulesProposalsByTeacherIdDate.TeacherId}_{schedulesProposalsByTeacherIdDate.Date.ToString()}";
+            var prefix =
+                $"{schedulesProposalsByTeacherIdDate.TeacherId}_{schedulesProposalsByTeacherIdDate.Date.ToString()}";
 
             var countMorning = generationContext.CpModel.NewIntVar(
                 0,
-                morningProposals.Count(),
+                morningProposals.Count,
                 $"{prefix}_Morning_QuantidadeAtivos"
             );
             var countAfternoon = generationContext.CpModel.NewIntVar(
                 0,
-                afternoonProposals.Count(),
+                afternoonProposals.Count,
                 $"{prefix}_Afternoon_QuantidadeAtivos"
             );
             var countNight = generationContext.CpModel.NewIntVar(
                 0,
-                nightProposals.Count(),
+                nightProposals.Count,
                 $"{prefix}_Night_QuantidadeAtivos"
             );
 

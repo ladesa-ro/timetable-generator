@@ -6,7 +6,7 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     CONSTRAINT: Teacher - no schedules in lunchtime - at least 01:30
 /// </summary>
-public class ConstraintTeacherLunch: IGeneratorConstraint
+public abstract class ConstraintTeacherLunch : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
@@ -24,7 +24,7 @@ public class ConstraintTeacherLunch: IGeneratorConstraint
                 )
             group scheduleProposal by new
             {
-                scheduleProposal.Date, 
+                scheduleProposal.Date,
                 scheduleProposal.TeacherId
             }
             into groupedScheduleProposalsByDateAndTeacher
@@ -40,10 +40,11 @@ public class ConstraintTeacherLunch: IGeneratorConstraint
             if (proposalsByDateAndTeacher == null)
                 continue;
 
-            var proposalsBoolVars = proposalsByDateAndTeacher.Proposals.Select(proposal => proposal.ModelBoolVar).ToArray();
+            var proposalsBoolVars =
+                proposalsByDateAndTeacher.Proposals.Select(proposal => proposal.ModelBoolVar).ToArray();
 
             if (proposalsBoolVars.Length == 0) continue;
-            
+
             generationContext.CpModel.AddAtMostOne(proposalsBoolVars);
         }
     }

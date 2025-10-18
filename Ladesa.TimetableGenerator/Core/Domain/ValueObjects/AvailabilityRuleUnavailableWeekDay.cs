@@ -7,10 +7,8 @@ public record AvailabilityRuleUnavailableWeekDay(DayOfWeek WeekDay, TimeSlot Tim
 
     public bool Verify(DateOnly date, TimeSlot timeSlot)
     {
-        if (WeekDay == date.DayOfWeek)
-        {
-            return !TimeSlot.Verify(timeSlot);
-        };
+        if (WeekDay == date.DayOfWeek) return !TimeSlot.Verify(timeSlot);
+        ;
 
         return true;
     }

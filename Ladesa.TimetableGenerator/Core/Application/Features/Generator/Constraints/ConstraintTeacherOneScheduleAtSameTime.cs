@@ -5,7 +5,7 @@ namespace Ladesa.TimetableGenerator.Core.Application.Features.Generator.Constrai
 /// <summary>
 ///     CONSTRAINT: Teacher - no more than one schedule at the same time.
 /// </summary>
-public class ConstraintTeacherOneScheduleAtSameTime: IGeneratorConstraint
+public abstract class ConstraintTeacherOneScheduleAtSameTime : IGeneratorConstraint
 {
     public static void Apply(GenerationContext generationContext)
     {
@@ -31,7 +31,8 @@ public class ConstraintTeacherOneScheduleAtSameTime: IGeneratorConstraint
             if (schedulesProposalsByDateTeacherIdTimeSlot == null)
                 continue;
 
-            var proposalsBoolVars = schedulesProposalsByDateTeacherIdTimeSlot.Proposals.Select(proposal => proposal.ModelBoolVar).ToArray();
+            var proposalsBoolVars = schedulesProposalsByDateTeacherIdTimeSlot.Proposals
+                .Select(proposal => proposal.ModelBoolVar).ToArray();
 
             if (proposalsBoolVars.Length == 0) continue;
             generationContext.CpModel.AddAtMostOne(proposalsBoolVars);
