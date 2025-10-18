@@ -16,7 +16,7 @@ builder.Services.Configure<RouteOptions>(options =>
 
 #endregion
 
-builder.Services.AddFeaturesModule();
+builder.Services.AddModuleFeatures();
 
 var app = builder.Build();
 app.UseAppFeatures();

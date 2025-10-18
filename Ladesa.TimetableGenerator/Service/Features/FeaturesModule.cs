@@ -1,4 +1,5 @@
 using Ladesa.TimetableGenerator.Service.Features.Health;
+using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.RabbitMq;
 using Ladesa.TimetableGenerator.Service.Features.Shared.Infrastructure.Swagger;
 using Microsoft.AspNetCore.Builder;
 
@@ -6,12 +7,14 @@ namespace Ladesa.TimetableGenerator.Service.Features;
 
 public static class FeaturesModule
 {
-    public static IServiceCollection AddFeaturesModule(this IServiceCollection services)
+    public static IServiceCollection AddModuleFeatures(this IServiceCollection services)
     {
+        services.AddModuleInfrastructureRabbitMq();
+
         services.AddSwaggerModule();
         services.AddHealthModule();
-        services.AddTimetableGeneratorModule();
-        
+        services.AddModuleTimetableGenerator();
+
         return services;
     }
 

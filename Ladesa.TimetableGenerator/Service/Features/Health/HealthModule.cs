@@ -11,7 +11,7 @@ public static class HealthModule
         services.AddScoped<IHealthService, HealthService>();
         return services;
     }
-    
+
     public static WebApplication UseAppHealth(this WebApplication app)
     {
         app.MapHealthEndpoints();

@@ -56,8 +56,6 @@ public class SimpleGeradorTests
         var slot = new TimeSlot("08:00:00", "08:50:00");
         var payload = BuildBasicPayload(data, new[] { slot });
 
-        Console.WriteLine(JsonSerializer.Serialize(GeradorPayloadMapper.ToDto(payload)));
-
         var horarios = Gerador.GerarHorario(payload);
         var primeiro = horarios.FirstOrDefault();
 

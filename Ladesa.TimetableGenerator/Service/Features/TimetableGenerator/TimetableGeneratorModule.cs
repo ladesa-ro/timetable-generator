@@ -1,13 +1,11 @@
-using GerarHorarioService.Extensions;
 using Ladesa.TimetableGenerator.Service.Workers;
 
 namespace Ladesa.TimetableGenerator.Service.Features.Health;
 
 public static class TimetableGeneratorModule
 {
-    public static IServiceCollection AddTimetableGeneratorModule(this IServiceCollection services)
+    public static IServiceCollection AddModuleTimetableGenerator(this IServiceCollection services)
     {
-        services.AddSingleton<RabbitMqHelpers>();
         services.AddHostedService<TimetableGeneratorListenWorker>();
 
         return services;
