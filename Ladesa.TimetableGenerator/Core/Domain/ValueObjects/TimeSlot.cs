@@ -20,4 +20,9 @@ public record TimeSlot(string Start, string End)
         return Verify(intervalo2.Start)
                && Verify(intervalo2.End);
     }
+
+    public override string ToString()
+    {
+        return $"[{Start} - {End}]";
+    }
 };

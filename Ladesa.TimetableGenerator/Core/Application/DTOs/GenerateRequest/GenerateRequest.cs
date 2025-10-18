@@ -1,7 +1,7 @@
 using Ladesa.TimetableGenerator.Core.Domain.Entities;
 using Ladesa.TimetableGenerator.Core.Domain.ValueObjects;
 
-namespace Ladesa.TimetableGenerator.Core.Application.DTOs;
+namespace Ladesa.TimetableGenerator.Core.Application.DTOs.GenerateRequest;
 
 public record GenerateRequest(
     Guid RequestId,
