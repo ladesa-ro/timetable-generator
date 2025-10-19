@@ -3,10 +3,10 @@ set -e
 
 function generate_protos() {
   PROTO_SRC="./vendors/ladesa-ro/protobufs/protos/timetable-generator-v1"
-  OUT_DIR="./Ladesa.TimetableGenerator/Service/Features/TimetableGenerator/Infrastructure/Protos"
+  OUT_DIR="./Ladesa.TimetableGenerator.v1/Protobuf/Generated"
 
-  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.V1"
-  TARGET_NAMESPACE="Ladesa.TimetableGenerator.Service.Infrastructure.Protos"
+  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.v1.Protobuf"
+  TARGET_NAMESPACE="Ladesa.TimetableGenerator.v1.Protobuf"
 
   rm -rf "$OUT_DIR"
   mkdir -p "$OUT_DIR"
@@ -15,10 +15,12 @@ function generate_protos() {
   protoc \
     --proto_path="$PROTO_SRC" \
     --csharp_out="$OUT_DIR" \
+    --csharp_opt=file_extension=.g.cs \
+    --csharp_opt=base_namespace="${GENERATED_NAMESPACE}" \
     $(find "$PROTO_SRC" -name "*.proto")
 
   echo "🔧 Ajustando namespaces nos arquivos gerados..."
-  find "$OUT_DIR" -type f -name "*.cs" | while read -r file; do
+  find "$OUT_DIR" -type f -name "*.g.cs" | while read -r file; do
     sed -i "s/$GENERATED_NAMESPACE/$TARGET_NAMESPACE/g" "$file"
   done
 
@@ -34,6 +36,7 @@ function sync_submodules() {
   echo "🔄 Sincronizando e atualizando submodules..."
   git submodule sync
   git submodule update --init --recursive
+  git submodule update --remote --merge
   echo "✅ Submodules sincronizados e atualizados."
 }
 
