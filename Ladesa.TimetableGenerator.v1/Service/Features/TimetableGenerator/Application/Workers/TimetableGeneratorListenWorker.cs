@@ -1,13 +1,14 @@
-using Ladesa.TimetableGenerator.v1.Core.Application.DTOs;
+using System.Text.Json;
+using Google.Protobuf;
 using Ladesa.TimetableGenerator.v1.Core.Application.Features.Generator.Core;
 using Ladesa.TimetableGenerator.v1.Service.Features.Shared.Application.Ports;
-using Ladesa.TimetableGenerator.v1.Service.Features.TimetableGenerator.Infrastructure.Mappers.Messages;
-using Ladesa.TimetableGenerator.v1.Service.Features.TimetableGenerator.Infrastructure.Protos;
-using Ladesa.TimetableGenerator.v1.Service.Infrastructure.Protos;
+using Ladesa.TimetableGenerator.v1.Service.Features.TimetableGenerator.Application.DTOs;
+using Ladesa.TimetableGenerator.v1.Service.Features.TimetableGenerator.Infrastructure.Protobuf.Mappers;
 
 namespace Ladesa.TimetableGenerator.v1.Service.Features.TimetableGenerator.Application.Workers;
 
-public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueuePublisher queuePublisher) : BackgroundService
+public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueuePublisher queuePublisher)
+    : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -15,58 +16,91 @@ public class TimetableGeneratorListenWorker(IQueueListener queueListener, IQueue
             "gerar_horario",
             async bytes =>
             {
+                Protobuf.ServiceGenerateRequestDto serviceGenerateRequestDtoProtobuf;
+
                 try
                 {
-                    var dto = GeneratorPayloadDto.Parser.ParseFrom(bytes);
-                    
-                    var generatorPayload = GeneratorPayloadMapper.ToDomain(dto);
-
-                    var horariosIterable = Generator.GenerateTimetables(generatorPayload);
-                    var horarios = horariosIterable.Take(1).ToArray();
-
-                    var response = new GenerateResponse(
-                        Success: true,
-                        Message: "Successfully generated timetable",
-                        GeneratedTimetables: horarios,
-                        Date: DateOnly.FromDateTime(DateTime.UtcNow)
-                    );
-
-                    var responseDto = GeneratorResponseMapper.ToDto(response);
-
-                    byte[] responseDtoBytes;
-                    using (var ms = new MemoryStream())
-                    {
-                        var cos = new Google.Protobuf.CodedOutputStream(ms, leaveOpen: true);
-                        responseDto.WriteTo(cos);
-                        cos.Flush();
-                        responseDtoBytes = ms.ToArray();
-                    }
-
-                    await queuePublisher.PublishAsync("horario_gerado", responseDtoBytes, cancellationToken: stoppingToken);
+                    serviceGenerateRequestDtoProtobuf = Protobuf.ServiceGenerateRequestDto.Parser.ParseFrom(bytes);
                 }
                 catch (Exception ex)
                 {
-                    // Cria mensagem de erro para enviar de volta ou logar
-                    var errorResponse = new GenerateResponse(
-                        Success: false,
-                        Message: $"Erro ao processar a mensagem: {ex.Message}",
-                        GeneratedTimetables: [],
-                        Date: DateOnly.FromDateTime(DateTime.UtcNow)
+                    var errorDto = new ServiceGenerateResponseResultErrorDto(
+                        "0001-parse-err",
+                        "Erro ao tentar parsear o request",
+                        JsonSerializer.Serialize(new { message = ex.Message, bytes = bytes })
                     );
 
-                    var errorDto = GeneratorResponseMapper.ToDto(errorResponse);
+                    // TODO: atualmente vai para a dead letter, porem pensar em puxar o request-id de algum header
+                    throw new Exception(JsonSerializer.Serialize(errorDto));
+                }
 
-                    byte[] errorBytes;
-                    using (var ms = new MemoryStream())
-                    {
-                        var cos = new Google.Protobuf.CodedOutputStream(ms, leaveOpen: true);
-                        errorDto.WriteTo(cos);
-                        cos.Flush();
-                        errorBytes = ms.ToArray();
-                    }
+                ServiceGenerateRequestDto serviceGenerateRequestDto;
 
-                    // Publica na fila de erro
-                    await queuePublisher.PublishAsync("horario_erro", errorBytes, cancellationToken: stoppingToken);
+                try
+                {
+                    serviceGenerateRequestDto =
+                        ServiceGenerateRequestMapper.ToServiceTimetableGeneratorDto(serviceGenerateRequestDtoProtobuf);
+                }
+                catch (Exception ex)
+                {
+                    var errorDto = new ServiceGenerateResponseResultErrorDto(
+                        "0002-map-err",
+                        "Erro ao tentar converter request para dto",
+                        JsonSerializer.Serialize(new { message = ex.Message, bytes = bytes })
+                    );
+
+                    // TODO: atualmente vai para a dead letter, porem pensar em puxar o request-id de algum header
+                    throw new Exception(JsonSerializer.Serialize(errorDto));
+                }
+
+                try
+                {
+                    var generatedTimetablesIterable =
+                        Generator.GenerateTimetables(serviceGenerateRequestDto.GenerateRequest);
+
+                    var generatedTimetables = generatedTimetablesIterable.Take(1).ToArray();
+
+                    var successDto = new ServiceGenerateResponseResultSuccessDto(
+                        serviceGenerateRequestDto.RequestId,
+                        serviceGenerateRequestDto.GenerateRequest,
+                        generatedTimetables
+                    );
+
+                    var responseDto = new ServiceGenerateResponseDto(
+                        serviceGenerateRequestDto.RequestId,
+                        true,
+                        successDto,
+                        null,
+                        DateOnly.FromDateTime(DateTime.Now)
+                    );
+
+                    var responseDtoProtobuf = ServiceGenerateResponseMapper.ToProtobufDto(responseDto);
+
+                    var responseDtoProtobufBytes = responseDtoProtobuf.ToByteArray();
+
+                    await queuePublisher.PublishAsync("horario_gerado", responseDtoProtobufBytes, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    var errorDto = new ServiceGenerateResponseResultErrorDto(
+                        "0003-gen-err",
+                        "Erro ao gerar horário",
+                        JsonSerializer.Serialize(new { message = ex.Message, bytes = bytes })
+                    );
+
+                    var responseDto = new ServiceGenerateResponseDto(
+                        serviceGenerateRequestDto.RequestId,
+                        false,
+                        null,
+                        errorDto,
+                        DateOnly.FromDateTime(DateTime.Now)
+                    );
+
+                    var responseDtoProtobuf = ServiceGenerateResponseMapper.ToProtobufDto(responseDto);
+
+                    var responseDtoProtobufBytes = responseDtoProtobuf.ToByteArray();
+
+                    await queuePublisher.PublishAsync("horario_gerado", responseDtoProtobufBytes, stoppingToken);
                 }
             },
             stoppingToken

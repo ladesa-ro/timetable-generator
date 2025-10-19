@@ -54,7 +54,7 @@ public static class Generator
             );
             // ===================================
             var teacher = generateRequest.TeacherFindByIdStrict(scheduleCombination.TeacherId);
-            var availableForTeacher = teacher.Availability.Verify(
+            var availableForTeacher = teacher.AvailabilityRule.Verify(
                 scheduleCombination.Date,
                 timeSlot
             );

@@ -72,21 +72,21 @@ public sealed class RabbitMqQueueListener : IQueueListener, IAsyncDisposable
             var dlxName = $"dlx.{_queueName}";
             var dlqName = $"dlq.{_queueName}";
 
-            await _channel.ExchangeDeclareAsync(exchange: dlxName, type: ExchangeType.Fanout,
+            await _channel.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout,
                 cancellationToken: cancellationToken);
 
             // 2. Declara a fila de dead-letter (onde as mensagens com erro vão parar)
-            await _channel.QueueDeclareAsync(queue: dlqName, durable: true, exclusive: false, autoDelete: false,
+            await _channel.QueueDeclareAsync(dlqName, true, false, false,
                 cancellationToken: cancellationToken);
 
             // 3. Associa (bind) a fila de dead-letter à exchange
-            await _channel.QueueBindAsync(queue: dlqName, exchange: dlxName, routingKey: "",
+            await _channel.QueueBindAsync(dlqName, dlxName, "",
                 cancellationToken: cancellationToken);
 
             // 4. Declara a fila principal com o argumento para usar a DLX
             var args = new Dictionary<string, object> { { "x-dead-letter-exchange", dlxName } };
-            await _channel.QueueDeclareAsync(queue: _queueName, durable: true, exclusive: false, autoDelete: false,
-                arguments: args, cancellationToken: cancellationToken);
+            await _channel.QueueDeclareAsync(_queueName, true, false, false,
+                args, cancellationToken: cancellationToken);
 
             // Define a qualidade de serviço (quantas mensagens por vez)
             await _channel.BasicQosAsync(0, 5, false, cancellationToken);
@@ -95,7 +95,7 @@ public sealed class RabbitMqQueueListener : IQueueListener, IAsyncDisposable
             consumer.ReceivedAsync += OnMessageReceivedAsync;
 
             // Inicia o consumo
-            _consumerTag = await _channel.BasicConsumeAsync(_queueName, autoAck: false, consumer, cancellationToken);
+            _consumerTag = await _channel.BasicConsumeAsync(_queueName, false, consumer, cancellationToken);
             _logger.LogInformation(
                 "Consumidor iniciado com sucesso na fila '{QueueName}' com o ConsumerTag '{ConsumerTag}'.", _queueName,
                 _consumerTag);
@@ -122,13 +122,13 @@ public sealed class RabbitMqQueueListener : IQueueListener, IAsyncDisposable
         {
             await _messageHandler(message);
             // Confirma o recebimento e processamento da mensagem
-            await _channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+            await _channel.BasicAckAsync(ea.DeliveryTag, false);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Erro ao processar mensagem da fila '{QueueName}'. Enviando para DLQ.", _queueName);
             // Rejeita a mensagem, o que a enviará para a DLX configurada
-            await _channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+            await _channel.BasicNackAsync(ea.DeliveryTag, false, false);
         }
     }
 

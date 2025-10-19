@@ -7,7 +7,6 @@
     <RootNamespace>Ladesa.TimetableGenerator.v1.Service</RootNamespace>
   </PropertyGroup>
   <ItemGroup Label="Dependencies">
-    <PackageReference Include="Google.Protobuf" Version="3.33.0"/>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8"/>
     <PackageReference Include="Polly" Version="8.6.4"/>
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2"/>
@@ -18,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Protobuf\Protobuf.csproj"/>
   </ItemGroup>
 </Project>

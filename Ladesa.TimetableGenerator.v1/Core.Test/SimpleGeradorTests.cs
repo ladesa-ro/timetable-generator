@@ -51,14 +51,14 @@ public class SimpleGeradorTests
     {
         var date = new DateOnly(2025, 1, 6); // Monday
         var timeSlot = new TimeSlot("08:00:00", "08:50:00");
-        
+
         var payload = BuildBasicPayload(date, [timeSlot]);
 
         var generatedTimetables = Generator.GenerateTimetables(payload);
         var generatedTimetable = generatedTimetables.FirstOrDefault();
 
         Assert.That(generatedTimetable, Is.Not.Null, "Deveria gerar ao menos um horário");
-        
+
         Assert.That(
             generatedTimetable!.Timetable.Schedules,
             Has.Length.EqualTo(1),
@@ -85,10 +85,10 @@ public class SimpleGeradorTests
         // Professor com regra de "indisponibilidade" na segunda o dia todo.
         // O comportamento atual do avaliador considera true quando o slot está dentro da janela configurada.
         var payload = BuildBasicPayload(
-            date: date,
-            timeSlots: [timeSlot],
-            groupAvailability: new AvailabilityRuleCompound([]),
-            teacherAvailability: new AvailabilityRuleCompound(
+            date,
+            [timeSlot],
+            new AvailabilityRuleCompound([]),
+            new AvailabilityRuleCompound(
                 [
                     new AvailabilityRuleUnavailableWeekDay(
                         DayOfWeek.Monday,
@@ -96,19 +96,19 @@ public class SimpleGeradorTests
                     )
                 ]
             ),
-            diaryWeekLimit: 1
+            1
         );
 
         var generatedTimetables = Generator.GenerateTimetables(payload);
         var generatedTimetable = generatedTimetables.FirstOrDefault();
-        
+
         Console.WriteLine(JsonSerializer.Serialize(
             generatedTimetable,
             new JsonSerializerOptions
             {
                 WriteIndented = true
             }));
-        
+
 
         Assert.That(generatedTimetable, Is.Not.Null, "Deveria gerar um horário");
         Assert.That(

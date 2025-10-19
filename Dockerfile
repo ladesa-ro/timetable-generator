@@ -97,18 +97,18 @@ FROM sdk-base AS build
 WORKDIR /src
 
 # Copia apenas os arquivos de projeto para melhor aproveitamento de cache
-COPY ./Ladesa.TimetableGenerator/Ladesa.TimetableGenerator.slnx ./Ladesa.TimetableGenerator/
-COPY ./Ladesa.TimetableGenerator/Core/*.csproj ./Ladesa.TimetableGenerator/Core/
-COPY ./Ladesa.TimetableGenerator/Core.Test/*.csproj ./Ladesa.TimetableGenerator/Core.Test/
-COPY ./Ladesa.TimetableGenerator/Service/*.csproj ./Ladesa.TimetableGenerator/Service/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx ./Ladesa.TimetableGenerator.v1/
+COPY ./Ladesa.TimetableGenerator.v1/Core/*.csproj ./Ladesa.TimetableGenerator.v1/Core/
+COPY ./Ladesa.TimetableGenerator.v1/Core.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Core.Test/
+COPY ./Ladesa.TimetableGenerator.v1/Service/*.csproj ./Ladesa.TimetableGenerator.v1/Service/
 
-RUN dotnet restore ./Ladesa.TimetableGenerator/Ladesa.TimetableGenerator.slnx
+RUN dotnet restore ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
 
 # Copia o código completo
 COPY . .
 
 # Build e publish (sem apphost para imagem menor)
-RUN dotnet publish ./Ladesa.TimetableGenerator/Service/Service.csproj \
+RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Service/Service.csproj \
   -c Release -o /app/publish /p:UseAppHost=false
 
 # =============================

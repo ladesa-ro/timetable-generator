@@ -18,11 +18,11 @@ public abstract class ConstraintDiaryLimitSchedulesInOneWeek : IGeneratorConstra
                 from scheduleProposal in generationContext.AllProposals
                 where scheduleProposal.DiaryId == diary.Id
                 select scheduleProposal.ModelBoolVar;
-            
+
             var diaryProposalsArray = diaryProposals.ToArray();
 
             if (diaryProposalsArray.Length == 0) continue;
-            
+
             generationContext.CpModel.Add(
                 LinearExpr.Sum(diaryProposalsArray) <= diary.WeekLimit
             );

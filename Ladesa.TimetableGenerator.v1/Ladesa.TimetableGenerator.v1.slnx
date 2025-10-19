@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="Core\Core.csproj"/>
-  <Project Path="Service\Service.csproj"/>
   <Project Path="Core.Test\Core.Test.csproj"/>
+  <Project Path="Core\Core.csproj"/>
+  <Project Path="Protobuf\Protobuf.csproj" Type="Classic C#"/>
+  <Project Path="Service\Service.csproj"/>
 </Solution>

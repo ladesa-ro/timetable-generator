@@ -72,9 +72,9 @@ public sealed class RabbitMqQueuePublisher : IQueuePublisher, IAsyncDisposable
         await _retryPolicy.ExecuteAsync(async (ct) =>
         {
             await channel.BasicPublishAsync(
-                exchange: string.Empty, // Default exchange
-                routingKey: queue,
-                mandatory: true, // Retorna erro se a mensagem não puder ser roteada
+                string.Empty, // Default exchange
+                queue,
+                true, // Retorna erro se a mensagem não puder ser roteada
                 body: body,
                 basicProperties: properties,
                 cancellationToken: ct
@@ -102,11 +102,11 @@ public sealed class RabbitMqQueuePublisher : IQueuePublisher, IAsyncDisposable
 
             // Garante que a fila exista antes de publicar (idempotente)
             await _channel.QueueDeclareAsync(
-                queue: queueName,
-                durable: true,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null,
+                queueName,
+                true,
+                false,
+                false,
+                null,
                 cancellationToken: cancellationToken);
 
             _logger.LogInformation("Canal criado e fila '{QueueName}' declarada com sucesso.", queueName);

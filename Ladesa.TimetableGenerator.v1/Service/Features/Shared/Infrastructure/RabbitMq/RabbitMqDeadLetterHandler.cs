@@ -28,10 +28,12 @@ public class RabbitMqDeadLetterHandler : IDeadLetterHandler, IAsyncDisposable
         _retryPolicy = Policy.Handle<Exception>()
             .WaitAndRetryAsync(
                 retryCount,
-                attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)) + TimeSpan.FromMilliseconds(new Random().Next(0, 200)),
+                attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt)) +
+                           TimeSpan.FromMilliseconds(new Random().Next(0, 200)),
                 (exception, timeSpan, retryAttempt, context) =>
                 {
-                    _logger.LogWarning(exception, "Falha ao publicar na DLQ. Tentativa {RetryAttempt}/{RetryCount}. Próxima tentativa em {Delay}s.",
+                    _logger.LogWarning(exception,
+                        "Falha ao publicar na DLQ. Tentativa {RetryAttempt}/{RetryCount}. Próxima tentativa em {Delay}s.",
                         retryAttempt, retryCount, timeSpan.TotalSeconds);
                 });
     }
@@ -63,9 +65,9 @@ public class RabbitMqDeadLetterHandler : IDeadLetterHandler, IAsyncDisposable
                 var channel = await GetOrCreateChannelAsync();
 
                 // Declara exchange e fila DLQ de forma idempotente
-                await channel.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, durable: true, autoDelete: false);
-                await channel.QueueDeclareAsync(dlqName, durable: true, exclusive: false, autoDelete: false);
-                await channel.QueueBindAsync(dlqName, dlxName, routingKey: "");
+                await channel.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, true, false);
+                await channel.QueueDeclareAsync(dlqName, true, false, false);
+                await channel.QueueBindAsync(dlqName, dlxName, "");
 
                 // Serializa a mensagem com informações do erro
                 var payload = JsonSerializer.Serialize(new
@@ -79,7 +81,7 @@ public class RabbitMqDeadLetterHandler : IDeadLetterHandler, IAsyncDisposable
 
                 var body = Encoding.UTF8.GetBytes(payload);
 
-                await channel.BasicPublishAsync(exchange: dlxName, routingKey: "", body: body);
+                await channel.BasicPublishAsync(dlxName, "", body);
                 _logger.LogInformation("Mensagem enviada para DLQ '{DLQName}' com sucesso.", dlqName);
             });
         }
