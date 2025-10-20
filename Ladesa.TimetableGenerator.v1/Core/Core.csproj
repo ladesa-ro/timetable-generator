@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Google.OrTools" Version="9.14.6206"/>
+    <PackageReference Include="Ical.Net" Version="5.1.1"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Timetable\Domain\ValueObjects\SlotDeTempo.cs"/>

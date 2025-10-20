@@ -1,0 +1,10 @@
+namespace Ladesa.TimetableGenerator.v1.Core.Domain;
+
+public static class GenerateRequestExtensionDates
+{
+    public static IEnumerable<DateOnly> GetDates(this GenerateRequest request)
+    {
+        for (var date = request.DateStart; date <= request.DateEnd; date = date.AddDays(1))
+            yield return date;
+    }
+}

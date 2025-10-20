@@ -1,10 +1,9 @@
 using System.Text.Json;
-using Ladesa.TimetableGenerator.v1.Core.Application.DTOs;
-using Ladesa.TimetableGenerator.v1.Core.Domain.Entities;
-using Ladesa.TimetableGenerator.v1.Core.Application.Features.Generator.Core;
-using Ladesa.TimetableGenerator.v1.Core.Domain.ValueObjects;
+using Ladesa.TimetableGenerator.v1.Core.Domain;
+using Ladesa.TimetableGenerator.v1.Core.Generator;
 
-namespace Ladesa.TimetableGenerator.Test;
+
+namespace Ladesa.TimetableGenerator.Core.Test;
 
 [TestFixture]
 public class SimpleGeradorTests
@@ -12,19 +11,19 @@ public class SimpleGeradorTests
     private static GenerateRequest BuildBasicPayload(
         DateOnly date,
         TimeSlot[] timeSlots,
-        IAvailabilityRule? groupAvailability = null,
-        IAvailabilityRule? teacherAvailability = null,
+        Availability? groupAvailability = null,
+        Availability? teacherAvailability = null,
         int diaryWeekLimit = 1
     )
     {
         var group = new Group(
             "turma:1",
-            groupAvailability ?? new AvailabilityRuleCompound([])
+            groupAvailability ?? new Availability([])
         );
 
         var teacher = new Teacher(
             "prof:1",
-            teacherAvailability ?? new AvailabilityRuleCompound([])
+            teacherAvailability ?? new Availability([])
         );
 
         var diary = new Diary(
@@ -87,12 +86,13 @@ public class SimpleGeradorTests
         var payload = BuildBasicPayload(
             date,
             [timeSlot],
-            new AvailabilityRuleCompound([]),
-            new AvailabilityRuleCompound(
+            new Availability([]),
+            new Availability(
                 [
-                    new AvailabilityRuleUnavailableWeekDay(
-                        DayOfWeek.Monday,
-                        new TimeSlot("00:00:00", "23:59:59")
+                    new AvailabilityRuleUnavailability(
+                        RRule: "FREQ=DAILY;BYDAY=MO",
+                        DateStart: date.ToDateTime(TimeOnly.Parse("00:00:00")), 
+                        DateEnd: date.ToDateTime(TimeOnly.Parse("23:59:00"))
                     )
                 ]
             ),

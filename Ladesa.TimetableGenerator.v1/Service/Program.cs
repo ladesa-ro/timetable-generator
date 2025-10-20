@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.v1.Service.Features;
+using Ladesa.TimetableGenerator.v1.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
