@@ -2,7 +2,7 @@ namespace Ladesa.TimetableGenerator.v1.Service.Features.Generator.Config;
 
 public class GeneratorListerWorkerConfigEnvironmentImpl (IConfiguration config): IGeneratorListenWorkerConfig
 {
-    private const string QueueListen = "TIMETABLE_SERVICEC_BROKER_QUEUE_LISTEN";
+    private const string QueueListen = "TIMETABLE_SERVICE_BROKER_QUEUE_LISTEN";
     private const string QueueReply = "TIMETABLE_SERVICE_BROKER_QUEUE_REPLY";
 
     public IGeneratorListenWorkerConfig.GeneratorListenWorkerConfig GetConfig()
