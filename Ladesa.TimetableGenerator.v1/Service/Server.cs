@@ -63,7 +63,7 @@ public class Server
         // END SWAGGER
     
         // HEALTH
-        services.AddScoped<IHealthService, HealthService>();
+        services.AddSingleton<IHealthService, HealthService>();
         // END HEALTH
     
         // GENERATOR
@@ -83,7 +83,7 @@ public class Server
             options.RoutePrefix = "api/v1/docs/swagger";
         });
         // END SWAGGER
-    
+
         // HEALTH
         app.MapHealthEndpoints();
         // END HEALTH
