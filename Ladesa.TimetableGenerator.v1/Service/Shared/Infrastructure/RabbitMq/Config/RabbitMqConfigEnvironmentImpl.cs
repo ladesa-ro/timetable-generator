@@ -2,9 +2,9 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Infrastructure.RabbitMq.Co
 
 public class RabbitMqConfigEnvironmentImpl (IConfiguration config): IRabbitMqConfigProvider
 {
-    private const string EnvHostname = "TIMETABLE_BROKER_HOSTNAME";
-    private const string EnvUsername = "TIMETABLE_BROKER_USERNAME";
-    private const string EnvPassword = "TIMETABLE_BROKER_PASSWORD";
+    private const string EnvHostname = "TIMETABLE_SERVICE_BROKER_HOSTNAME";
+    private const string EnvUsername = "TIMETABLE_SERVICE_BROKER_USERNAME";
+    private const string EnvPassword = "TIMETABLE_SERVICE_BROKER_PASSWORD";
 
     public IRabbitMqConfigProvider.RabbitMqConfig GetConnectionOptions()
     {
