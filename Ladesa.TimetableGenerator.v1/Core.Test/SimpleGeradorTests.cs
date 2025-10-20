@@ -2,8 +2,7 @@ using System.Text.Json;
 using Ladesa.TimetableGenerator.v1.Core.Domain;
 using Ladesa.TimetableGenerator.v1.Core.Generator;
 
-
-namespace Ladesa.TimetableGenerator.Core.Test;
+namespace Ladesa.TimetableGenerator.Test;
 
 [TestFixture]
 public class SimpleGeradorTests

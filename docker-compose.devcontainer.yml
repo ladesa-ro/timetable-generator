@@ -12,6 +12,8 @@ services:
     command: bash -c 'sleep infinity;'
     working_dir: /app/
     userns_mode: keep-id:uid=1000,gid=1000
+    depends_on:
+      - message-broker
     env_file:
       - .env
 
