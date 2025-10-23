@@ -11,43 +11,43 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void AllDayEveryDay_ShouldBlockAllDay()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 0, 0, 0),
-            new DateTime(2025, 10, 20, 23, 59, 59)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 0, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 23, minute: 59, second: 59)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
 
         // Dentro do período
-        var slotInside = new TimeSlot("08:00", "10:00");
-        Assert.That(unavailability.IsAvailable(date, slotInside), Is.False);
+        var slotInside = new TimeSlot(Start: "08:00", End: "10:00");
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotInside), expression: Is.False);
 
         // Antes do período
-        var slotBefore = new TimeSlot("00:00", "00:30");
-        Assert.That(unavailability.IsAvailable(date, slotBefore), Is.False);
+        var slotBefore = new TimeSlot(Start: "00:00", End: "00:30");
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotBefore), expression: Is.False);
 
         // Depois do período
-        var slotAfter = new TimeSlot("23:00", "23:59");
-        Assert.That(unavailability.IsAvailable(date, slotAfter), Is.False);
+        var slotAfter = new TimeSlot(Start: "23:00", End: "23:59");
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotAfter), expression: Is.False);
     }
 
     [Test]
     public void EveryMorning_ShouldBlockMorningOnly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 8, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 8, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("08:30", "09:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("07:00", "07:50")), Is.True);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("12:30", "13:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("11:50", "12:10")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "08:30", End: "09:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "07:00", End: "07:50")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:30", End: "13:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "11:50", End: "12:10")), expression: Is.False);
         });
     }
 
@@ -55,18 +55,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void EveryWednesdayAfternoon_ShouldBlockOnlyOnWednesday()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=WEEKLY;BYDAY=WE",
-            new DateTime(2025, 10, 22, 14, 0, 0),
-            new DateTime(2025, 10, 22, 18, 0, 0)
+            RRule: "FREQ=WEEKLY;BYDAY=WE",
+            DateStart: new DateTime(year: 2025, month: 10, day: 22, hour: 14, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 22, hour: 18, minute: 0, second: 0)
         );
 
-        var wednesday = new DateOnly(2025, 10, 22); // Wednesday
-        var thursday = new DateOnly(2025, 10, 23); // Thursday
+        var wednesday = new DateOnly(year: 2025, month: 10, day: 22); // Wednesday
+        var thursday = new DateOnly(year: 2025, month: 10, day: 23); // Thursday
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(wednesday, new TimeSlot("15:00", "16:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(thursday, new TimeSlot("15:00", "16:00")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: wednesday, checkTimeSlot: new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: thursday, checkTimeSlot: new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.True);
         });
     }
 
@@ -74,18 +74,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void EventWithoutEndDate_ShouldBlockFromTimeOnwardsForever()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            null
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: null
         );
 
-        var date = new DateOnly(2025, 10, 21);
+        var date = new DateOnly(year: 2025, month: 10, day: 21);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("10:00", "11:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("12:00", "13:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("09:00", "09:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:00", End: "13:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
         });
     }
 
@@ -93,18 +93,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void MonthlyEvent_OnFirstDay_ShouldBlockCorrectly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=MONTHLY;BYMONTHDAY=1",
-            new DateTime(2025, 11, 1, 8, 0, 0),
-            new DateTime(2025, 11, 1, 12, 0, 0)
+            RRule: "FREQ=MONTHLY;BYMONTHDAY=1",
+            DateStart: new DateTime(year: 2025, month: 11, day: 1, hour: 8, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 11, day: 1, hour: 12, minute: 0, second: 0)
         );
 
-        var firstOfMonth = new DateOnly(2025, 11, 1);
-        var secondOfMonth = new DateOnly(2025, 11, 2);
+        var firstOfMonth = new DateOnly(year: 2025, month: 11, day: 1);
+        var secondOfMonth = new DateOnly(year: 2025, month: 11, day: 2);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(firstOfMonth, new TimeSlot("09:00", "10:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(secondOfMonth, new TimeSlot("09:00", "10:00")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: firstOfMonth, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: secondOfMonth, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
         });
     }
 
@@ -112,18 +112,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void LastFridayOfMonth_ShouldBlockCorrectFridayOnly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=MONTHLY;BYDAY=FR;BYSETPOS=-1",
-            new DateTime(2025, 10, 31, 15, 0, 0),
-            new DateTime(2025, 10, 31, 18, 0, 0)
+            RRule: "FREQ=MONTHLY;BYDAY=FR;BYSETPOS=-1",
+            DateStart: new DateTime(year: 2025, month: 10, day: 31, hour: 15, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 31, hour: 18, minute: 0, second: 0)
         );
 
-        var lastFriday = new DateOnly(2025, 10, 31);
-        var otherFriday = new DateOnly(2025, 10, 24);
+        var lastFriday = new DateOnly(year: 2025, month: 10, day: 31);
+        var otherFriday = new DateOnly(year: 2025, month: 10, day: 24);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(lastFriday, new TimeSlot("16:00", "17:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(otherFriday, new TimeSlot("16:00", "17:00")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: lastFriday, checkTimeSlot: new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: otherFriday, checkTimeSlot: new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.True);
         });
     }
 
@@ -131,20 +131,20 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void EveryOtherDay_ShouldBlockEveryOtherDay()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY;INTERVAL=2",
-            new DateTime(2025, 10, 20, 9, 0, 0),
-            new DateTime(2025, 10, 20, 17, 0, 0)
+            RRule: "FREQ=DAILY;INTERVAL=2",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 9, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 17, minute: 0, second: 0)
         );
 
-        var firstDay = new DateOnly(2025, 10, 20);
-        var secondDay = new DateOnly(2025, 10, 21);
-        var thirdDay = new DateOnly(2025, 10, 22);
+        var firstDay = new DateOnly(year: 2025, month: 10, day: 20);
+        var secondDay = new DateOnly(year: 2025, month: 10, day: 21);
+        var thirdDay = new DateOnly(year: 2025, month: 10, day: 22);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(firstDay, new TimeSlot("10:00", "11:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(secondDay, new TimeSlot("10:00", "11:00")), Is.True);
-            Assert.That(unavailability.IsAvailable(thirdDay, new TimeSlot("10:00", "11:00")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: firstDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: secondDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
         });
     }
 
@@ -154,18 +154,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void SingleEvent_ShouldBlockOnlyOnStartDate()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "", // Assuming empty RRULE means single event
-            new DateTime(2025, 10, 20, 9, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "", // Assuming empty RRULE means single event
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 9, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var startDate = new DateOnly(2025, 10, 20);
-        var nextDate = new DateOnly(2025, 10, 21);
+        var startDate = new DateOnly(year: 2025, month: 10, day: 20);
+        var nextDate = new DateOnly(year: 2025, month: 10, day: 21);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(startDate, new TimeSlot("10:00", "11:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(nextDate, new TimeSlot("10:00", "11:00")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: startDate, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: nextDate, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
         });
     }
 
@@ -173,80 +173,80 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void OverlappingSlot_StartsBeforeEndsDuring_ShouldBlock()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var overlappingSlot = new TimeSlot("09:30", "10:30");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var overlappingSlot = new TimeSlot(Start: "09:30", End: "10:30");
 
-        Assert.That(unavailability.IsAvailable(date, overlappingSlot), Is.False);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: overlappingSlot), expression: Is.False);
     }
 
     [Test]
     public void OverlappingSlot_StartsDuringEndsAfter_ShouldBlock()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var overlappingSlot = new TimeSlot("11:30", "12:30");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var overlappingSlot = new TimeSlot(Start: "11:30", End: "12:30");
 
-        Assert.That(unavailability.IsAvailable(date, overlappingSlot), Is.False);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: overlappingSlot), expression: Is.False);
     }
 
     [Test]
     public void SlotTouchingStart_EndsAtStart_ShouldBeAvailable() // Assuming no overlap if ends exactly at start
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var touchingSlot = new TimeSlot("09:00", "10:00");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var touchingSlot = new TimeSlot(Start: "09:00", End: "10:00");
 
-        Assert.That(unavailability.IsAvailable(date, touchingSlot), Is.True);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: touchingSlot), expression: Is.True);
     }
 
     [Test]
     public void SlotTouchingEnd_StartsAtEnd_ShouldBeAvailable() // Assuming no overlap if starts exactly at end
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var touchingSlot = new TimeSlot("12:00", "13:00");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var touchingSlot = new TimeSlot(Start: "12:00", End: "13:00");
 
-        Assert.That(unavailability.IsAvailable(date, touchingSlot), Is.True);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: touchingSlot), expression: Is.True);
     }
 
     [Test]
     public void WeeklyWithMultipleDays_ShouldBlockOnSpecifiedDays()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=WEEKLY;BYDAY=MO,WE,FR",
-            new DateTime(2025, 10, 20, 13, 0, 0), // Monday
-            new DateTime(2025, 10, 20, 15, 0, 0)
+            RRule: "FREQ=WEEKLY;BYDAY=MO,WE,FR",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 13, minute: 0, second: 0), // Monday
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 15, minute: 0, second: 0)
         );
 
-        var monday = new DateOnly(2025, 10, 20);
-        var tuesday = new DateOnly(2025, 10, 21);
-        var wednesday = new DateOnly(2025, 10, 22);
+        var monday = new DateOnly(year: 2025, month: 10, day: 20);
+        var tuesday = new DateOnly(year: 2025, month: 10, day: 21);
+        var wednesday = new DateOnly(year: 2025, month: 10, day: 22);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(monday, new TimeSlot("14:00", "14:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(tuesday, new TimeSlot("14:00", "14:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(wednesday, new TimeSlot("14:00", "14:30")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: monday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: tuesday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: wednesday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
         });
     }
 
@@ -254,18 +254,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void MonthlyByDayOfWeek_SecondTuesday_ShouldBlockCorrectly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=MONTHLY;BYDAY=TU;BYSETPOS=2",
-            new DateTime(2025, 10, 14, 9, 0, 0), // Second Tuesday in Oct 2025
-            new DateTime(2025, 10, 14, 11, 0, 0)
+            RRule: "FREQ=MONTHLY;BYDAY=TU;BYSETPOS=2",
+            DateStart: new DateTime(year: 2025, month: 10, day: 14, hour: 9, minute: 0, second: 0), // Second Tuesday in Oct 2025
+            DateEnd: new DateTime(year: 2025, month: 10, day: 14, hour: 11, minute: 0, second: 0)
         );
 
-        var secondTuesday = new DateOnly(2025, 10, 14);
-        var firstTuesday = new DateOnly(2025, 10, 7);
+        var secondTuesday = new DateOnly(year: 2025, month: 10, day: 14);
+        var firstTuesday = new DateOnly(year: 2025, month: 10, day: 7);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(secondTuesday, new TimeSlot("10:00", "10:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(firstTuesday, new TimeSlot("10:00", "10:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: secondTuesday, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: firstTuesday, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
         });
     }
 
@@ -273,20 +273,20 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void YearlyEvent_ShouldBlockOnAnniversary()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=YEARLY",
-            new DateTime(2025, 10, 20, 8, 0, 0),
-            new DateTime(2025, 10, 20, 17, 0, 0)
+            RRule: "FREQ=YEARLY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 8, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 17, minute: 0, second: 0)
         );
 
-        var sameDayThisYear = new DateOnly(2025, 10, 20);
-        var sameDayNextYear = new DateOnly(2026, 10, 20);
-        var differentDay = new DateOnly(2025, 10, 21);
+        var sameDayThisYear = new DateOnly(year: 2025, month: 10, day: 20);
+        var sameDayNextYear = new DateOnly(year: 2026, month: 10, day: 20);
+        var differentDay = new DateOnly(year: 2025, month: 10, day: 21);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(sameDayThisYear, new TimeSlot("09:00", "10:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(sameDayNextYear, new TimeSlot("09:00", "10:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(differentDay, new TimeSlot("09:00", "10:00")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: sameDayThisYear, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: sameDayNextYear, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: differentDay, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
         });
     }
 
@@ -294,20 +294,20 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void WithUntilDate_ShouldBlockOnlyBeforeUntil()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY;UNTIL=20251025T120000",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY;UNTIL=20251025T120000",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var beforeUntil = new DateOnly(2025, 10, 24);
-        var onUntil = new DateOnly(2025, 10, 25);
-        var afterUntil = new DateOnly(2025, 10, 26);
+        var beforeUntil = new DateOnly(year: 2025, month: 10, day: 24);
+        var onUntil = new DateOnly(year: 2025, month: 10, day: 25);
+        var afterUntil = new DateOnly(year: 2025, month: 10, day: 26);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(beforeUntil, new TimeSlot("11:00", "11:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(onUntil, new TimeSlot("11:00", "11:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(afterUntil, new TimeSlot("11:00", "11:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: beforeUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: onUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: afterUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
         });
     }
 
@@ -315,22 +315,22 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void WithCount_ShouldBlockOnlyForSpecifiedOccurrences()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY;COUNT=3",
-            new DateTime(2025, 10, 20, 14, 0, 0),
-            new DateTime(2025, 10, 20, 16, 0, 0)
+            RRule: "FREQ=DAILY;COUNT=3",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 14, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 16, minute: 0, second: 0)
         );
 
-        var firstDay = new DateOnly(2025, 10, 20);
-        var secondDay = new DateOnly(2025, 10, 21);
-        var thirdDay = new DateOnly(2025, 10, 22);
-        var fourthDay = new DateOnly(2025, 10, 23);
+        var firstDay = new DateOnly(year: 2025, month: 10, day: 20);
+        var secondDay = new DateOnly(year: 2025, month: 10, day: 21);
+        var thirdDay = new DateOnly(year: 2025, month: 10, day: 22);
+        var fourthDay = new DateOnly(year: 2025, month: 10, day: 23);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(firstDay, new TimeSlot("15:00", "15:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(secondDay, new TimeSlot("15:00", "15:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(thirdDay, new TimeSlot("15:00", "15:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(fourthDay, new TimeSlot("15:00", "15:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: firstDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: secondDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: fourthDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
         });
     }
 
@@ -338,34 +338,34 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void EveryTwoWeeks_ShouldBlockAccordingly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=WEEKLY;INTERVAL=2",
-            new DateTime(2025, 10, 20, 9, 0, 0), // Monday
-            new DateTime(2025, 10, 20, 11, 0, 0)
+            RRule: "FREQ=WEEKLY;INTERVAL=2",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 9, minute: 0, second: 0), // Monday
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 11, minute: 0, second: 0)
         );
 
 
         var calendarEvent = new CalendarEvent
         {
-            DtStart = new CalDateTime(unavailability.DateStart),
-            DtEnd = new CalDateTime((DateTime)unavailability.DateEnd),
+            DtStart = new CalDateTime(value: unavailability.DateStart),
+            DtEnd = new CalDateTime(value: (DateTime)unavailability.DateEnd),
             RecurrenceRules = [unavailability.RecurrencePattern]
         };
 
 
-        var week1 = new DateOnly(2025, 10, 20);
-        var week2 = new DateOnly(2025, 10, 27);
-        var between = new DateOnly(2025, 10, 24); // Friday of first week, but since no BYDAY, assumes same day
+        var week1 = new DateOnly(year: 2025, month: 10, day: 20);
+        var week2 = new DateOnly(year: 2025, month: 10, day: 27);
+        var between = new DateOnly(year: 2025, month: 10, day: 24); // Friday of first week, but since no BYDAY, assumes same day
 
-        var r = calendarEvent.GetOccurrences(new CalDateTime(week2)).Take(2).ToArray();
+        var r = calendarEvent.GetOccurrences(startTime: new CalDateTime(date: week2)).Take(count: 2).ToArray();
 
-        Console.WriteLine(r);
+        Console.WriteLine(value: r);
 
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(week1, new TimeSlot("10:00", "10:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(between, new TimeSlot("10:00", "10:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(week2, new TimeSlot("10:00", "10:30")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: week1, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: between, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: week2, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
         });
     }
 
@@ -373,79 +373,79 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void DateBeforeStartDate_ShouldBeAvailable()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 8, 0, 0),
-            new DateTime(2025, 10, 20, 10, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 8, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0)
         );
 
-        var beforeDate = new DateOnly(2025, 10, 19);
+        var beforeDate = new DateOnly(year: 2025, month: 10, day: 19);
 
-        Assert.That(unavailability.IsAvailable(beforeDate, new TimeSlot("09:00", "09:30")), Is.True);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: beforeDate, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
     }
 
     [Test]
     public void SlotCompletelyEncompassingUnavailability_ShouldBlock()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var encompassingSlot = new TimeSlot("09:00", "13:00");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var encompassingSlot = new TimeSlot(Start: "09:00", End: "13:00");
 
-        Assert.That(unavailability.IsAvailable(date, encompassingSlot), Is.False);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: encompassingSlot), expression: Is.False);
     }
 
     [Test]
     public void NoOverlapSlotBefore_ShouldBeAvailable()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var beforeSlot = new TimeSlot("08:00", "09:59");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var beforeSlot = new TimeSlot(Start: "08:00", End: "09:59");
 
-        Assert.That(unavailability.IsAvailable(date, beforeSlot), Is.True);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: beforeSlot), expression: Is.True);
     }
 
     [Test]
     public void NoOverlapSlotAfter_ShouldBeAvailable()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY",
-            new DateTime(2025, 10, 20, 10, 0, 0),
-            new DateTime(2025, 10, 20, 12, 0, 0)
+            RRule: "FREQ=DAILY",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 12, minute: 0, second: 0)
         );
 
-        var date = DateOnly.FromDateTime(unavailability.DateStart);
-        var afterSlot = new TimeSlot("12:01", "13:00");
+        var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
+        var afterSlot = new TimeSlot(Start: "12:01", End: "13:00");
 
-        Assert.That(unavailability.IsAvailable(date, afterSlot), Is.True);
+        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: afterSlot), expression: Is.True);
     }
 
     [Test]
     public void MonthlyLastDay_ShouldBlockOnLastDayOfMonth()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=MONTHLY;BYMONTHDAY=-1",
-            new DateTime(2025, 10, 31, 14, 0, 0),
-            new DateTime(2025, 10, 31, 16, 0, 0)
+            RRule: "FREQ=MONTHLY;BYMONTHDAY=-1",
+            DateStart: new DateTime(year: 2025, month: 10, day: 31, hour: 14, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 31, hour: 16, minute: 0, second: 0)
         );
 
-        var lastDayOct = new DateOnly(2025, 10, 31);
-        var lastDayNov = new DateOnly(2025, 11, 30);
-        var otherDay = new DateOnly(2025, 10, 30);
+        var lastDayOct = new DateOnly(year: 2025, month: 10, day: 31);
+        var lastDayNov = new DateOnly(year: 2025, month: 11, day: 30);
+        var otherDay = new DateOnly(year: 2025, month: 10, day: 30);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(lastDayOct, new TimeSlot("15:00", "15:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(lastDayNov, new TimeSlot("15:00", "15:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(otherDay, new TimeSlot("15:00", "15:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: lastDayOct, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: lastDayNov, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: otherDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
         });
     }
 
@@ -453,18 +453,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void WeeklyWithUntil_ShouldStopAfterUntil()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=WEEKLY;BYDAY=MO;UNTIL=20251101",
-            new DateTime(2025, 10, 20, 9, 0, 0),
-            new DateTime(2025, 10, 20, 11, 0, 0)
+            RRule: "FREQ=WEEKLY;BYDAY=MO;UNTIL=20251101",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 9, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 11, minute: 0, second: 0)
         );
 
-        var beforeUntil = new DateOnly(2025, 10, 27); // Next Monday
-        var afterUntil = new DateOnly(2025, 11, 4); // Monday after Until
+        var beforeUntil = new DateOnly(year: 2025, month: 10, day: 27); // Next Monday
+        var afterUntil = new DateOnly(year: 2025, month: 11, day: 4); // Monday after Until
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(beforeUntil, new TimeSlot("10:00", "10:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(afterUntil, new TimeSlot("10:00", "10:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: beforeUntil, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: afterUntil, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
         });
     }
 
@@ -472,18 +472,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void EventWithNullEndOnSingleDay_ShouldBlockFromStartToEndOfDay()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "", // Single event
-            new DateTime(2025, 10, 20, 13, 0, 0),
-            null
+            RRule: "", // Single event
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 13, minute: 0, second: 0),
+            DateEnd: null
         );
 
-        var date = new DateOnly(2025, 10, 20);
+        var date = new DateOnly(year: 2025, month: 10, day: 20);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("12:00", "12:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("13:00", "14:00")), Is.False);
-            Assert.That(unavailability.IsAvailable(date, new TimeSlot("23:00", "23:30")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:00", End: "12:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "13:00", End: "14:00")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "23:00", End: "23:30")), expression: Is.False);
         });
     }
 
@@ -491,18 +491,18 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void ComplexRRule_MonthlyThirdWednesday_ShouldBlockCorrectly()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=MONTHLY;BYDAY=WE;BYSETPOS=3",
-            new DateTime(2025, 10, 15, 10, 0, 0), // Third Wednesday in Oct 2025
-            new DateTime(2025, 10, 15, 12, 0, 0)
+            RRule: "FREQ=MONTHLY;BYDAY=WE;BYSETPOS=3",
+            DateStart: new DateTime(year: 2025, month: 10, day: 15, hour: 10, minute: 0, second: 0), // Third Wednesday in Oct 2025
+            DateEnd: new DateTime(year: 2025, month: 10, day: 15, hour: 12, minute: 0, second: 0)
         );
 
-        var thirdWednesday = new DateOnly(2025, 10, 15);
-        var secondWednesday = new DateOnly(2025, 10, 8);
+        var thirdWednesday = new DateOnly(year: 2025, month: 10, day: 15);
+        var secondWednesday = new DateOnly(year: 2025, month: 10, day: 8);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(thirdWednesday, new TimeSlot("11:00", "11:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(secondWednesday, new TimeSlot("11:00", "11:30")), Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdWednesday, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: secondWednesday, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
         });
     }
 
@@ -510,22 +510,22 @@ public class AvailabilityRuleUnavailabilityDetailedTests
     public void DailyWithInterval3_ShouldBlockEveryThirdDay()
     {
         var unavailability = new AvailabilityRuleUnavailability(
-            "FREQ=DAILY;INTERVAL=3",
-            new DateTime(2025, 10, 20, 8, 0, 0),
-            new DateTime(2025, 10, 20, 10, 0, 0)
+            RRule: "FREQ=DAILY;INTERVAL=3",
+            DateStart: new DateTime(year: 2025, month: 10, day: 20, hour: 8, minute: 0, second: 0),
+            DateEnd: new DateTime(year: 2025, month: 10, day: 20, hour: 10, minute: 0, second: 0)
         );
 
-        var day1 = new DateOnly(2025, 10, 20);
-        var day2 = new DateOnly(2025, 10, 21);
-        var day3 = new DateOnly(2025, 10, 22);
-        var day4 = new DateOnly(2025, 10, 23);
+        var day1 = new DateOnly(year: 2025, month: 10, day: 20);
+        var day2 = new DateOnly(year: 2025, month: 10, day: 21);
+        var day3 = new DateOnly(year: 2025, month: 10, day: 22);
+        var day4 = new DateOnly(year: 2025, month: 10, day: 23);
 
-        Assert.Multiple(() =>
+        Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(unavailability.IsAvailable(day1, new TimeSlot("09:00", "09:30")), Is.False);
-            Assert.That(unavailability.IsAvailable(day2, new TimeSlot("09:00", "09:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(day3, new TimeSlot("09:00", "09:30")), Is.True);
-            Assert.That(unavailability.IsAvailable(day4, new TimeSlot("09:00", "09:30")), Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: day1, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: day2, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: day3, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+            Assert.That(actual: unavailability.IsAvailable(checkDate: day4, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
         });
     }
 }
