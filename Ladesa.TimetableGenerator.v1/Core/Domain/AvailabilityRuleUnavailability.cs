@@ -50,7 +50,9 @@ public record AvailabilityRuleUnavailability(
     private RecurrencePattern? GetEffectiveRecurrencePattern()
     {
         if (!string.IsNullOrEmpty(RRule) && RecurrencePattern is null)
-            throw new Exception("invalid RRULE: unable to parse recurrence pattern.");
+            throw new Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException(
+                Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationErrorCode.InvalidRRule,
+                "invalid RRULE: unable to parse recurrence pattern.");
         if (RecurrencePattern is null) return null;
 
         if (RecurrencePattern.Frequency == FrequencyType.Weekly

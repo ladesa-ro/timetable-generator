@@ -53,10 +53,16 @@ public record GenerateRequest
 
         // Validate duplicate IDs among entities
         if (this.Groups.GroupBy(g => g.Id).Any(g => g.Count() > 1))
-            throw new Exception("Duplicate entity IDs found in Groups.");
+            throw new Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException(
+                Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationErrorCode.DuplicateGroupId,
+                "Duplicate entity IDs found in Groups.");
         if (this.Teachers.GroupBy(t => t.Id).Any(g => g.Count() > 1))
-            throw new Exception("Duplicate entity IDs found in Teachers.");
+            throw new Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException(
+                Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationErrorCode.DuplicateTeacherId,
+                "Duplicate entity IDs found in Teachers.");
         if (this.Diaries.GroupBy(d => d.Id).Any(g => g.Count() > 1))
-            throw new Exception("Duplicate entity IDs found in Diaries.");
+            throw new Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException(
+                Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationErrorCode.DuplicateDiaryId,
+                "Duplicate entity IDs found in Diaries.");
     }
 }

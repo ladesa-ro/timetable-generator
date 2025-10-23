@@ -34,7 +34,7 @@ public class Generator_InputValidation_Tests
 
         var request = new GenerateRequest(date, date, [], [teacher], [diary], [timeSlot]);
 
-        var ex = Assert.Throws<Exception>(() => Generator.GenerateTimetables(request).FirstOrDefault());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException>(() => Generator.GenerateTimetables(request).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("Group not found"), "Should throw exception for non-existent group.");
     }
 
@@ -48,7 +48,7 @@ public class Generator_InputValidation_Tests
 
         var request = new GenerateRequest(date, date, [group], [], [diary], [timeSlot]);
 
-        var ex = Assert.Throws<Exception>(() => Generator.GenerateTimetables(request).FirstOrDefault());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException>(() => Generator.GenerateTimetables(request).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("Teacher not found"), "Should throw exception for non-existent teacher.");
     }
 
@@ -63,7 +63,7 @@ public class Generator_InputValidation_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var ex = Assert.Throws<Exception>(() => Generator.GenerateTimetables(request).FirstOrDefault());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException>(() => Generator.GenerateTimetables(request).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("not found"), "Should throw exception for non-existent group and/or teacher.");
     }
 
@@ -85,7 +85,7 @@ public class Generator_InputValidation_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var ex = Assert.Throws<Exception>(() => Generator.GenerateTimetables(request).FirstOrDefault());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException>(() => Generator.GenerateTimetables(request).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("invalid"), "Should throw exception for invalid RRULE syntax.");
     }
 
@@ -192,7 +192,7 @@ public class Generator_InputValidation_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group1.Id, teacher.Id, "disc:1", 1, 1);
 
-        Assert.Throws<Exception>(() => new GenerateRequest(date, date, [group1, group2], [teacher], [diary], [timeSlot]),
+        Assert.Throws<Ladesa.TimetableGenerator.v1.Core.Generator.GeneratorValidationException>(() => new GenerateRequest(date, date, [group1, group2], [teacher], [diary], [timeSlot]),
             "Should throw exception for duplicate entity IDs.");
     }
 }

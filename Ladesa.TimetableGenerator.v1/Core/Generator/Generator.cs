@@ -103,11 +103,11 @@ public static class Generator
             foreach (var diary in request.Diaries)
             {
                 if (!groupIds.Contains(diary.GroupId) && !teacherIds.Contains(diary.TeacherId))
-                    throw new Exception("Diary references not found: group and teacher not found.");
+                    throw new GeneratorValidationException(GeneratorValidationErrorCode.DiaryReferencesNotFound, "Diary references not found: group and teacher not found.");
                 if (!groupIds.Contains(diary.GroupId))
-                    throw new Exception($"Group not found: {diary.GroupId}.");
+                    throw new GeneratorValidationException(GeneratorValidationErrorCode.GroupNotFound, $"Group not found: {diary.GroupId}.");
                 if (!teacherIds.Contains(diary.TeacherId))
-                    throw new Exception($"Teacher not found: {diary.TeacherId}.");
+                    throw new GeneratorValidationException(GeneratorValidationErrorCode.TeacherNotFound, $"Teacher not found: {diary.TeacherId}.");
             }
         }
 
@@ -129,6 +129,7 @@ public static class Generator
         var generatedTick = new AutoResetEvent(false);
 
         GeneratedTimetable? generatedTimetable = null;
+        int isDone = 0; // 0 = running, 1 = done
 
         // thread de solução de horário para essa requisição
         var solutionGeneratorThread = new Thread(() =>
@@ -174,15 +175,10 @@ public static class Generator
                     0
                 );
                 generatedTick.Set();
-                // Signal completion
-                generatedTimetable = null;
-                generatedTick.Set();
             }
-            else
-            {
-                generatedTimetable = null;
-                generatedTick.Set();
-            }
+
+            System.Threading.Interlocked.Exchange(ref isDone, 1);
+            generatedTick.Set();
         });
 
         solutionGeneratorThread.Start();
@@ -191,9 +187,16 @@ public static class Generator
         {
             generatedTick.WaitOne();
 
-            if (generatedTimetable != null)
-                yield return generatedTimetable;
-        } while (generatedTimetable != null);
+            var item = System.Threading.Interlocked.Exchange(ref generatedTimetable, null);
+            if (item != null)
+            {
+                yield return item;
+            }
+            else
+            {
+                break;
+            }
+        } while (true);
     }
 
     /// <summary>
