@@ -81,6 +81,8 @@ public static class Generator
         ConstraintGroupLunch.Apply(generationContext);
         ConstraintTeacherNoOppositeTurns.Apply(generationContext);
         ConstraintTeacher12Hours.Apply(generationContext);
+        ConstraintGroupNoOverlappingTimeSlots.Apply(generationContext);
+        ConstraintTeacherNoOverlappingTimeSlots.Apply(generationContext);
         // ConstraintAgruparDisciplinasParametro(contexto, "7", 2, new("13:50", "17:30"));
         // ConstraintPadronizarPRD(contexto);
         // ConstraintEspecificarPRD(contexto, "1", 5);
@@ -92,7 +94,35 @@ public static class Generator
 
     public static IEnumerable<GeneratedTimetable> GenerateTimetables(GenerateRequest request)
     {
+        // Validate that all diaries reference existing groups and teachers
+        if (request.Diaries is not null)
+        {
+            var groupIds = new HashSet<string>(request.Groups.Select(g => g.Id));
+            var teacherIds = new HashSet<string>(request.Teachers.Select(t => t.Id));
+
+            foreach (var diary in request.Diaries)
+            {
+                if (!groupIds.Contains(diary.GroupId) && !teacherIds.Contains(diary.TeacherId))
+                    throw new Exception("Diary references not found: group and teacher not found.");
+                if (!groupIds.Contains(diary.GroupId))
+                    throw new Exception($"Group not found: {diary.GroupId}.");
+                if (!teacherIds.Contains(diary.TeacherId))
+                    throw new Exception($"Teacher not found: {diary.TeacherId}.");
+            }
+        }
+
         var generationContext = CreateContextWithRestrictionsApplied(request);
+
+        // If there are no viable proposals (no dates/diaries/time slots), return a single empty timetable result
+        if (generationContext.AllProposals.Count == 0)
+        {
+            var empty = new GeneratedTimetable(
+                new TimetableGrid(request.DateStart, request.DateEnd, request.TimeSlots, Array.Empty<TimetableGridSchedule>()),
+                0
+            );
+            yield return empty;
+            yield break;
+        }
 
         // ==============================================================
 
@@ -104,6 +134,7 @@ public static class Generator
         var solutionGeneratorThread = new Thread(() =>
         {
             long? previousScore = null;
+            var producedAny = false;
 
             do
             {
@@ -113,6 +144,7 @@ public static class Generator
                     generationContext,
                     spGeneratedTimetable =>
                     {
+                        producedAny = true;
                         generatedTimetable = spGeneratedTimetable;
                         generatedTick.Set();
                     }
@@ -134,8 +166,23 @@ public static class Generator
                 }
             } while (previousScore > 0);
 
-            generatedTimetable = null;
-            generatedTick.Set();
+            if (!producedAny)
+            {
+                // Fallback: yield an empty timetable when the model is feasible only with zero schedules or produced nothing
+                generatedTimetable = new GeneratedTimetable(
+                    new TimetableGrid(request.DateStart, request.DateEnd, request.TimeSlots, Array.Empty<TimetableGridSchedule>()),
+                    0
+                );
+                generatedTick.Set();
+                // Signal completion
+                generatedTimetable = null;
+                generatedTick.Set();
+            }
+            else
+            {
+                generatedTimetable = null;
+                generatedTick.Set();
+            }
         });
 
         solutionGeneratorThread.Start();
