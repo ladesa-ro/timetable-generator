@@ -1,3 +1,4 @@
+using System.Globalization;
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.v1.Core.Domain;
 using Ladesa.TimetableGenerator.v1.Core.Generator;
@@ -14,18 +15,37 @@ public abstract class ConstraintDiaryLimitSchedulesInOneWeek : IGeneratorConstra
         foreach (var group in generationContext.GenerateRequest.Groups)
         foreach (var diary in generationContext.GenerateRequest.DiaryFindByGroupId(group.Id))
         {
-            var diaryProposals =
-                from scheduleProposal in generationContext.AllProposals
-                where scheduleProposal.DiaryId == diary.Id
-                select scheduleProposal.ModelBoolVar;
+            if(diary.WeekLimit < 0) continue;
 
-            var diaryProposalsArray = diaryProposals.ToArray();
+            var diaryProposalsByWeekOfYearList =
+                (from scheduleProposal in generationContext.AllProposals
+                    where scheduleProposal.DiaryId == diary.Id
+                    group scheduleProposal by CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(
+                        scheduleProposal.Date.ToDateTime(new TimeOnly()),
+                        CalendarWeekRule.FirstDay,
+                        DayOfWeek.Monday
+                    )
+                    into g
+                    select new
+                    {
+                        WeekOfYear = g.Key,
+                        Proposals = g.AsEnumerable().ToArray()
+                    }).ToArray();
 
-            if (diaryProposalsArray.Length == 0) continue;
+            
 
-            generationContext.CpModel.Add(
-                LinearExpr.Sum(diaryProposalsArray) <= diary.WeekLimit
-            );
+            if (diaryProposalsByWeekOfYearList.Length == 0) continue;
+
+            foreach (var diaryProposalsByWeekOfYear in diaryProposalsByWeekOfYearList)
+            {
+                var proposals = diaryProposalsByWeekOfYear.Proposals.Select(proposal => proposal.ModelBoolVar).ToArray();
+                
+                if (proposals.Length == 0) continue;
+                
+                generationContext.CpModel.Add(
+                    LinearExpr.Sum(proposals) <= diary.WeekLimit
+                );
+            }
         }
     }
 }

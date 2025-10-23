@@ -13,8 +13,10 @@ public record AvailabilityRuleUnavailability(
 {
     private static readonly RecurrencePatternSerializer RecurrencePatternSerializer = new();
 
-    private static RecurrencePattern ParseRecurrencePattern(string rrule)
+    private static RecurrencePattern? ParseRecurrencePattern(string? rrule)
     {
+        if(rrule is null || rrule.Length == 0) return null;
+
         var stringReader = new StringReader(rrule);
         var recurrencePatternDeserialized = RecurrencePatternSerializer.Deserialize(stringReader);
 
@@ -25,7 +27,7 @@ public record AvailabilityRuleUnavailability(
         };
     }
 
-    public RecurrencePattern RecurrencePattern { get; } = ParseRecurrencePattern(RRule);
+    public RecurrencePattern? RecurrencePattern { get; } = ParseRecurrencePattern(RRule);
 
     /// Checks if the specified time slot on a given date is available, based on the unavailability rule.
     /// <param name="checkDate">The date to check for availability.</param>
@@ -33,14 +35,15 @@ public record AvailabilityRuleUnavailability(
     /// <returns>True if the time slot is available on the given date; otherwise, false.</returns>
     public bool IsAvailable(DateOnly checkDate, TimeSlot checkTimeSlot)
     {
+        var (checkStart, checkEnd) = checkTimeSlot.GetDateTimeRange(checkDate);
+
         var calendarEvent = new CalendarEvent()
         {
             DtStart = new CalDateTime(DateStart),
             DtEnd = DateEnd is not null ? new CalDateTime((DateTime)DateEnd) : null,
-            RecurrenceRules = [RecurrencePattern],
+            RecurrenceRules = RecurrencePattern is null ? [] : [RecurrencePattern],
         };
         
-        var (checkStart, checkEnd) = checkTimeSlot.GetDateTimeRange(checkDate);
 
         var occurrences = calendarEvent
             .GetOccurrences(

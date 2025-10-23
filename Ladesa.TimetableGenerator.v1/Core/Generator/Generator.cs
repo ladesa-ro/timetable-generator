@@ -76,6 +76,7 @@ public static class Generator
         ConstraintGroupOneScheduleAtSameTime.Apply(generationContext);
         ConstraintTeacherOneScheduleAtSameTime.Apply(generationContext);
         ConstraintDiaryLimitSchedulesInOneWeek.Apply(generationContext);
+        ConstraintDiaryLimitRemaining.Apply(generationContext);
         ConstraintTeacherLunch.Apply(generationContext);
         ConstraintGroupLunch.Apply(generationContext);
         ConstraintTeacherNoOppositeTurns.Apply(generationContext);
@@ -161,8 +162,110 @@ public static class Generator
     {
         var qualityScore = LinearExpr.NewBuilder();
 
+
+        // quanto mais aulas, melhor
         foreach (var propostaDeAula in contexto.AllProposals)
             qualityScore.AddTerm((IntVar)propostaDeAula.ModelBoolVar, 1);
+
+
+        var generateRequest = contexto.GenerateRequest;
+        var previousTimetableGrid = generateRequest.PreviousTimetableGrid;
+
+        if (previousTimetableGrid is not null)
+        {
+            // bonus para aulas que caem
+
+            foreach (var previousSchedule in previousTimetableGrid.Schedules)
+            {
+                var matchingProposals = (from scheduleProposal in contexto.AllProposals
+                        where scheduleProposal.GroupId == previousSchedule.GroupId
+                              && scheduleProposal.DiaryId == previousSchedule.DiaryId
+                              && scheduleProposal.TeacherId == previousSchedule.TeacherId
+                        select scheduleProposal).ToArray()
+                    ;
+
+                // same day of week
+                var matchingProposalsSameDayOfWeek = (from scheduleProposal in matchingProposals
+                    where
+                        scheduleProposal.Date.DayOfWeek == previousSchedule.Date.DayOfWeek
+                    select scheduleProposal).ToArray();
+
+                foreach (var matchingProposalSameDay in matchingProposalsSameDayOfWeek)
+                {
+                    qualityScore.AddTerm((IntVar)matchingProposalSameDay.ModelBoolVar, generateRequest.BoostSameDayOfWeekOnly);
+                }
+
+
+                // same time slot
+                var sameTimeSlotBoolVars = (from scheduleProposal in matchingProposals
+                    where
+                        scheduleProposal.TimeSlot == previousSchedule.TimeSlot
+                    select scheduleProposal).ToArray();
+
+                foreach (var sameTimeSlotBoolVar in sameTimeSlotBoolVars)
+                {
+                    qualityScore.AddTerm((IntVar)sameTimeSlotBoolVar.ModelBoolVar, generateRequest.BoostSameTimeSlotOnly);
+                }
+                
+                // same day of week and time slot
+                var sameDayAndTimeSlotBoolVars = (from scheduleProposal in matchingProposals
+                    where
+                        scheduleProposal.Date.DayOfWeek == previousSchedule.Date.DayOfWeek
+                        && scheduleProposal.TimeSlot == previousSchedule.TimeSlot
+                    select scheduleProposal).ToArray();
+                
+                foreach (var sameDayAndTimeSlotBoolVar in sameDayAndTimeSlotBoolVars)
+                {
+                    qualityScore.AddTerm((IntVar)sameDayAndTimeSlotBoolVar.ModelBoolVar, generateRequest.BoostSameDayOfWeekAndTimeSlot);
+                }
+                
+                // in case of different day of the week, we give a bonus for the lesser distance
+                var distancesByDayOfWeek = (from scheduleProposal in matchingProposals
+                        group scheduleProposal by scheduleProposal.Date.DayOfWeek into g
+                        select new
+                        {
+                            DayOfWeek = g.Key,
+                            Proposals = g.AsEnumerable()
+                        }).ToArray();
+
+                foreach (var distanceByDayOfWeek in distancesByDayOfWeek)
+                {
+                    var distance = Math.Abs((int)distanceByDayOfWeek.DayOfWeek - (int)previousSchedule.Date.DayOfWeek);
+                    var score = (7 - distance) * generateRequest.BoostLesserDistanceFromDayOfWeek;
+
+                    foreach (var proposal in distanceByDayOfWeek.Proposals)
+                    {
+                        // less distance = better score
+                        qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);
+                    }
+                }
+                
+                // in case of different time slots week, we give a bonus for the lesser distance
+                var distancesByTimeSlot = (from scheduleProposal in matchingProposals
+                        group scheduleProposal by scheduleProposal.TimeSlot into g
+                        select new
+                        {
+                            TimeSlot = g.Key,
+                            Proposals = g.AsEnumerable()
+                        }).ToArray();
+                
+                foreach (var distanceByTimeSlot in distancesByTimeSlot)
+                {
+                    var distance = previousSchedule.TimeSlot.Distance(distanceByTimeSlot.TimeSlot);
+                    var distanceAsMinutes = distance.TotalMinutes;
+                    
+                    // more distance = worst score
+                    var score = (long)((-distanceAsMinutes) * generateRequest.BoostLesserDistanceFromTimeSlot);
+                    
+                    foreach (var proposal in distanceByTimeSlot.Proposals)
+                    {
+                        qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);
+                    }
+                }
+                
+            }
+        }
+
 
         if (limiteScore != null) contexto.CpModel.Add(qualityScore <= contexto.CpModel.NewConstant((long)limiteScore));
 

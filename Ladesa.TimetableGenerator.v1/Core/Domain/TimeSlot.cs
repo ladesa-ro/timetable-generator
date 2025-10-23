@@ -40,4 +40,17 @@ public record TimeSlot(string Start, string End)
     {
         return (GetDateTimeStart(date), GetDateTimeEnd(date));
     }
+
+    public TimeSpan Distance(TimeSlot timeSlot2)
+    {
+        var sameStart = this.Start == timeSlot2.Start;
+        var sameEnd = this.End == timeSlot2.End;
+
+        return sameStart switch
+        {
+            true when sameEnd => TimeSpan.Zero,
+            true => TimeSpan.Parse(this.End) - TimeSpan.Parse(timeSlot2.End),
+            _ => TimeSpan.Parse(this.Start) - TimeSpan.Parse(timeSlot2.Start)
+        };
+    }
 };
