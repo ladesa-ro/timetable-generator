@@ -1,4 +1,4 @@
-name: CI/CD
+name: CD - Build, publish and deploy
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 concurrency:
-  group: ci-cd-${{ github.ref }}
+  group: cd-${{ github.ref }}
 
 env:
   REGISTRY: ghcr.io

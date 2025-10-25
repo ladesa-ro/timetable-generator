@@ -1,7 +1,7 @@
 # timetable-generator
 
 [![CodeQL][badge-codeql-src]][badge-codeql-href]
-[![NUnit Tests + Allure Reports][badge-tests-src]][badge-tests-href]
+[![Tests][badge-tests-src]][badge-tests-href]
 
 Allure Report: [clique aqui][tests-allure-report].
 
@@ -13,9 +13,9 @@ Allure Report: [clique aqui][tests-allure-report].
 
 <!-- Badge / Tests -->
 
-[badge-tests-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-report.yml/badge.svg
+[badge-tests-src]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/ci-cd.yml/badge.svg
 
-[badge-tests-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/test-and-report.yml
+[badge-tests-href]: https://github.com/ladesa-ro/timetable-generator/actions/workflows/ci-cd.yml/
 
 <!-- Links / Allure Report -->
 
