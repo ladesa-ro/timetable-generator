@@ -1,0 +1,63 @@
+name: CI – Build, Test, and Report
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
+
+      - name: Build solution
+        run: dotnet build Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx --configuration Release --no-restore
+
+      - name: Run tests (NUnit)
+        run: |
+          dotnet test Ladesa.TimetableGenerator.v1/Core.Test/Core.Test.csproj \
+            --configuration Release \
+            --no-build \
+            --logger "trx;LogFileName=test-results.trx" \
+            --results-directory TestResults
+
+      - name: Publish test results to GitHub Checks
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: |
+            **/TestResults/**/*.trx
+            **/TestResults/**/*.xml
+
+      - name: PR test summary (Dorny)
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: NUnit Test Report
+          path: '**/TestResults/**/*.trx'
+          reporter: dotnet-trx
+          fail-on-error: false
+
+      - name: Upload test results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/TestResults/**/*'
