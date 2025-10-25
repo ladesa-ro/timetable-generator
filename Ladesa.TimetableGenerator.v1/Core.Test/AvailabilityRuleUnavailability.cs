@@ -347,8 +347,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var calendarEvent = new CalendarEvent
         {
             DtStart = new CalDateTime(value: unavailability.DateStart),
-            DtEnd = new CalDateTime(value: (DateTime)unavailability.DateEnd),
-            RecurrenceRules = [unavailability.RecurrencePattern]
+            DtEnd = new CalDateTime(value: (DateTime)unavailability.DateEnd!),
+            RecurrenceRules = [unavailability.RecurrencePattern!]
         };
 
 
