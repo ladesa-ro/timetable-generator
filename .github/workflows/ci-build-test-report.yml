@@ -48,7 +48,7 @@ jobs:
 
       - name: PR test summary (Dorny)
         if: always()
-        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3
+        uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8
         with:
           name: NUnit Test Report
           path: '**/TestResults/**/*.trx'
