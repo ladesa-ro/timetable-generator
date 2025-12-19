@@ -40,7 +40,7 @@ jobs:
 
       - name: Publish test results to GitHub Checks
         if: always()
-        uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
+        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         with:
           files: |
             **/TestResults/**/*.trx
