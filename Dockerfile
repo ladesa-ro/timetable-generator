@@ -101,7 +101,6 @@ COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx ./Ladesa.T
 COPY ./Ladesa.TimetableGenerator.v1/Core/*.csproj ./Ladesa.TimetableGenerator.v1/Core/
 COPY ./Ladesa.TimetableGenerator.v1/Core.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Core.Test/
 COPY ./Ladesa.TimetableGenerator.v1/Service/*.csproj ./Ladesa.TimetableGenerator.v1/Service/
-COPY ./Ladesa.TimetableGenerator.v1/Protobuf/*.csproj ./Ladesa.TimetableGenerator.v1/Protobuf/
 
 RUN dotnet restore ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
 
