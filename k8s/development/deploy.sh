@@ -13,5 +13,5 @@ kubectl rollout restart \
 # Aguarda o rollout finalizar
 kubectl rollout status \
   deployment/timetable-generator \
-  --namespace ladesa
+  --namespace ladesa \
   --timeout=300s
