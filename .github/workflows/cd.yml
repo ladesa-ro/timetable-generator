@@ -56,7 +56,8 @@ jobs:
 
   timetable-generator-cd-cluster:
     name: "CD: Implantação no Cluster Kubernetes"
-    runs-on: deploy
+    
+    runs-on: deploy-dev
 
     permissions:
       contents: read

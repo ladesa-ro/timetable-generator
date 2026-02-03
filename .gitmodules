@@ -1,4 +1,0 @@
-[submodule "vendors/ladesa-ro/protobufs"]
-	path = vendors/ladesa-ro/protobufs
-	url = git@github.com:ladesa-ro/protobufs.git
-    branch = main

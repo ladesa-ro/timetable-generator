@@ -1,5 +1,5 @@
+using System.Text;
 using System.Text.Json;
-using Google.Protobuf;
 using Ladesa.TimetableGenerator.v1.Service.Features.Generator.Config;
 using Ladesa.TimetableGenerator.v1.Service.Features.Generator.DTOs;
 using Ladesa.TimetableGenerator.v1.Service.Shared.Application.Ports;
@@ -17,11 +17,12 @@ public class GeneratorListenWorker(IGeneratorListenWorkerConfig generatorListenW
             config.QueueListen,
             async bytes =>
             {
-                Protobuf.ServiceGenerateRequest serviceGenerateRequestDtoProtobuf;
+                Msg.GenerateRequest generateRequestMessagesDto;
 
                 try
                 {
-                    serviceGenerateRequestDtoProtobuf = Protobuf.ServiceGenerateRequest.Parser.ParseFrom(bytes);
+                    var json = Encoding.UTF8.GetString(bytes);
+                    generateRequestMessagesDto = Msg.GenerateRequest.FromJson(json);
                 }
                 catch (Exception ex)
                 {
@@ -40,7 +41,7 @@ public class GeneratorListenWorker(IGeneratorListenWorkerConfig generatorListenW
                 try
                 {
                     serviceGenerateRequestDto =
-                        ServiceGenerateRequestMapper.ToServiceDto(serviceGenerateRequestDtoProtobuf);
+                        ServiceGenerateRequestMapper.ToServiceDto(generateRequestMessagesDto);
                 }
                 catch (Exception ex)
                 {
@@ -75,11 +76,12 @@ public class GeneratorListenWorker(IGeneratorListenWorkerConfig generatorListenW
                         DateOnly.FromDateTime(DateTime.Now)
                     );
 
-                    var responseDtoProtobuf = ServiceGenerateResponseMapper.ToProtobufDto(responseDto);
+                    var responseDtoMessages = ServiceGenerateResponseMapper.ToMessagesDto(responseDto);
 
-                    var responseDtoProtobufBytes = responseDtoProtobuf.ToByteArray();
+                    var responseDtoJson = Msg.Serialize.ToJson(responseDtoMessages);
+                    var responseDtoBytes = Encoding.UTF8.GetBytes(responseDtoJson);
 
-                    await queuePublisher.PublishAsync(config.QueueReply, responseDtoProtobufBytes, stoppingToken);
+                    await queuePublisher.PublishAsync(config.QueueReply, responseDtoBytes, stoppingToken);
                 }
                 catch (Exception ex)
                 {
@@ -97,11 +99,12 @@ public class GeneratorListenWorker(IGeneratorListenWorkerConfig generatorListenW
                         DateOnly.FromDateTime(DateTime.Now)
                     );
 
-                    var responseDtoProtobuf = ServiceGenerateResponseMapper.ToProtobufDto(responseDto);
+                    var responseDtoMessages = ServiceGenerateResponseMapper.ToMessagesDto(responseDto);
 
-                    var responseDtoProtobufBytes = responseDtoProtobuf.ToByteArray();
+                    var responseDtoJson = Msg.Serialize.ToJson(responseDtoMessages);
+                    var responseDtoBytes = Encoding.UTF8.GetBytes(responseDtoJson);
 
-                    await queuePublisher.PublishAsync(config.QueueReply, responseDtoProtobufBytes, stoppingToken);
+                    await queuePublisher.PublishAsync(config.QueueReply, responseDtoBytes, stoppingToken);
                 }
             },
             stoppingToken

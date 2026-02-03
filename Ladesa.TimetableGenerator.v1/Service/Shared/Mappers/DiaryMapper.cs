@@ -2,23 +2,23 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class DiaryMapper
 {
-    public static Core.Domain.Diary ToCoreDomainEntity(Protobuf.Diary protobufDto)
+    public static Core.Domain.Diary ToCoreDomainEntity(Msg.DiaryElement messagesDto)
     {
         var coreDomainEntity = new Core.Domain.Diary(
-            protobufDto.Id,
-            protobufDto.GroupId,
-            protobufDto.TeacherId,
-            protobufDto.SubjectId,
-            protobufDto.WeekLimit,
-            protobufDto.Remaining
+            messagesDto.Id,
+            messagesDto.GroupId,
+            messagesDto.TeacherId,
+            messagesDto.SubjectId,
+            (int)messagesDto.WeekLimit,
+            (int)messagesDto.Remaining
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.Diary ToProtobufDto(Core.Domain.Diary coreDomainEntity)
+    public static Msg.DiaryElement ToMessagesDto(Core.Domain.Diary coreDomainEntity)
     {
-        var protobufDto = new Protobuf.Diary
+        var messagesDto = new Msg.DiaryElement
         {
             Id = coreDomainEntity.Id,
             GroupId = coreDomainEntity.GroupId,
@@ -28,6 +28,6 @@ public static class DiaryMapper
             Remaining = coreDomainEntity.Remaining
         };
 
-        return protobufDto;
+        return messagesDto;
     }
 }

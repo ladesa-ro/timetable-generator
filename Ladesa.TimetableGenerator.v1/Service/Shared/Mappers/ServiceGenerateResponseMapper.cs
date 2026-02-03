@@ -1,48 +1,50 @@
-using System.Globalization;
 using Ladesa.TimetableGenerator.v1.Service.Features.Generator.DTOs;
 
 namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class ServiceGenerateResponseMapper
 {
-    public static ServiceGenerateResponseDto ToServiceDto(
-        Protobuf.ServiceGenerateResponse protobufDto)
+    public static ServiceGenerateResponseDto ToServiceDto(Msg.ServiceGenerateResponse messagesDto)
     {
+        var isSuccessful = string.IsNullOrEmpty(messagesDto.Result?.ErrorCode);
+
         var serviceDto = new ServiceGenerateResponseDto(
-            RequestId: Guid.Parse(input: protobufDto.RequestId),
-            IsSuccessful: protobufDto.IsSuccessful,
-            
-            Success: protobufDto.ResultSuccess is not null
-                ? ServiceGenerateResponseResultSuccessMapper.ToServiceDto(
-                    protobufDto: protobufDto.ResultSuccess)
+            RequestId: Guid.Parse(input: messagesDto.RequestId),
+            IsSuccessful: isSuccessful,
+
+            Success: isSuccessful && messagesDto.Result is not null
+                ? ServiceGenerateResponseResultSuccessMapper.ToServiceDto(messagesDto: messagesDto.Result)
                 : null,
-            
-            Error: protobufDto.ResultError is not null
-                ? ServiceGenerateResponseResultErrorMapper.ToServiceDto(
-                    protobufDto: protobufDto.ResultError)
+
+            Error: !isSuccessful && messagesDto.Result is not null
+                ? ServiceGenerateResponseResultErrorMapper.ToServiceDto(messagesDto: messagesDto.Result)
                 : null,
-            
-            DateTimeIssued: DateOnly.Parse(s: protobufDto.DateTimeIssued, provider: CultureInfo.InvariantCulture)
+
+            DateTimeIssued: DateOnly.FromDateTime(messagesDto.DateTimeIssued.DateTime)
         );
         return serviceDto;
     }
 
-    public static Protobuf.ServiceGenerateResponse ToProtobufDto(
-        ServiceGenerateResponseDto applicationDto)
+    public static Msg.ServiceGenerateResponse ToMessagesDto(ServiceGenerateResponseDto applicationDto)
     {
-        var protobufDto = new Protobuf.ServiceGenerateResponse
-        {
-            RequestId = applicationDto.RequestId.ToString(),
-            IsSuccessful = applicationDto.IsSuccessful,
-            DateTimeIssued = applicationDto.DateTimeIssued.ToString(provider: CultureInfo.InvariantCulture)
-        };
+        Msg.Result? result = null;
 
         if (applicationDto.Success is not null)
-            protobufDto.ResultSuccess = ServiceGenerateResponseResultSuccessMapper.ToProtobufDto(serviceDto: applicationDto.Success);
+        {
+            result = ServiceGenerateResponseResultSuccessMapper.ToMessagesDto(serviceDto: applicationDto.Success);
+        }
+        else if (applicationDto.Error is not null)
+        {
+            result = ServiceGenerateResponseResultErrorMapper.ToMessagesDto(serviceDto: applicationDto.Error);
+        }
 
-        if (applicationDto.Error is not null)
-            protobufDto.ResultError = ServiceGenerateResponseResultErrorMapper.ToProtobufDto(serviceDto: applicationDto.Error);
+        var messagesDto = new Msg.ServiceGenerateResponse
+        {
+            RequestId = applicationDto.RequestId.ToString(),
+            DateTimeIssued = new DateTimeOffset(applicationDto.DateTimeIssued.ToDateTime(TimeOnly.MinValue)),
+            Result = result
+        };
 
-        return protobufDto;
+        return messagesDto;
     }
 }

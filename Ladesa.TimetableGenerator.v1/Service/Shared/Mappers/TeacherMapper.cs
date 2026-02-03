@@ -2,22 +2,22 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class TeacherMapper
 {
-    public static Core.Domain.Teacher ToCoreDomainEntity(Protobuf.Teacher protobufDto)
+    public static Core.Domain.Teacher ToCoreDomainEntity(Msg.TeacherElement messagesDto)
     {
         var coreDomainEntity = new Core.Domain.Teacher(
-            protobufDto.Id,
-            AvailabilityMapper.ToCoreDomainEntity(protobufDto.Availability)
+            messagesDto.Id,
+            AvailabilityMapper.ToCoreDomainEntity(messagesDto.Availability)
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.Teacher ToProtobufDto(Core.Domain.Teacher coreDomainEntity)
+    public static Msg.TeacherElement ToMessagesDto(Core.Domain.Teacher coreDomainEntity)
     {
-        return new Protobuf.Teacher
+        return new Msg.TeacherElement
         {
             Id = coreDomainEntity.Id,
-            Availability = AvailabilityMapper.ToProtobufDto(coreDomainEntity.Availability)
+            Availability = AvailabilityMapper.ToMessagesDto(coreDomainEntity.Availability)
         };
     }
 }

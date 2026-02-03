@@ -2,24 +2,24 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class GeneratedTimetableMapper
 {
-    public static Core.Domain.GeneratedTimetable ToCoreDomainEntity(Protobuf.GeneratedTimetable protobufDto)
+    public static Core.Domain.GeneratedTimetable ToCoreDomainEntity(Msg.GeneratedTimetableElement messagesDto)
     {
         var coreDomainEntity = new Core.Domain.GeneratedTimetable(
-            TimetableGridMapper.ToCoreDomainEntity(protobufDto.Timetable),
-            protobufDto.Score
+            TimetableGridMapper.ToCoreDomainEntity(messagesDto.TimeTable),
+            (int)messagesDto.Score
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.GeneratedTimetable ToProtobufDto(Core.Domain.GeneratedTimetable coreDomainEntity)
+    public static Msg.GeneratedTimetableElement ToMessagesDto(Core.Domain.GeneratedTimetable coreDomainEntity)
     {
-        var protobufDto = new Protobuf.GeneratedTimetable
+        var messagesDto = new Msg.GeneratedTimetableElement
         {
-            Timetable = TimetableGridMapper.ToProtobuf(coreDomainEntity.Timetable),
+            TimeTable = TimetableGridMapper.ToMessagesDto(coreDomainEntity.Timetable),
             Score = coreDomainEntity.Score
         };
 
-        return protobufDto;
+        return messagesDto;
     }
 }

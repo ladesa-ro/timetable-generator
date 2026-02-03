@@ -5,27 +5,27 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 public static class AvailabilityRuleUnavailabilityMapper
 {
     public static Core.Domain.AvailabilityRuleUnavailability ToCoreDomainEntity(
-        Protobuf.AvailabilityRuleUnavailability protobufDto)
+        Msg.RuleElement messagesDto)
     {
         var coreDomainEntity = new Core.Domain.AvailabilityRuleUnavailability(
-            protobufDto.RRule,
-            DateTime.Parse(protobufDto.DateStart, CultureInfo.InvariantCulture),
-            protobufDto.DateEnd is not null ? DateTime.Parse(protobufDto.DateEnd, CultureInfo.InvariantCulture) : null
+            messagesDto.RRule,
+            messagesDto.DateStart.DateTime,
+            messagesDto.DateEnd is not null ? DateTime.Parse(messagesDto.DateEnd, CultureInfo.InvariantCulture) : null
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.AvailabilityRuleUnavailability ToProtobufDto(
+    public static Msg.RuleElement ToMessagesDto(
         Core.Domain.AvailabilityRuleUnavailability coreDomainEntity)
     {
-        var protobufDto = new Protobuf.AvailabilityRuleUnavailability
+        var messagesDto = new Msg.RuleElement
         {
             RRule = coreDomainEntity.RRule,
-            DateStart = coreDomainEntity.DateStart.ToString(CultureInfo.InvariantCulture),
+            DateStart = new DateTimeOffset(coreDomainEntity.DateStart),
             DateEnd = coreDomainEntity.DateEnd?.ToString(CultureInfo.InvariantCulture)
         };
 
-        return protobufDto;
+        return messagesDto;
     }
 }

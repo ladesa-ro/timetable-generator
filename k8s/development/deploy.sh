@@ -2,16 +2,16 @@
 
 set -xeo pipefail
 
-# Aplica secrets e deployment
-kubectl apply -f ./secrets/timetable-generator.yaml
 kubectl apply -f ./deployments/timetable-generator.yaml
+kubectl apply -f ./services/timetable-generator.yaml
 
 # Reinicia o deployment
 kubectl rollout restart \
-  deployment.apps/ladesa-ro-timetable-generator \
-  --namespace ladesa-ro-development
+  deployment.apps/timetable-generator \
+  --namespace ladesa
 
 # Aguarda o rollout finalizar
 kubectl rollout status \
-  deployment/ladesa-ro-timetable-generator \
-  --namespace ladesa-ro-development
+  deployment/timetable-generator \
+  --namespace ladesa
+  --timeout=300s

@@ -2,22 +2,23 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class AvailabilityMapper
 {
-    public static Core.Domain.Availability ToCoreDomainEntity(Protobuf.Availability protobufDto)
+    public static Core.Domain.Availability ToCoreDomainEntity(Msg.AvailabilityClass messagesDto)
     {
         var coreDomainEntity = new Core.Domain.Availability(
-            protobufDto.RulesUnavailability.Select(AvailabilityRuleUnavailabilityMapper.ToCoreDomainEntity).ToArray()
+            messagesDto.Rules?.Select(AvailabilityRuleUnavailabilityMapper.ToCoreDomainEntity).ToArray() ?? []
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.Availability ToProtobufDto(Core.Domain.Availability coreDomainEntity)
+    public static Msg.AvailabilityClass ToMessagesDto(Core.Domain.Availability coreDomainEntity)
     {
-        var protobufDto = new Protobuf.Availability { };
+        var messagesDto = new Msg.AvailabilityClass
+        {
+            Rules = coreDomainEntity.RulesUnavailability
+                ?.Select(AvailabilityRuleUnavailabilityMapper.ToMessagesDto).ToArray()
+        };
 
-        protobufDto.RulesUnavailability.AddRange(coreDomainEntity.RulesUnavailability
-            ?.Select(AvailabilityRuleUnavailabilityMapper.ToProtobufDto).ToArray());
-
-        return protobufDto;
+        return messagesDto;
     }
 }

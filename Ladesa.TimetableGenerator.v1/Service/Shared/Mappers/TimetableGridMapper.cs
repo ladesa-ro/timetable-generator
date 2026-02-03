@@ -1,31 +1,28 @@
-using System.Globalization;
-
 namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class TimetableGridMapper
 {
-    public static Core.Domain.TimetableGrid ToCoreDomainEntity(Protobuf.TimetableGrid protobufDto)
+    public static Core.Domain.TimetableGrid ToCoreDomainEntity(Msg.TimeTable messagesDto)
     {
         var coreDomainEntity = new Core.Domain.TimetableGrid(
-            DateOnly.Parse(protobufDto.DateEnd, CultureInfo.InvariantCulture),
-            DateOnly.Parse(protobufDto.DateEnd, CultureInfo.InvariantCulture),
-            protobufDto.TimeSlots.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray(),
-            protobufDto.Schedules.Select(TimetableGridScheduleMapper.ToCoreDomainEntity).ToArray()
+            DateOnly.FromDateTime(messagesDto.DateStart.DateTime),
+            DateOnly.FromDateTime(messagesDto.DateEnd.DateTime),
+            messagesDto.TimeSlots?.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray() ?? [],
+            messagesDto.Schedules?.Select(TimetableGridScheduleMapper.ToCoreDomainEntity).ToArray() ?? []
         );
 
         return coreDomainEntity;
     }
 
-    public static Protobuf.TimetableGrid ToProtobuf(Core.Domain.TimetableGrid domain)
+    public static Msg.TimeTable ToMessagesDto(Core.Domain.TimetableGrid domain)
     {
-        var dto = new Protobuf.TimetableGrid
+        var dto = new Msg.TimeTable
         {
-            DateStart = domain.DateStart.ToString(CultureInfo.InvariantCulture),
-            DateEnd = domain.DateEnd.ToString(CultureInfo.InvariantCulture)
+            DateStart = new DateTimeOffset(domain.DateStart.ToDateTime(TimeOnly.MinValue)),
+            DateEnd = new DateTimeOffset(domain.DateEnd.ToDateTime(TimeOnly.MinValue)),
+            TimeSlots = domain.TimeSlots.Select(TimeSlotMapper.ToMessagesDto).ToArray(),
+            Schedules = domain.Schedules.Select(TimetableGridScheduleMapper.ToMessagesDto).ToArray()
         };
-
-        dto.TimeSlots.AddRange(domain.TimeSlots.Select(TimeSlotMapper.ToProtobufDto).ToArray());
-        dto.Schedules.AddRange(domain.Schedules.Select(TimetableGridScheduleMapper.ToProtobuf).ToArray());
 
         return dto;
     }

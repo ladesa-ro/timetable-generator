@@ -2,20 +2,20 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class GroupMapper
 {
-    public static Core.Domain.Group ToCoreDomainEntity(Protobuf.Group dto)
+    public static Core.Domain.Group ToCoreDomainEntity(Msg.GroupElement dto)
     {
         return new Core.Domain.Group(
-            Id: dto.Id, 
-            Availability: AvailabilityMapper.ToCoreDomainEntity(protobufDto: dto.Availability)
+            Id: dto.Id,
+            Availability: AvailabilityMapper.ToCoreDomainEntity(messagesDto: dto.Availability)
         );
     }
 
-    public static Protobuf.Group ToDto(Core.Domain.Group domain)
+    public static Msg.GroupElement ToMessagesDto(Core.Domain.Group domain)
     {
-        return new Protobuf.Group
+        return new Msg.GroupElement
         {
             Id = domain.Id,
-            Availability = AvailabilityMapper.ToProtobufDto(coreDomainEntity: domain.Availability)
+            Availability = AvailabilityMapper.ToMessagesDto(coreDomainEntity: domain.Availability)
         };
     }
 }

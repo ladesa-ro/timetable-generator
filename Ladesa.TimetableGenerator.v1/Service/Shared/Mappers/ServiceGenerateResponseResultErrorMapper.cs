@@ -4,27 +4,25 @@ namespace Ladesa.TimetableGenerator.v1.Service.Shared.Mappers;
 
 public static class ServiceGenerateResponseResultErrorMapper
 {
-    public static ServiceGenerateResponseResultErrorDto ToServiceDto(
-        Protobuf.ServiceGenerateResponseResultError protobufDto)
+    public static ServiceGenerateResponseResultErrorDto ToServiceDto(Msg.Result messagesDto)
     {
         var serviceDto = new ServiceGenerateResponseResultErrorDto(
-            protobufDto.ErrorCode,
-            protobufDto.ErrorMessage,
-            protobufDto.AdditionalInfo
+            messagesDto.ErrorCode,
+            messagesDto.ErrorMessage,
+            messagesDto.AdditionalInfo
         );
         return serviceDto;
     }
 
-    public static Protobuf.ServiceGenerateResponseResultError ToProtobufDto(
-        ServiceGenerateResponseResultErrorDto serviceDto)
+    public static Msg.Result ToMessagesDto(ServiceGenerateResponseResultErrorDto serviceDto)
     {
-        var protobufDto = new Protobuf.ServiceGenerateResponseResultError
+        var messagesDto = new Msg.Result
         {
             ErrorCode = serviceDto.ErrorCode,
             ErrorMessage = serviceDto.ErrorMessage,
             AdditionalInfo = serviceDto.AdditionalInfo
         };
 
-        return protobufDto;
+        return messagesDto;
     }
 }
