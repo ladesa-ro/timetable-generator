@@ -1,13 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: timetable-generator
-  namespace: ladesa
+  name: ladesa-ro-timetable-generator
+  namespace: ladesa-ro-development
+  annotations:
+    secrets.infisical.com/auto-reload: "true"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: timetable-generator
+      app: ladesa-ro-timetable-generator
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -16,13 +18,13 @@ spec:
   template:
     metadata:
       labels:
-        app: timetable-generator
+        app: ladesa-ro-timetable-generator
     spec:
       containers:
-        - name: timetable-generator
+        - name: ladesa-ro-timetable-generator
           envFrom:
            - secretRef:
-               name: timetable-generator-config
+               name: ladesa-ro-timetable-generator-config
                optional: false
           image: ghcr.io/ladesa-ro/timetable-generator/timetable-generator:development
           imagePullPolicy: Always
