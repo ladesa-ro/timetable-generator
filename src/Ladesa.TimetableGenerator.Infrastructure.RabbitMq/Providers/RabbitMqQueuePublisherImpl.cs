@@ -15,7 +15,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 /// </summary>
 public sealed class RabbitMqQueuePublisherImpl : RabbitMqDisposableBase, IQueuePublisher
 {
-    private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
+    private readonly IRabbitMqPersistentConnection _persistentConnection;
     private readonly ILogger<RabbitMqQueuePublisherImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
     private readonly SemaphoreSlim _channelSemaphore = new(1, 1);
@@ -23,14 +23,14 @@ public sealed class RabbitMqQueuePublisherImpl : RabbitMqDisposableBase, IQueueP
     private IChannel? _channel;
 
     public RabbitMqQueuePublisherImpl(
-        RabbitMqPersistentConnectionImpl persistentConnectionImpl,
+        IRabbitMqPersistentConnection persistentConnection,
         ILogger<RabbitMqQueuePublisherImpl> logger,
         int retryCount = 3)
     {
-        _persistentConnectionImpl = persistentConnectionImpl;
+        _persistentConnection = persistentConnection;
         _logger = logger;
 
-        _persistentConnectionImpl.OnReconnected += OnConnectionImplReconnected;
+        _persistentConnection.OnReconnected += OnConnectionImplReconnected;
 
         _retryPolicy = Policy.Handle<BrokerUnreachableException>()
             .Or<SocketException>()
@@ -85,7 +85,7 @@ public sealed class RabbitMqQueuePublisherImpl : RabbitMqDisposableBase, IQueueP
 
             _logger.LogInformation("Channel does not exist or is closed. Creating a new channel...");
 
-            _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
+            _channel = await _persistentConnection.CreateChannelAsync(cancellationToken);
             _channel.CallbackExceptionAsync += OnChannelCallbackException;
 
             await _channel.QueueDeclareAsync(queueName, true, false, false, null, cancellationToken: cancellationToken);
@@ -121,7 +121,7 @@ public sealed class RabbitMqQueuePublisherImpl : RabbitMqDisposableBase, IQueueP
     {
         if (!TryMarkDisposed()) return;
 
-        _persistentConnectionImpl.OnReconnected -= OnConnectionImplReconnected;
+        _persistentConnection.OnReconnected -= OnConnectionImplReconnected;
 
         try
         {

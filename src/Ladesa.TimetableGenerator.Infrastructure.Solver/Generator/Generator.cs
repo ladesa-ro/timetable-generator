@@ -1,6 +1,5 @@
 using System.Threading.Channels;
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;

@@ -1,6 +1,4 @@
-using Ladesa.TimetableGenerator.Domain.Models;
-
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
+namespace Ladesa.TimetableGenerator.Domain.Models;
 
 /// <summary>
 /// Constants for common time slots used in scheduling constraints.

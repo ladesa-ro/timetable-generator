@@ -1,3 +1,5 @@
+using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Constraints;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
@@ -5,10 +7,11 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 /// <summary>
 ///     CONSTRAINT: Teacher - no more than one schedule at the same time.
 /// </summary>
-public class ConstraintTeacherOneScheduleAtSameTime : IConstraint
+public class ConstraintTeacherOneScheduleAtSameTime : IConstraintTeacherOneScheduleAtSameTime
 {
-    public void Apply(GenerationContext generationContext)
+    public void Apply(IGenerationContext context)
     {
+        var generationContext = (GenerationContext)context;
         ConstraintHelpers.ApplyAtMostOnePerGroup(
             generationContext,
             p => new { p.Date, p.TeacherId, p.TimeSlot });

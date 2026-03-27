@@ -1,5 +1,5 @@
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
+using Ladesa.TimetableGenerator.Domain.Models.Constraints;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
@@ -7,12 +7,13 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 /// <summary>
 ///     CONSTRAINT: Teacher - no more than 12 hours in a day.
 /// </summary>
-public class ConstraintTeacher12Hours : IConstraint
+public class ConstraintTeacher12Hours : IConstraintTeacher12Hours
 {
     private static readonly TimeSpan MaxDailyWorkDuration = new(12, 0, 0);
 
-    public void Apply(GenerationContext generationContext)
+    public void Apply(IGenerationContext context)
     {
+        var generationContext = (GenerationContext)context;
         foreach (var date in generationContext.GenerateRequest.GetDates())
         {
             var nextDay = date.AddDays(1);

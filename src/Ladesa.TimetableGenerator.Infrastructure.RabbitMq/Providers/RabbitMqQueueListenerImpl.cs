@@ -15,7 +15,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 /// </summary>
 public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueListener
 {
-    private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
+    private readonly IRabbitMqPersistentConnection _persistentConnection;
     private readonly ILogger<RabbitMqQueueListenerImpl> _logger;
     private readonly ushort _prefetchCount;
     private readonly SemaphoreSlim _initializationSemaphore = new(1, 1);
@@ -26,15 +26,15 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
     private Func<byte[], Task>? _messageHandler;
 
     public RabbitMqQueueListenerImpl(
-        RabbitMqPersistentConnectionImpl persistentConnectionImpl,
+        IRabbitMqPersistentConnection persistentConnection,
         IRabbitMqConfigProvider configProvider,
         ILogger<RabbitMqQueueListenerImpl> logger)
     {
-        _persistentConnectionImpl = persistentConnectionImpl;
+        _persistentConnection = persistentConnection;
         _logger = logger;
         _prefetchCount = configProvider.GetConnectionOptions().PrefetchCount;
 
-        _persistentConnectionImpl.OnReconnected += OnConnectionImplReconnected;
+        _persistentConnection.OnReconnected += OnConnectionImplReconnected;
     }
 
     public async Task SubscribeAsync(
@@ -46,8 +46,8 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
         _messageHandler = handler ?? throw new ArgumentNullException(nameof(handler));
         _queueName = queue;
 
-        await _persistentConnectionImpl.TryConnectAsync(cancellationToken);
-        if (_persistentConnectionImpl.IsConnected) await InitializeConsumerAsync(cancellationToken);
+        await _persistentConnection.TryConnectAsync(cancellationToken);
+        if (_persistentConnection.IsConnected) await InitializeConsumerAsync(cancellationToken);
     }
 
     private async Task InitializeConsumerAsync(CancellationToken cancellationToken = default)
@@ -102,7 +102,7 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
 
     private async Task SetupChannelAsync(CancellationToken cancellationToken)
     {
-        _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
+        _channel = await _persistentConnection.CreateChannelAsync(cancellationToken);
         _channel.CallbackExceptionAsync += OnChannelCallbackException;
     }
 
@@ -167,7 +167,7 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
     {
         if (!TryMarkDisposed()) return;
 
-        _persistentConnectionImpl.OnReconnected -= OnConnectionImplReconnected;
+        _persistentConnection.OnReconnected -= OnConnectionImplReconnected;
 
         try
         {

@@ -11,18 +11,18 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 
 public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetterHandler
 {
-    private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
+    private readonly IRabbitMqPersistentConnection _persistentConnection;
     private readonly ILogger<RabbitMqDeadLetterHandlerImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
 
     private IChannel? _channel;
 
     public RabbitMqDeadLetterHandlerImpl(
-        RabbitMqPersistentConnectionImpl persistentConnectionImpl,
+        IRabbitMqPersistentConnection persistentConnection,
         ILogger<RabbitMqDeadLetterHandlerImpl> logger,
         int retryCount = 3)
     {
-        _persistentConnectionImpl = persistentConnectionImpl ?? throw new ArgumentNullException(nameof(persistentConnectionImpl));
+        _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         _retryPolicy = Policy.Handle<Exception>()
@@ -43,10 +43,10 @@ public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetter
         if (_channel != null && _channel.IsOpen)
             return _channel;
 
-        if (!await _persistentConnectionImpl.TryConnectAsync(cancellationToken))
+        if (!await _persistentConnection.TryConnectAsync(cancellationToken))
             throw new InvalidOperationException("Could not connect to RabbitMQ to create DLQ channel.");
 
-        _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
+        _channel = await _persistentConnection.CreateChannelAsync(cancellationToken);
         return _channel;
     }
 

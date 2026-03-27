@@ -1,6 +1,7 @@
 using System.Globalization;
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Constraints;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
@@ -8,10 +9,11 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 /// <summary>
 ///     CONSTRAINT: Diary - limit how many schedules can be in one week.
 /// </summary>
-public class ConstraintDiaryLimitSchedulesInOneWeek : IConstraint
+public class ConstraintDiaryLimitSchedulesInOneWeek : IConstraintDiaryLimitSchedulesInOneWeek
 {
-    public void Apply(GenerationContext generationContext)
+    public void Apply(IGenerationContext context)
     {
+        var generationContext = (GenerationContext)context;
         foreach (var group in generationContext.GenerateRequest.Groups)
         foreach (var diary in generationContext.GenerateRequest.DiaryFindByGroupId(group.Id))
         {

@@ -11,22 +11,23 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 public class TimetableOptimizer : ITimetableOptimizer
 {
     public void OptimizeResult(
-        GenerationContext context,
+        IGenerationContext context,
         long? scoreLimit = null)
     {
+        var generationContext = (GenerationContext)context;
         var qualityScore = LinearExpr.NewBuilder();
 
-        AddBasicScheduleScore(qualityScore, context);
+        AddBasicScheduleScore(qualityScore, generationContext);
 
-        var previousTimetableGrid = context.GenerateRequest.PreviousTimetableGrid;
+        var previousTimetableGrid = generationContext.GenerateRequest.PreviousTimetableGrid;
         if (previousTimetableGrid is not null)
-            AddPreviousTimetableBonus(qualityScore, context, previousTimetableGrid);
+            AddPreviousTimetableBonus(qualityScore, generationContext, previousTimetableGrid);
 
         if (scoreLimit != null)
-            context.CpModel.Add(qualityScore <= context.CpModel.NewConstant((long)scoreLimit));
+            generationContext.CpModel.Add(qualityScore <= generationContext.CpModel.NewConstant((long)scoreLimit));
 
-        context.CpModel.Maximize(qualityScore);
-        context.Score = qualityScore;
+        generationContext.CpModel.Maximize(qualityScore);
+        generationContext.Score = qualityScore;
     }
 
     private static void AddBasicScheduleScore(LinearExprBuilder qualityScore, GenerationContext context)

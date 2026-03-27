@@ -11,7 +11,7 @@ public class GenerationContextScheduleProposal(
     DateOnly date,
     TimeSlot timeSlot,
     BoolVar? modelBoolVar = null
-)
+) : IScheduleProposal
 {
     private GenerationContext GenerationContext { get; } = generationContext;
 

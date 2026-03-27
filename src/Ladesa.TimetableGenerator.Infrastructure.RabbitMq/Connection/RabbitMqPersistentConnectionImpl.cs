@@ -7,7 +7,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 
-public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
+public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase, IRabbitMqPersistentConnection
 {
     private const double RetryBackoffBase = 2.0;
     private const int MaxJitterMilliseconds = 1000;

@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Constraints;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
@@ -10,7 +10,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 ///     Allowed combinations: none, morning only, afternoon only, night only,
 ///     morning+afternoon, afternoon+night. (Morning+night is forbidden.)
 /// </summary>
-public class ConstraintTeacherNoOppositeTurns : IConstraint
+public class ConstraintTeacherNoOppositeTurns : IConstraintTeacherNoOppositeTurns
 {
     /// <summary>
     ///     Allowed shift combinations per teacher per day: [morning, afternoon, night].
@@ -28,8 +28,9 @@ public class ConstraintTeacherNoOppositeTurns : IConstraint
         // { 1, 0, 1 } is intentionally excluded: morning + night (opposite turns)
     };
 
-    public void Apply(GenerationContext generationContext)
+    public void Apply(IGenerationContext context)
     {
+        var generationContext = (GenerationContext)context;
         var proposalsByTeacherAndDate = GroupProposalsByTeacherAndDate(generationContext);
 
         foreach (var bucket in proposalsByTeacherAndDate)

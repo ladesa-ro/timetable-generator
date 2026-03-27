@@ -1,3 +1,4 @@
+using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
