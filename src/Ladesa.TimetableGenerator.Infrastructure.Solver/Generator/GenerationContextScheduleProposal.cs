@@ -3,7 +3,7 @@ using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-public class GenerationContextScheduleProposal(
+internal class GenerationContextScheduleProposal(
     GenerationContext generationContext,
     string groupId,
     string diaryId,

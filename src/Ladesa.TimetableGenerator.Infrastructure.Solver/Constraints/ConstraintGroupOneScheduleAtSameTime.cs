@@ -1,17 +1,16 @@
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: Group - no more than one schedule at the same time.
 /// </summary>
-public static class ConstraintGroupOneScheduleAtSameTime
+internal class ConstraintGroupOneScheduleAtSameTime : IConstraint
 {
-    public static void Apply(GenerationContext generationContext)
+    public void Apply(GenerationContext context)
     {
         ConstraintHelpers.ApplyAtMostOnePerGroup(
-            generationContext,
+            context,
             p => new { p.Date, p.GroupId, p.TimeSlot });
     }
 }

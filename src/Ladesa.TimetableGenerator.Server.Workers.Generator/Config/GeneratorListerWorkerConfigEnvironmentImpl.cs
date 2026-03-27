@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Extensions;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
 

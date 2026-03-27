@@ -1,5 +1,5 @@
 .github/**/* @ladesa-ro/security
-k8s/**/* @ladesa-ro/security @ladesa-ro/devops
+.deploy/**/* @ladesa-ro/security @ladesa-ro/devops
 CODEOWNERS  @ladesa-ro/security
 **/*.sh  @ladesa-ro/security
 Makefile @ladesa-ro/security @ladesa-ro/devops

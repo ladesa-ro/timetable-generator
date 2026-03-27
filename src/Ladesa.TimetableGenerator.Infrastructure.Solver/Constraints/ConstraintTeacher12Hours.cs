@@ -1,27 +1,25 @@
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
+using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: Teacher - no more than 12 hours in a day.
 /// </summary>
-public static class ConstraintTeacher12Hours
+internal class ConstraintTeacher12Hours : IConstraint
 {
-    public static void Apply(GenerationContext generationContext)
-    {
-        var timeSpan12 = new TimeSpan(12, 0, 0);
+    private static readonly TimeSpan MaxDailyWorkDuration = new(12, 0, 0);
 
-        foreach (var date in generationContext.GenerateRequest.GetDates())
+    public void Apply(GenerationContext context)
+    {
+        foreach (var date in context.GenerateRequest.GetDates())
         {
             var nextDay = date.AddDays(1);
 
-            foreach (var teacher in generationContext.GenerateRequest.Teachers)
+            foreach (var teacher in context.GenerateRequest.Teachers)
             {
                 var nightProposals =
-                    from scheduleProposal in generationContext.AllProposals
+                    from scheduleProposal in context.AllProposals
                     where
                         scheduleProposal.TeacherId == teacher.Id
                         && scheduleProposal.Date == date
@@ -30,10 +28,10 @@ public static class ConstraintTeacher12Hours
 
                 foreach (var nightProposal in nightProposals)
                 {
-                    var timeSpanAfter12 = TimeSpan.Parse(nightProposal.TimeSlot.End).Add(timeSpan12);
+                    var timeSpanAfter12 = TimeSpan.Parse(nightProposal.TimeSlot.End).Add(MaxDailyWorkDuration);
 
                     var conflictingProposalsNextDay =
-                        from scheduleProposal in generationContext.AllProposals
+                        from scheduleProposal in context.AllProposals
                         where
                             scheduleProposal.Date == nextDay
                             && scheduleProposal.TeacherId == nightProposal.TeacherId
@@ -48,7 +46,7 @@ public static class ConstraintTeacher12Hours
                         .Select(v => v.Not())
                         .ToArray();
 
-                    generationContext
+                    context
                         .CpModel.AddBoolAnd(negatedVariables)
                         .OnlyEnforceIf(nightProposal.ModelBoolVar);
                 }

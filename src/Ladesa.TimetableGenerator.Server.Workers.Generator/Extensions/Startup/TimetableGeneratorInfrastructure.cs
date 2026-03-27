@@ -11,7 +11,7 @@ public static class TimetableGeneratorInfrastructureExtensions
     {
         services.AddSingleton<IRabbitMqConfigProvider, RabbitMqConfigEnvironmentImpl>();
         services.AddSingleton<IRabbitMqConnectionFactory, RabbitMqConnectionFactoryImpl>();
-        services.AddSingleton<RabbitMqPersistentConnectionImpl>();
+        services.AddSingleton<IRabbitMqPersistentConnection, RabbitMqPersistentConnectionImpl>();
         services.AddSingleton<IQueueListener, RabbitMqQueueListenerImpl>();
         services.AddSingleton<IQueuePublisher, RabbitMqQueuePublisherImpl>();
         services.AddSingleton<IDeadLetterHandler, RabbitMqDeadLetterHandlerImpl>();

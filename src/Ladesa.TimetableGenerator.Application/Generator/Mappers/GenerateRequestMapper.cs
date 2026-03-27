@@ -3,35 +3,45 @@ namespace Ladesa.TimetableGenerator.Application.Generator.Mappers;
 public static class GenerateRequestMapper
 {
     public static Domain.Models.GenerateRequest ToCoreDomainEntity(Msg.GenerateRequest dto)
-    {
-        var coreDomainEntity = new Domain.Models.GenerateRequest(
-            DateOnly.FromDateTime(dto.DateStart.DateTime),
-            DateOnly.FromDateTime(dto.DateEnd.DateTime),
-            dto.Groups?.Select(GroupMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.Teachers?.Select(TeacherMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.Diaries?.Select(DiaryMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.TimeSlots?.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray() ?? [],
+        => MapToCoreDomainEntity(
+            dto.DateStart, dto.DateEnd,
+            dto.Groups?.Select(GroupMapper.ToCoreDomainEntity).ToArray(),
+            dto.Teachers?.Select(TeacherMapper.ToCoreDomainEntity).ToArray(),
+            dto.Diaries?.Select(DiaryMapper.ToCoreDomainEntity).ToArray(),
+            dto.TimeSlots?.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray(),
             dto.PreviousTimetableGrid is not null
                 ? TimetableGridMapper.ToCoreDomainEntity(dto.PreviousTimetableGrid)
-                : null
-        );
-        return coreDomainEntity;
-    }
+                : null);
 
     public static Domain.Models.GenerateRequest ToCoreDomainEntity(Msg.GenerateRequestClass dto)
-    {
-        var coreDomainEntity = new Domain.Models.GenerateRequest(
-            DateOnly.FromDateTime(dto.DateStart.DateTime),
-            DateOnly.FromDateTime(dto.DateEnd.DateTime),
-            dto.Groups?.Select(GroupMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.Teachers?.Select(TeacherMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.Diaries?.Select(DiaryMapper.ToCoreDomainEntity).ToArray() ?? [],
-            dto.TimeSlots?.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray() ?? [],
+        => MapToCoreDomainEntity(
+            dto.DateStart, dto.DateEnd,
+            dto.Groups?.Select(GroupMapper.ToCoreDomainEntity).ToArray(),
+            dto.Teachers?.Select(TeacherMapper.ToCoreDomainEntity).ToArray(),
+            dto.Diaries?.Select(DiaryMapper.ToCoreDomainEntity).ToArray(),
+            dto.TimeSlots?.Select(TimeSlotMapper.ToCoreDomainValueObject).ToArray(),
             dto.PreviousTimetableGrid is not null
                 ? TimetableGridMapper.ToCoreDomainEntity(dto.PreviousTimetableGrid)
-                : null
+                : null);
+
+    private static Domain.Models.GenerateRequest MapToCoreDomainEntity(
+        DateTimeOffset dateStart,
+        DateTimeOffset dateEnd,
+        Domain.Models.Group[]? groups,
+        Domain.Models.Teacher[]? teachers,
+        Domain.Models.Diary[]? diaries,
+        Domain.Models.TimeSlot[]? timeSlots,
+        Domain.Models.TimetableGrid? previousTimetableGrid)
+    {
+        return new Domain.Models.GenerateRequest(
+            DateOnly.FromDateTime(dateStart.DateTime),
+            DateOnly.FromDateTime(dateEnd.DateTime),
+            groups ?? [],
+            teachers ?? [],
+            diaries ?? [],
+            timeSlots ?? [],
+            previousTimetableGrid
         );
-        return coreDomainEntity;
     }
 
     public static Msg.GenerateRequestClass ToMessagesDto(Domain.Models.GenerateRequest coreDomainEntity)

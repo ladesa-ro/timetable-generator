@@ -1,13 +1,12 @@
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     Shared helpers for constraint implementations.
 /// </summary>
-public static class ConstraintHelpers
+internal static class ConstraintHelpers
 {
     /// <summary>
     ///     Groups proposals by a composite key and applies AddAtMostOne for each group.

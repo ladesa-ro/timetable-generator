@@ -1,8 +1,6 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
+using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
@@ -11,60 +9,74 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 ///     Allowed combinations: none, morning only, afternoon only, night only,
 ///     morning+afternoon, afternoon+night. (Morning+night is forbidden.)
 /// </summary>
-public static class ConstraintTeacherNoOppositeTurns
+internal class ConstraintTeacherNoOppositeTurns : IConstraint
 {
-    // Allowed shift arrangements: [morning, afternoon, night]
+    /// <summary>
+    ///     Allowed shift combinations per teacher per day: [morning, afternoon, night].
+    ///     The only forbidden combination is morning + night (without afternoon),
+    ///     as this would require opposite turns on the same day.
+    /// </summary>
     private static readonly long[,] AllowedShiftArrangements =
     {
         { 0, 0, 0 }, // no classes
         { 1, 0, 0 }, // morning only
         { 0, 1, 0 }, // afternoon only
         { 0, 0, 1 }, // night only
-        { 1, 1, 0 }, // morning + afternoon
-        { 0, 1, 1 }  // afternoon + night
+        { 1, 1, 0 }, // morning + afternoon (consecutive)
+        { 0, 1, 1 }, // afternoon + night (consecutive)
+        // { 1, 0, 1 } is intentionally excluded: morning + night (opposite turns)
     };
 
-    public static void Apply(GenerationContext generationContext)
+    public void Apply(GenerationContext context)
     {
-        var proposalsByTeacherAndDate =
-            from proposal in generationContext.AllProposals
-            group proposal by new { proposal.TeacherId, proposal.Date } into grouped
-            select new
-            {
-                grouped.Key.TeacherId,
-                grouped.Key.Date,
-                Proposals = grouped.ToList()
-            };
+        var proposalsByTeacherAndDate = GroupProposalsByTeacherAndDate(context);
 
         foreach (var bucket in proposalsByTeacherAndDate)
         {
             if (bucket.Proposals.Count == 0)
                 continue;
 
-            var morningVars = FilterByShift(bucket.Proposals, TimeSlotConstants.MorningShift);
-            var afternoonVars = FilterByShift(bucket.Proposals, TimeSlotConstants.AfternoonShift);
-            var nightVars = FilterByShift(bucket.Proposals, TimeSlotConstants.NightShift);
-
-            if (morningVars.Count == 0 || afternoonVars.Count == 0 || nightVars.Count == 0)
-                continue;
-
-            var prefix = $"{bucket.TeacherId}_{bucket.Date}";
-
-            var shiftCounts = new[]
-            {
-                CreateShiftCount(generationContext, morningVars, $"{prefix}_morning"),
-                CreateShiftCount(generationContext, afternoonVars, $"{prefix}_afternoon"),
-                CreateShiftCount(generationContext, nightVars, $"{prefix}_night"),
-            };
-
-            var shiftActive = shiftCounts
-                .Select(c => CreateShiftActiveVar(generationContext, c.countVar, c.label))
-                .ToArray();
-
-            generationContext.CpModel
-                .AddAllowedAssignments(shiftActive)
-                .AddTuples(AllowedShiftArrangements);
+            ApplyShiftConstraintForBucket(context, bucket.TeacherId, bucket.Date, bucket.Proposals);
         }
+    }
+
+    private static IEnumerable<(string TeacherId, DateOnly Date, List<GenerationContextScheduleProposal> Proposals)>
+        GroupProposalsByTeacherAndDate(GenerationContext context)
+    {
+        return from proposal in context.AllProposals
+            group proposal by new { proposal.TeacherId, proposal.Date } into grouped
+            select (grouped.Key.TeacherId, grouped.Key.Date, grouped.ToList());
+    }
+
+    private static void ApplyShiftConstraintForBucket(
+        GenerationContext context,
+        string teacherId,
+        DateOnly date,
+        List<GenerationContextScheduleProposal> proposals)
+    {
+        var morningVars = FilterByShift(proposals, TimeSlotConstants.MorningShift);
+        var afternoonVars = FilterByShift(proposals, TimeSlotConstants.AfternoonShift);
+        var nightVars = FilterByShift(proposals, TimeSlotConstants.NightShift);
+
+        if (morningVars.Count == 0 || afternoonVars.Count == 0 || nightVars.Count == 0)
+            return;
+
+        var prefix = $"{teacherId}_{date}";
+
+        var shiftCounts = new[]
+        {
+            CreateShiftCount(context, morningVars, $"{prefix}_morning"),
+            CreateShiftCount(context, afternoonVars, $"{prefix}_afternoon"),
+            CreateShiftCount(context, nightVars, $"{prefix}_night"),
+        };
+
+        var shiftActive = shiftCounts
+            .Select(c => CreateShiftActiveVar(context, c.countVar, c.label))
+            .ToArray();
+
+        context.CpModel
+            .AddAllowedAssignments(shiftActive)
+            .AddTuples(AllowedShiftArrangements);
     }
 
     private static List<BoolVar> FilterByShift(

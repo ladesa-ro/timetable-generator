@@ -13,6 +13,7 @@ public record GenerateRequest
     public int BoostSameTimeSlotOnly { get; }
     public int BoostLesserDistanceFromDayOfWeek { get; }
     public int BoostLesserDistanceFromTimeSlot { get; }
+    public ConstraintKind[]? EnabledConstraints { get; }
     public GenerateRequest(
         DateOnly DateStart,
         DateOnly DateEnd,
@@ -25,7 +26,8 @@ public record GenerateRequest
         int BoostSameDayOfWeekOnly = 50,
         int BoostSameTimeSlotOnly = 50,
         int BoostLesserDistanceFromDayOfWeek = 40,
-        int BoostLesserDistanceFromTimeSlot = 40)
+        int BoostLesserDistanceFromTimeSlot = 40,
+        ConstraintKind[]? EnabledConstraints = null)
     {
         this.DateStart = DateStart;
         this.DateEnd = DateEnd;
@@ -39,6 +41,7 @@ public record GenerateRequest
         this.BoostSameTimeSlotOnly = BoostSameTimeSlotOnly;
         this.BoostLesserDistanceFromDayOfWeek = BoostLesserDistanceFromDayOfWeek;
         this.BoostLesserDistanceFromTimeSlot = BoostLesserDistanceFromTimeSlot;
+        this.EnabledConstraints = EnabledConstraints;
         // Validate time slots: must be strictly increasing within the day (no zero-length, no spanning midnight)
         foreach (var slot in this.TimeSlots)
         {

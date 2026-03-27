@@ -1,17 +1,16 @@
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: For the same group and date, no overlapping time slots may be scheduled.
 /// </summary>
-public static class ConstraintGroupNoOverlappingTimeSlots
+internal class ConstraintGroupNoOverlappingTimeSlots : IConstraint
 {
-    public static void Apply(GenerationContext generationContext)
+    public void Apply(GenerationContext context)
     {
         ConstraintHelpers.ApplyNoOverlappingTimeSlots(
-            generationContext,
+            context,
             p => new { p.Date, p.GroupId });
     }
 }
