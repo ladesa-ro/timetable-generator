@@ -111,5 +111,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         shell: bash
-        working-directory: ./k8s/development/
+        working-directory: ./.deploy/development/
         run: bash ./deploy.sh
