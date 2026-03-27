@@ -10,7 +10,7 @@ public static class TimetableGeneratorInfrastructureExtensions
     public static IServiceCollection AddTimetableGeneratorInfrastructure(this IServiceCollection services)
     {
         services.AddSingleton<IRabbitMqConfigProvider, RabbitMqConfigEnvironmentImpl>();
-        services.AddSingleton<RabbitMqConnectionFactoryImpl>();
+        services.AddSingleton<IRabbitMqConnectionFactory, RabbitMqConnectionFactoryImpl>();
         services.AddSingleton<RabbitMqPersistentConnectionImpl>();
         services.AddSingleton<IQueueListener, RabbitMqQueueListenerImpl>();
         services.AddSingleton<IQueuePublisher, RabbitMqQueuePublisherImpl>();

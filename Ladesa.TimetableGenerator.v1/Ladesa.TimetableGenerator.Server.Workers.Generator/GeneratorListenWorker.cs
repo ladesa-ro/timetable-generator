@@ -1,10 +1,8 @@
-using System.Text;
 using System.Text.Json;
 using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
 using Ladesa.TimetableGenerator.Application.Generator;
 using Ladesa.TimetableGenerator.Application.Generator.DTOs;
 using Ladesa.TimetableGenerator.Application.Ports;
-using Ladesa.TimetableGenerator.Application.Generator.Mappers;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
 
@@ -12,7 +10,10 @@ public class GeneratorListenWorker(
     IGeneratorListenWorkerConfig generatorListenWorkerConfig,
     IQueueListener queueListener,
     IQueuePublisher queuePublisher,
-    ITimetableGeneratorService timetableGeneratorService)
+    ITimetableGeneratorService timetableGeneratorService,
+    ISystemClock systemClock,
+    IMessageDeserializer<ServiceGenerateRequestDto> requestDeserializer,
+    IMessageSerializer<ServiceGenerateResponseDto> responseSerializer)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -22,38 +23,22 @@ public class GeneratorListenWorker(
             config.QueueListen,
             async bytes =>
             {
-                var parsedRequest = ParseRequest(bytes);
-                var mappedRequest = MapRequest(parsedRequest, bytes);
-                await GenerateAndPublish(mappedRequest, config.QueueReply, bytes, stoppingToken);
+                var requestDto = DeserializeRequest(bytes);
+                await GenerateAndPublish(requestDto, config.QueueReply, bytes, stoppingToken);
             },
             stoppingToken
         );
     }
 
-    private static Msg.GenerateRequest ParseRequest(byte[] bytes)
+    private ServiceGenerateRequestDto DeserializeRequest(byte[] bytes)
     {
         try
         {
-            var json = Encoding.UTF8.GetString(bytes);
-            return Msg.GenerateRequest.FromJson(json);
+            return requestDeserializer.Deserialize(bytes);
         }
         catch (Exception ex)
         {
             var errorDto = CreateErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
-            // TODO: currently goes to dead letter; consider pulling request-id from a header
-            throw new Exception(JsonSerializer.Serialize(errorDto));
-        }
-    }
-
-    private static ServiceGenerateRequestDto MapRequest(Msg.GenerateRequest messagesDto, byte[] bytes)
-    {
-        try
-        {
-            return ServiceGenerateRequestMapper.ToServiceDto(messagesDto);
-        }
-        catch (Exception ex)
-        {
-            var errorDto = CreateErrorDto(GeneratorErrorCodes.MappingError, GeneratorErrorMessages.MappingError, ex, bytes);
             // TODO: currently goes to dead letter; consider pulling request-id from a header
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
@@ -83,7 +68,7 @@ public class GeneratorListenWorker(
                 true,
                 successDto,
                 null,
-                DateOnly.FromDateTime(DateTime.Now)
+                systemClock.Today
             );
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
@@ -97,7 +82,7 @@ public class GeneratorListenWorker(
                 false,
                 null,
                 errorDto,
-                DateOnly.FromDateTime(DateTime.Now)
+                systemClock.Today
             );
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
@@ -106,9 +91,7 @@ public class GeneratorListenWorker(
 
     private async Task PublishResponse(ServiceGenerateResponseDto responseDto, string replyQueue, CancellationToken stoppingToken)
     {
-        var messagesDto = ServiceGenerateResponseMapper.ToMessagesDto(responseDto);
-        var json = Msg.Serialize.ToJson(messagesDto);
-        var bytes = Encoding.UTF8.GetBytes(json);
+        var bytes = responseSerializer.Serialize(responseDto);
         await queuePublisher.PublishAsync(replyQueue, bytes, stoppingToken);
     }
 

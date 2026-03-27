@@ -9,7 +9,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 
 public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
 {
-    private readonly RabbitMqConnectionFactoryImpl _rabbitMqConnectionFactoryImpl;
+    private readonly IRabbitMqConnectionFactory _rabbitMqConnectionFactoryImpl;
     private readonly ILogger<RabbitMqPersistentConnectionImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
     private readonly SemaphoreSlim _connectionSemaphore = new(1, 1);
@@ -20,7 +20,7 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
     public event Action? OnReconnected;
 
     public RabbitMqPersistentConnectionImpl(
-        RabbitMqConnectionFactoryImpl rabbitMqConnectionFactoryImpl,
+        IRabbitMqConnectionFactory rabbitMqConnectionFactoryImpl,
         ILogger<RabbitMqPersistentConnectionImpl> logger,
         int retryCount = 5)
     {

@@ -22,7 +22,7 @@ public class GenerationContext
     {
         AllProposals.Clear();
 
-        foreach (var scheduleCombination in Generator.GetAllCombinationsWithAvailability(GenerateRequest))
+        foreach (var scheduleCombination in ScheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateRequest))
         {
             var scheduleProposal = new GenerationContextScheduleProposal(
                 this,

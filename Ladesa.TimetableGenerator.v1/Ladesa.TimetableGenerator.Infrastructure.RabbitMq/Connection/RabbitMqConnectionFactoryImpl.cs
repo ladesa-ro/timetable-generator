@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 
 
-public class RabbitMqConnectionFactoryImpl(IRabbitMqConfigProvider configProvider)
+public class RabbitMqConnectionFactoryImpl(IRabbitMqConfigProvider configProvider) : IRabbitMqConnectionFactory
 {
     public ConnectionFactory GetConnectionFactory()
     {
