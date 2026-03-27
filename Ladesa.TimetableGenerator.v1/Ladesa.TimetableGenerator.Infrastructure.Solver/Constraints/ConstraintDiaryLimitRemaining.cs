@@ -1,8 +1,9 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Generator;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Constraints;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: Diary - limit how many schedules can be in total.

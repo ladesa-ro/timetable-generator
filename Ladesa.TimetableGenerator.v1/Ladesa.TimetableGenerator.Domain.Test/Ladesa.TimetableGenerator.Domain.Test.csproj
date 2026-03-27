@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ladesa.TimetableGenerator.Domain\Ladesa.TimetableGenerator.Domain.csproj" />
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.Solver\Ladesa.TimetableGenerator.Infrastructure.Solver.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="NUnit.Framework" />

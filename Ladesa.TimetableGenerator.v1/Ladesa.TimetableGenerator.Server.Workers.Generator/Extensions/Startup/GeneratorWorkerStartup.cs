@@ -1,4 +1,5 @@
 using Ladesa.TimetableGenerator.Application.Generator;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Application.Generator.DTOs;
 using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;

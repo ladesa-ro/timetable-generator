@@ -1,5 +1,4 @@
 namespace Ladesa.TimetableGenerator.Domain.Models;
-
 public record GenerateRequest
 {
     public DateOnly DateStart { get; }
@@ -14,7 +13,6 @@ public record GenerateRequest
     public int BoostSameTimeSlotOnly { get; }
     public int BoostLesserDistanceFromDayOfWeek { get; }
     public int BoostLesserDistanceFromTimeSlot { get; }
-
     public GenerateRequest(
         DateOnly DateStart,
         DateOnly DateEnd,
@@ -41,7 +39,6 @@ public record GenerateRequest
         this.BoostSameTimeSlotOnly = BoostSameTimeSlotOnly;
         this.BoostLesserDistanceFromDayOfWeek = BoostLesserDistanceFromDayOfWeek;
         this.BoostLesserDistanceFromTimeSlot = BoostLesserDistanceFromTimeSlot;
-
         // Validate time slots: must be strictly increasing within the day (no zero-length, no spanning midnight)
         foreach (var slot in this.TimeSlots)
         {
@@ -50,22 +47,20 @@ public record GenerateRequest
             if (start >= end)
                 throw new ArgumentException("Invalid time slot: start must be before end within the same day.");
         }
-
         ValidateNoDuplicates(this.Groups, g => g.Id,
-            Generator.GeneratorValidationErrorCode.DuplicateGroupId, "Groups");
+            GeneratorValidationErrorCode.DuplicateGroupId, "Groups");
         ValidateNoDuplicates(this.Teachers, t => t.Id,
-            Generator.GeneratorValidationErrorCode.DuplicateTeacherId, "Teachers");
+            GeneratorValidationErrorCode.DuplicateTeacherId, "Teachers");
         ValidateNoDuplicates(this.Diaries, d => d.Id,
-            Generator.GeneratorValidationErrorCode.DuplicateDiaryId, "Diaries");
+            GeneratorValidationErrorCode.DuplicateDiaryId, "Diaries");
     }
-
     private static void ValidateNoDuplicates<T>(
         T[] items,
         Func<T, string> idSelector,
-        Generator.GeneratorValidationErrorCode errorCode,
+        GeneratorValidationErrorCode errorCode,
         string entityName)
     {
         if (items.GroupBy(idSelector).Any(grouped => grouped.Count() > 1))
-            throw new Generator.GeneratorValidationException(errorCode, $"Duplicate entity IDs found in {entityName}.");
+            throw new GeneratorValidationException(errorCode, $"Duplicate entity IDs found in {entityName}.");
     }
 }

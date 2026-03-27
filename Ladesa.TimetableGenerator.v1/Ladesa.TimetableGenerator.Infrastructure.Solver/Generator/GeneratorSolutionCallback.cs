@@ -1,7 +1,7 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Generator;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 public class GeneratorSolutionCallback(
     GenerationContext generationContext,

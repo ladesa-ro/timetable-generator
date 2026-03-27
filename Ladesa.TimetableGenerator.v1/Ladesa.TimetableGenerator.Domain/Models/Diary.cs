@@ -1,5 +1,4 @@
 namespace Ladesa.TimetableGenerator.Domain.Models;
-
 public record Diary(
     string Id,
     string GroupId,

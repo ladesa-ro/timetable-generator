@@ -1,5 +1,4 @@
-using Ical.Net.CalendarComponents;
-using Ical.Net.DataTypes;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
@@ -7,6 +6,8 @@ namespace Ladesa.TimetableGenerator.Domain.Test;
 [TestFixture]
 public class AvailabilityRuleUnavailabilityDetailedTests
 {
+    private readonly IAvailabilityEvaluator _evaluator = new IcalAvailabilityEvaluator();
+
     [Test]
     public void AllDayEveryDay_ShouldBlockAllDay()
     {
@@ -20,15 +21,15 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         // Within the period
         var slotInside = new TimeSlot(Start: "08:00", End: "10:00");
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotInside), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, slotInside), expression: Is.False);
 
         // Before the period
         var slotBefore = new TimeSlot(Start: "00:00", End: "00:30");
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotBefore), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, slotBefore), expression: Is.False);
 
         // After the period
         var slotAfter = new TimeSlot(Start: "23:00", End: "23:59");
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: slotAfter), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, slotAfter), expression: Is.False);
     }
 
     [Test]
@@ -44,10 +45,10 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "08:30", End: "09:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "07:00", End: "07:50")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:30", End: "13:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "11:50", End: "12:10")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "08:30", End: "09:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "07:00", End: "07:50")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "12:30", End: "13:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "11:50", End: "12:10")), expression: Is.False);
         });
     }
 
@@ -65,8 +66,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: wednesday, checkTimeSlot: new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: thursday, checkTimeSlot: new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, wednesday, new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, thursday, new TimeSlot(Start: "15:00", End: "16:00")), expression: Is.True);
         });
     }
 
@@ -83,9 +84,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:00", End: "13:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "12:00", End: "13:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
         });
     }
 
@@ -103,8 +104,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: firstOfMonth, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: secondOfMonth, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, firstOfMonth, new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, secondOfMonth, new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
         });
     }
 
@@ -122,8 +123,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: lastFriday, checkTimeSlot: new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: otherFriday, checkTimeSlot: new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, lastFriday, new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, otherFriday, new TimeSlot(Start: "16:00", End: "17:00")), expression: Is.True);
         });
     }
 
@@ -142,9 +143,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: firstDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: secondDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdDay, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, firstDay, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, secondDay, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, thirdDay, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
         });
     }
 
@@ -164,8 +165,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: startDate, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: nextDate, checkTimeSlot: new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, startDate, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, nextDate, new TimeSlot(Start: "10:00", End: "11:00")), expression: Is.True);
         });
     }
 
@@ -181,7 +182,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var overlappingSlot = new TimeSlot(Start: "09:30", End: "10:30");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: overlappingSlot), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, overlappingSlot), expression: Is.False);
     }
 
     [Test]
@@ -196,7 +197,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var overlappingSlot = new TimeSlot(Start: "11:30", End: "12:30");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: overlappingSlot), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, overlappingSlot), expression: Is.False);
     }
 
     [Test]
@@ -211,7 +212,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var touchingSlot = new TimeSlot(Start: "09:00", End: "10:00");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: touchingSlot), expression: Is.True);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, touchingSlot), expression: Is.True);
     }
 
     [Test]
@@ -226,7 +227,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var touchingSlot = new TimeSlot(Start: "12:00", End: "13:00");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: touchingSlot), expression: Is.True);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, touchingSlot), expression: Is.True);
     }
 
     [Test]
@@ -244,9 +245,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: monday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: tuesday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: wednesday, checkTimeSlot: new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, monday, new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, tuesday, new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, wednesday, new TimeSlot(Start: "14:00", End: "14:30")), expression: Is.False);
         });
     }
 
@@ -264,8 +265,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: secondTuesday, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: firstTuesday, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, secondTuesday, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, firstTuesday, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
         });
     }
 
@@ -284,9 +285,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: sameDayThisYear, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: sameDayNextYear, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: differentDay, checkTimeSlot: new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, sameDayThisYear, new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, sameDayNextYear, new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, differentDay, new TimeSlot(Start: "09:00", End: "10:00")), expression: Is.True);
         });
     }
 
@@ -305,9 +306,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: beforeUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: onUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: afterUntil, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, beforeUntil, new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, onUntil, new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, afterUntil, new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
         });
     }
 
@@ -327,10 +328,10 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: firstDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: secondDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: fourthDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, firstDay, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, secondDay, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, thirdDay, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, fourthDay, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
         });
     }
 
@@ -344,28 +345,15 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         );
 
 
-        var calendarEvent = new CalendarEvent
-        {
-            DtStart = new CalDateTime(value: unavailability.DateStart),
-            DtEnd = new CalDateTime(value: (DateTime)unavailability.DateEnd!),
-            RecurrenceRules = [unavailability.RecurrencePattern!]
-        };
-
-
         var week1 = new DateOnly(year: 2025, month: 10, day: 20);
         var week2 = new DateOnly(year: 2025, month: 10, day: 27);
-        var between = new DateOnly(year: 2025, month: 10, day: 24); // Friday of first week, but since no BYDAY, assumes same day
-
-        var r = calendarEvent.GetOccurrences(startTime: new CalDateTime(date: week2)).Take(count: 2).ToArray();
-
-        Console.WriteLine(value: r);
-
+        var between = new DateOnly(year: 2025, month: 10, day: 24);
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: week1, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: between, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: week2, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, week1, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, between, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, week2, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
         });
     }
 
@@ -380,7 +368,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         var beforeDate = new DateOnly(year: 2025, month: 10, day: 19);
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: beforeDate, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, beforeDate, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
     }
 
     [Test]
@@ -395,7 +383,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var encompassingSlot = new TimeSlot(Start: "09:00", End: "13:00");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: encompassingSlot), expression: Is.False);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, encompassingSlot), expression: Is.False);
     }
 
     [Test]
@@ -410,7 +398,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var beforeSlot = new TimeSlot(Start: "08:00", End: "09:59");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: beforeSlot), expression: Is.True);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, beforeSlot), expression: Is.True);
     }
 
     [Test]
@@ -425,7 +413,7 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         var date = DateOnly.FromDateTime(dateTime: unavailability.DateStart);
         var afterSlot = new TimeSlot(Start: "12:01", End: "13:00");
 
-        Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: afterSlot), expression: Is.True);
+        Assert.That(actual: _evaluator.IsAvailable(unavailability, date, afterSlot), expression: Is.True);
     }
 
     [Test]
@@ -443,9 +431,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: lastDayOct, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: lastDayNov, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: otherDay, checkTimeSlot: new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, lastDayOct, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, lastDayNov, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, otherDay, new TimeSlot(Start: "15:00", End: "15:30")), expression: Is.True);
         });
     }
 
@@ -463,8 +451,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: beforeUntil, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: afterUntil, checkTimeSlot: new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, beforeUntil, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, afterUntil, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
         });
     }
 
@@ -481,9 +469,9 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "12:00", End: "12:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "13:00", End: "14:00")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: date, checkTimeSlot: new TimeSlot(Start: "23:00", End: "23:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "12:00", End: "12:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "13:00", End: "14:00")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, date, new TimeSlot(Start: "23:00", End: "23:30")), expression: Is.False);
         });
     }
 
@@ -501,8 +489,8 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: thirdWednesday, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: secondWednesday, checkTimeSlot: new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, thirdWednesday, new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, secondWednesday, new TimeSlot(Start: "11:00", End: "11:30")), expression: Is.True);
         });
     }
 
@@ -522,10 +510,10 @@ public class AvailabilityRuleUnavailabilityDetailedTests
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: unavailability.IsAvailable(checkDate: day1, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: day2, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: day3, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
-            Assert.That(actual: unavailability.IsAvailable(checkDate: day4, checkTimeSlot: new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, day1, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, day2, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, day3, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.True);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, day4, new TimeSlot(Start: "09:00", End: "09:30")), expression: Is.False);
         });
     }
 }

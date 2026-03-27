@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Domain.Generator.Generator;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
 

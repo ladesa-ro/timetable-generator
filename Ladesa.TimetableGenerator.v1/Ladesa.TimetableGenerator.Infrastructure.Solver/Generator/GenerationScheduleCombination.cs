@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Generator;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 public record GenerationScheduleCombination(
     DateOnly Date,

@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Generator;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 /// <summary>
 ///     Generates all possible schedule combinations from the request,
@@ -8,10 +8,6 @@ namespace Ladesa.TimetableGenerator.Domain.Generator;
 /// </summary>
 public static class ScheduleCombinationGenerator
 {
-    /// <summary>
-    ///     Generates all possible combinations (date x timeslot x group x diary)
-    ///     without applying any constraints.
-    /// </summary>
     internal static IEnumerable<GenerationScheduleCombination> GetAllPossibleCombinations(
         GenerateRequest request)
     {
@@ -23,20 +19,17 @@ public static class ScheduleCombinationGenerator
                 date, timeSlot, grp.Id, diary.Id, diary.TeacherId);
     }
 
-    /// <summary>
-    ///     Generates all possible combinations, filtering by
-    ///     group and teacher availability rules.
-    /// </summary>
     public static IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
-        GenerateRequest generateRequest)
+        GenerateRequest generateRequest,
+        IAvailabilityEvaluator availabilityEvaluator)
     {
         foreach (var combination in GetAllPossibleCombinations(generateRequest))
         {
             var group = generateRequest.GroupFindByIdStrict(combination.GroupId);
             var teacher = generateRequest.TeacherFindByIdStrict(combination.TeacherId);
 
-            if (group.Availability.IsAvailable(combination.Date, combination.TimeSlot)
-                && teacher.Availability.IsAvailable(combination.Date, combination.TimeSlot))
+            if (group.Availability.IsAvailable(combination.Date, combination.TimeSlot, availabilityEvaluator)
+                && teacher.Availability.IsAvailable(combination.Date, combination.TimeSlot, availabilityEvaluator))
                 yield return combination;
         }
     }

@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Domain.Generator.Generator;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
 using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
 namespace Ladesa.TimetableGenerator.Domain.Test.Domain;
@@ -47,7 +47,7 @@ public class GenerateRequest_Tests
         var g1 = Builders.Group("group:1");
         var g2 = Builders.Group("group:1"); // duplicate id
 
-        Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Builders.Request(
+        Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Builders.Request(
             start: date,
             end: date,
             groups: [g1, g2],
@@ -64,7 +64,7 @@ public class GenerateRequest_Tests
         var t1 = Builders.Teacher("teacher:1");
         var t2 = Builders.Teacher("teacher:1"); // duplicate id
 
-        Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Builders.Request(
+        Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Builders.Request(
             start: date,
             end: date,
             groups: [Builders.Group()],
@@ -83,7 +83,7 @@ public class GenerateRequest_Tests
         var d1 = Builders.Diary("diary:1", g.Id, t.Id);
         var d2 = Builders.Diary("diary:1", g.Id, t.Id); // duplicate id
 
-        Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Builders.Request(
+        Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Builders.Request(
             start: date,
             end: date,
             groups: [g],
@@ -102,7 +102,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: t.Id);
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
         Assert.That(ex!.Message, Does.Contain("Group not found"));
     }
 
@@ -115,7 +115,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: g.Id, teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
         Assert.That(ex!.Message, Does.Contain("Teacher not found"));
     }
 
@@ -128,7 +128,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Generator.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
         Assert.That(ex!.Message, Does.Contain("Diary references not found"));
     }
 }

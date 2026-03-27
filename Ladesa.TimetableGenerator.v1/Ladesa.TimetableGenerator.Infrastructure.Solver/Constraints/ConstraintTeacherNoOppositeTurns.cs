@@ -1,9 +1,10 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Constants;
-using Ladesa.TimetableGenerator.Domain.Generator;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Constraints;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: Teacher - no opposite turns on the same day.

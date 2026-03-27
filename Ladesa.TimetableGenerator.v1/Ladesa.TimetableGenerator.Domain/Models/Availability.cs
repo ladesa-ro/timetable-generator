@@ -8,13 +8,10 @@ public record Availability(
     /// Determines whether a specific time slot on a given date is available
     /// based on the defined unavailability rules.
     /// </summary>
-    /// <param name="checkDate">The date to check for availability.</param>
-    /// <param name="checkTimeSlot">The time slot to check for availability.</param>
-    /// <returns>True if the specified date and time slot are available; otherwise, false.</returns>
-    public bool IsAvailable(DateOnly checkDate, TimeSlot checkTimeSlot)
+    public bool IsAvailable(DateOnly checkDate, TimeSlot checkTimeSlot, IAvailabilityEvaluator evaluator)
     {
         if (RulesUnavailability is null or { Length: 0 }) return true;
-        
-        return RulesUnavailability.All(ruleUnavailability => ruleUnavailability.IsAvailable(checkDate, checkTimeSlot));
+
+        return RulesUnavailability.All(rule => evaluator.IsAvailable(rule, checkDate, checkTimeSlot));
     }
-};
+}

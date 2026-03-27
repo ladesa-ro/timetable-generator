@@ -101,6 +101,7 @@ COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx ./Ladesa.T
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.Solver/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.Solver/
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/

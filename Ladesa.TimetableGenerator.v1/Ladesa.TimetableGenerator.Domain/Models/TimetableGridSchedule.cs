@@ -1,5 +1,4 @@
 namespace Ladesa.TimetableGenerator.Domain.Models;
-
 public record TimetableGridSchedule(
     string GroupId,
     string DiaryId,

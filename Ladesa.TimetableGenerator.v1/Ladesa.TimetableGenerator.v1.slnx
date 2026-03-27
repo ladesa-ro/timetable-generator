@@ -7,6 +7,7 @@
   </Folder>
   <Folder Name="/Infrastructure/">
     <Project Path="Ladesa.TimetableGenerator.Infrastructure.RabbitMq\Ladesa.TimetableGenerator.Infrastructure.RabbitMq.csproj" />
+    <Project Path="Ladesa.TimetableGenerator.Infrastructure.Solver\Ladesa.TimetableGenerator.Infrastructure.Solver.csproj" />
   </Folder>
   <Folder Name="/Server/" />
   <Folder Name="/Server/APIs/">

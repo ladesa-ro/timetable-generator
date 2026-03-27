@@ -6,8 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Google.OrTools" Version="9.14.6206" />
-    <PackageReference Include="Ical.Net" Version="5.1.1" />
-  </ItemGroup>
 </Project>

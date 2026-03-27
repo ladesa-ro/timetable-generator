@@ -1,9 +1,9 @@
 using System.Threading.Channels;
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Constraints;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 using Ladesa.TimetableGenerator.Domain.Models;
 
-namespace Ladesa.TimetableGenerator.Domain.Generator;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 /// <summary>
 ///     Main entry point for timetable generation. Orchestrates validation,
@@ -17,11 +17,15 @@ public static class Generator
     /// </summary>
     /// <param name="request">The generation request containing groups, teachers, diaries, time slots, and constraints.</param>
     /// <returns>An enumerable of generated timetables, ordered by decreasing quality score.</returns>
-    public static IEnumerable<GeneratedTimetable> GenerateTimetables(GenerateRequest request)
+    public static IEnumerable<GeneratedTimetable> GenerateTimetables(
+        GenerateRequest request,
+        IAvailabilityEvaluator? availabilityEvaluator = null)
     {
+        availabilityEvaluator ??= new IcalAvailabilityEvaluator();
+
         ValidateDiaryReferences(request);
 
-        var generationContext = CreateContextWithRestrictionsApplied(request);
+        var generationContext = CreateContextWithRestrictionsApplied(request, availabilityEvaluator);
 
         if (generationContext.AllProposals.Count == 0)
         {
@@ -43,12 +47,16 @@ public static class Generator
     ///     Delegates to <see cref="ScheduleCombinationGenerator"/>.
     /// </summary>
     public static IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
-        GenerateRequest generateRequest)
-        => ScheduleCombinationGenerator.GetAllCombinationsWithAvailability(generateRequest);
+        GenerateRequest generateRequest,
+        IAvailabilityEvaluator? availabilityEvaluator = null)
+        => ScheduleCombinationGenerator.GetAllCombinationsWithAvailability(
+            generateRequest, availabilityEvaluator ?? new IcalAvailabilityEvaluator());
 
-    private static GenerationContext CreateContextWithRestrictionsApplied(GenerateRequest request)
+    private static GenerationContext CreateContextWithRestrictionsApplied(
+        GenerateRequest request,
+        IAvailabilityEvaluator availabilityEvaluator)
     {
-        var generationContext = new GenerationContext(request);
+        var generationContext = new GenerationContext(request, availabilityEvaluator);
 
         ConstraintGroupOneScheduleAtSameTime.Apply(generationContext);
         ConstraintTeacherOneScheduleAtSameTime.Apply(generationContext);

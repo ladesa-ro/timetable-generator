@@ -2,7 +2,7 @@ using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
-namespace Ladesa.TimetableGenerator.Domain.Generator;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 /// <summary>
 ///     Configures the objective function for the CP solver to maximize

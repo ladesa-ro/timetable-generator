@@ -1,5 +1,4 @@
 namespace Ladesa.TimetableGenerator.Domain.Models;
-
 public static class GenerateRequestExtensionDates
 {
     public static IEnumerable<DateOnly> GetDates(this GenerateRequest request)
