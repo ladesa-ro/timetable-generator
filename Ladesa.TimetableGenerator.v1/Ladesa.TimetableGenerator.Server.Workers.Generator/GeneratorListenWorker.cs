@@ -13,7 +13,8 @@ public class GeneratorListenWorker(
     ITimetableGeneratorService timetableGeneratorService,
     ISystemClock systemClock,
     IMessageDeserializer<ServiceGenerateRequestDto> requestDeserializer,
-    IMessageSerializer<ServiceGenerateResponseDto> responseSerializer)
+    IMessageSerializer<ServiceGenerateResponseDto> responseSerializer,
+    IErrorMapper errorMapper)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -38,7 +39,7 @@ public class GeneratorListenWorker(
         }
         catch (Exception ex)
         {
-            var errorDto = CreateErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
+            var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
             // TODO: currently goes to dead letter; consider pulling request-id from a header
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
@@ -75,7 +76,8 @@ public class GeneratorListenWorker(
         }
         catch (Exception ex)
         {
-            var errorDto = CreateErrorDto(GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
+            var errorDto = errorMapper.MapToErrorDto(
+                GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
 
             var responseDto = new ServiceGenerateResponseDto(
                 requestDto.RequestId,
@@ -93,18 +95,5 @@ public class GeneratorListenWorker(
     {
         var bytes = responseSerializer.Serialize(responseDto);
         await queuePublisher.PublishAsync(replyQueue, bytes, stoppingToken);
-    }
-
-    private static ServiceGenerateResponseResultErrorDto CreateErrorDto(
-        string errorCode,
-        string errorMessage,
-        Exception ex,
-        byte[] bytes)
-    {
-        return new ServiceGenerateResponseResultErrorDto(
-            errorCode,
-            errorMessage,
-            JsonSerializer.Serialize(new { message = ex.Message, bytes })
-        );
     }
 }

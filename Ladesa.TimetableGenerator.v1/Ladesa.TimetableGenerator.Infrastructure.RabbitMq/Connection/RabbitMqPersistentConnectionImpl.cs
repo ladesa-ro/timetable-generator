@@ -7,7 +7,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 
-public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
+public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
 {
     private readonly IRabbitMqConnectionFactory _rabbitMqConnectionFactoryImpl;
     private readonly ILogger<RabbitMqPersistentConnectionImpl> _logger;
@@ -15,7 +15,6 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
     private readonly SemaphoreSlim _connectionSemaphore = new(1, 1);
 
     private IConnection? _connection;
-    private bool _disposed;
 
     public event Action? OnReconnected;
 
@@ -36,13 +35,13 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
                 (ex, time, attempt, context) =>
                 {
                     _logger.LogWarning(ex,
-                        "RabbitMQ: Falha ao conectar. Retentando em {Time}s. Tentativa {Attempt}/{RetryCount}",
+                        "RabbitMQ: Failed to connect. Retrying in {Time}s. Attempt {Attempt}/{RetryCount}",
                         time.TotalSeconds, attempt, retryCount);
                 }
             );
     }
 
-    public bool IsConnected => _connection is { IsOpen: true } && !_disposed;
+    public bool IsConnected => _connection is { IsOpen: true } && !IsDisposed;
 
     public async Task<bool> TryConnectAsync(CancellationToken cancellationToken = default)
     {
@@ -54,10 +53,9 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
         {
             if (IsConnected) return true;
 
-            _logger.LogInformation("RabbitMQ: Tentando conectar...");
+            _logger.LogInformation("RabbitMQ: Attempting to connect...");
 
             var connectionFactory = _rabbitMqConnectionFactoryImpl.GetConnectionFactory();
-
             connectionFactory.AutomaticRecoveryEnabled = true;
             connectionFactory.NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
 
@@ -68,7 +66,7 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
 
             if (policyResult.Outcome == OutcomeType.Failure || !IsConnected || _connection is null)
             {
-                _logger.LogError("RabbitMQ: Falha ao conectar após múltiplas tentativas. Erro final: {Exception}",
+                _logger.LogError("RabbitMQ: Failed to connect after multiple attempts. Final error: {Exception}",
                     policyResult.FinalException?.Message);
                 return false;
             }
@@ -77,7 +75,7 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
             _connection.CallbackExceptionAsync += OnCallbackException;
             _connection.ConnectionBlockedAsync += OnConnectionBlocked;
 
-            _logger.LogInformation("RabbitMQ: Conectado com sucesso ao host '{HostName}'",
+            _logger.LogInformation("RabbitMQ: Connected successfully to host '{HostName}'",
                 _connection.Endpoint.HostName);
 
             OnReconnected?.Invoke();
@@ -95,44 +93,37 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
         if (!IsConnected) await TryConnectAsync(cancellationToken);
 
         if (!IsConnected || _connection is null)
-            throw new InvalidOperationException("Não foi possível conectar ao RabbitMQ para criar um canal.");
+            throw new InvalidOperationException("Could not connect to RabbitMQ to create a channel.");
 
         return await _connection.CreateChannelAsync(cancellationToken: cancellationToken);
     }
 
-    #region Event Handlers
-
     private Task OnConnectionBlocked(object? sender, ConnectionBlockedEventArgs e)
     {
-        if (_disposed) return Task.CompletedTask;
-        _logger.LogWarning("RabbitMQ: Conexão bloqueada. Razão: {Reason}", e.Reason);
+        if (CheckDisposed()) return Task.CompletedTask;
+        _logger.LogWarning("RabbitMQ: Connection blocked. Reason: {Reason}", e.Reason);
         return Task.CompletedTask;
     }
 
     private Task OnCallbackException(object? sender, CallbackExceptionEventArgs e)
     {
-        if (_disposed) return Task.CompletedTask;
-        _logger.LogError(e.Exception, "RabbitMQ: Uma exceção foi lançada no callback da conexão. Detalhes: {Detail}",
-            e.Detail);
+        if (CheckDisposed()) return Task.CompletedTask;
+        _logger.LogError(e.Exception, "RabbitMQ: Exception in connection callback. Details: {Detail}", e.Detail);
         return Task.CompletedTask;
     }
 
     private Task OnConnectionShutdown(object? sender, ShutdownEventArgs reason)
     {
-        if (_disposed) return Task.CompletedTask;
-        _logger.LogWarning("RabbitMQ: Conexão encerrada. Razão: {Reason}. Tentando reconectar...", reason.ReplyText);
+        if (CheckDisposed()) return Task.CompletedTask;
+        _logger.LogWarning("RabbitMQ: Connection shut down. Reason: {Reason}. Attempting to reconnect...", reason.ReplyText);
         _ = TryConnectAsync();
         return Task.CompletedTask;
     }
 
-    #endregion
-
-    #region Dispose Pattern
-
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
-        if (_disposed) return;
-        _disposed = true;
+        if (!TryMarkDisposed()) return;
+
         try
         {
             if (_connection is not null)
@@ -146,7 +137,7 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
         }
         catch (IOException ex)
         {
-            _logger.LogCritical(ex, "Erro ao descartar a conexão RabbitMQ: {Message}", ex.Message);
+            _logger.LogCritical(ex, "Error disposing RabbitMQ connection: {Message}", ex.Message);
         }
         finally
         {
@@ -155,6 +146,4 @@ public sealed class RabbitMqPersistentConnectionImpl : IAsyncDisposable
 
         GC.SuppressFinalize(this);
     }
-
-    #endregion
 }

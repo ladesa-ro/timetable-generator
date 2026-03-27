@@ -15,6 +15,7 @@ public static class GeneratorWorkerStartupExtensions
         services.AddSingleton<ISystemClock, SystemClock>();
         services.AddSingleton<IMessageDeserializer<ServiceGenerateRequestDto>, GenerateRequestDeserializer>();
         services.AddSingleton<IMessageSerializer<ServiceGenerateResponseDto>, GenerateResponseSerializer>();
+        services.AddSingleton<IErrorMapper, ErrorMapper>();
         services.AddHostedService<GeneratorListenWorker>();
 
         return services;

@@ -8,14 +8,13 @@ using RabbitMQ.Client;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 
-public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposable
+public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetterHandler
 {
     private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
     private readonly ILogger<RabbitMqDeadLetterHandlerImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
 
     private IChannel? _channel;
-    private bool _disposed;
 
     public RabbitMqDeadLetterHandlerImpl(
         RabbitMqPersistentConnectionImpl persistentConnectionImpl,
@@ -25,7 +24,6 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
         _persistentConnectionImpl = persistentConnectionImpl ?? throw new ArgumentNullException(nameof(persistentConnectionImpl));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-        // Exponential retry policy
         _retryPolicy = Policy.Handle<Exception>()
             .WaitAndRetryAsync(
                 retryCount,
@@ -34,7 +32,7 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
                 (exception, timeSpan, retryAttempt, context) =>
                 {
                     _logger.LogWarning(exception,
-                        "Falha ao publicar na DLQ. Tentativa {RetryAttempt}/{RetryCount}. Próxima tentativa em {Delay}s.",
+                        "Failed to publish to DLQ. Attempt {RetryAttempt}/{RetryCount}. Next retry in {Delay}s.",
                         retryAttempt, retryCount, timeSpan.TotalSeconds);
                 });
     }
@@ -45,7 +43,7 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
             return _channel;
 
         if (!await _persistentConnectionImpl.TryConnectAsync(cancellationToken))
-            throw new InvalidOperationException("Não foi possível conectar ao RabbitMQ para criar o canal DLQ.");
+            throw new InvalidOperationException("Could not connect to RabbitMQ to create DLQ channel.");
 
         _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
         return _channel;
@@ -53,7 +51,7 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
 
     public async Task HandleAsync(string queue, byte[] message, Exception exception)
     {
-        if (_disposed) throw new ObjectDisposedException(nameof(RabbitMqDeadLetterHandlerImpl));
+        ThrowIfDisposed();
         if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
 
         var dlqName = $"dlq.{queue}";
@@ -65,12 +63,10 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
             {
                 var channel = await GetOrCreateChannelAsync();
 
-                // Declara exchange e fila DLQ de forma idempotente
                 await channel.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, true, false);
                 await channel.QueueDeclareAsync(dlqName, true, false, false);
                 await channel.QueueBindAsync(dlqName, dlxName, "");
 
-                // Serialize message with error information
                 var payload = JsonSerializer.Serialize(new
                 {
                     Message = message,
@@ -83,20 +79,19 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
                 var body = Encoding.UTF8.GetBytes(payload);
 
                 await channel.BasicPublishAsync(dlxName, "", body);
-                _logger.LogInformation("Mensagem enviada para DLQ '{DLQName}' com sucesso.", dlqName);
+                _logger.LogInformation("Message sent to DLQ '{DLQName}' successfully.", dlqName);
             });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Falha crítica ao enviar mensagem para DLQ '{DLQName}'.", dlqName);
+            _logger.LogError(ex, "Critical failure sending message to DLQ '{DLQName}'.", dlqName);
             throw;
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
-        if (_disposed) return;
-        _disposed = true;
+        if (!TryMarkDisposed()) return;
 
         try
         {
@@ -104,13 +99,12 @@ public class RabbitMqDeadLetterHandlerImpl : IDeadLetterHandler, IAsyncDisposabl
             {
                 if (_channel.IsOpen)
                     await _channel.CloseAsync();
-
                 _channel.Dispose();
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Erro ao descartar o canal DLQ.");
+            _logger.LogWarning(ex, "Error disposing DLQ channel.");
         }
 
         GC.SuppressFinalize(this);
