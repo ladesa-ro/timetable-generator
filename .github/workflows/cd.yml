@@ -16,8 +16,8 @@ env:
   IMAGE_BASENAME: ${{ github.repository }}
 
 jobs:
-  timetable-generator-ci-image:
-    name: "CI: Construção e Publicação da Imagem de Container"
+  timetable-api-ci-image:
+    name: "CI: Build and Publish API Image"
     runs-on: ubuntu-latest
 
     permissions:
@@ -28,7 +28,7 @@ jobs:
       name: ci-cd-timetable-generator-dev
 
     steps:
-      - name: Checkout do código-fonte
+      - name: Checkout source code
         uses: actions/checkout@v6
 
       - name: Set up QEMU
@@ -37,41 +37,79 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
 
-      - name: Autenticação no GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.REGISTRY_USERNAME }}
           password: ${{ env.REGISTRY_TOKEN }}
 
-      - name: Construção e publicação da imagem de contêiner
+      - name: Build and push API image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
         with:
           context: .
-          target: timetable-generator-runtime
+          target: timetable-api-runtime
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-generator:development
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-generator:cache-development
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-generator:cache-development,mode=max
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-api:development
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-api:cache-development
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-api:cache-development,mode=max
 
-  timetable-generator-cd-cluster:
-    name: "CD: Implantação no Cluster Kubernetes"
-    
-    runs-on: dev-deploy
+  timetable-worker-ci-image:
+    name: "CI: Build and Publish Worker Image"
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
-
-    needs: [ timetable-generator-ci-image ]
+      packages: write
 
     environment:
       name: ci-cd-timetable-generator-dev
 
     steps:
-      - name: Checkout do código-fonte
+      - name: Checkout source code
         uses: actions/checkout@v6
 
-      - name: Implantação da aplicação no Kubernetes
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_TOKEN }}
+
+      - name: Build and push Worker image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+        with:
+          context: .
+          target: timetable-worker-runtime
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-worker:development
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-worker:cache-development
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_BASENAME }}/timetable-worker:cache-development,mode=max
+
+  timetable-generator-cd-cluster:
+    name: "CD: Deploy to Kubernetes Cluster"
+
+    runs-on: dev-deploy
+
+    permissions:
+      contents: read
+
+    needs: [ timetable-api-ci-image, timetable-worker-ci-image ]
+
+    environment:
+      name: ci-cd-timetable-generator-dev
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Deploy to Kubernetes
         shell: bash
         working-directory: ./k8s/development/
         run: bash ./deploy.sh

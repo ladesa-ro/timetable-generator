@@ -67,33 +67,18 @@ public class IcalAvailabilityEvaluator : IAvailabilityEvaluator
         if (pattern.Frequency == FrequencyType.Weekly
             && (pattern.ByDay is null || pattern.ByDay.Count == 0))
         {
-            var byDay = DayOfWeekToByDay(rule.DateStart.DayOfWeek);
-
-            var parts = rule.RRule.Split(';', StringSplitOptions.RemoveEmptyEntries)
-                .Where(p => !p.StartsWith("BYDAY=", StringComparison.OrdinalIgnoreCase)
-                            && !p.StartsWith("INTERVAL=", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-            parts.Add($"BYDAY={byDay}");
-            parts.Add("INTERVAL=1");
-            var adjusted = string.Join(';', parts);
-
-            return ParseRecurrencePattern(adjusted);
+            var adjusted = new RecurrencePattern(pattern.Frequency)
+            {
+                Interval = pattern.Interval > 0 ? pattern.Interval : 1,
+                Until = pattern.Until,
+                Count = pattern.Count,
+                ByDay = { new WeekDay(rule.DateStart.DayOfWeek) }
+            };
+            return adjusted;
         }
 
         return pattern;
     }
-
-    private static string DayOfWeekToByDay(DayOfWeek dow) => dow switch
-    {
-        DayOfWeek.Monday => "MO",
-        DayOfWeek.Tuesday => "TU",
-        DayOfWeek.Wednesday => "WE",
-        DayOfWeek.Thursday => "TH",
-        DayOfWeek.Friday => "FR",
-        DayOfWeek.Saturday => "SA",
-        DayOfWeek.Sunday => "SU",
-        _ => throw new ArgumentOutOfRangeException(nameof(dow))
-    };
 
     private static bool HasConflict(DateTime checkStart, DateTime checkEnd, Occurrence occurrence, DateTime? ruleEndDate)
     {

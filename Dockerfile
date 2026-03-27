@@ -97,26 +97,26 @@ FROM sdk-base AS build
 WORKDIR /src
 
 # Copia apenas os arquivos de projeto para melhor aproveitamento de cache
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx ./Ladesa.TimetableGenerator.v1/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.Solver/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.Solver/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/
-COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/
+COPY ./src/Ladesa.TimetableGenerator.slnx ./src/
+COPY ./src/Ladesa.TimetableGenerator.Domain/*.csproj ./src/Ladesa.TimetableGenerator.Domain/
+COPY ./src/Ladesa.TimetableGenerator.Application/*.csproj ./src/Ladesa.TimetableGenerator.Application/
+COPY ./src/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/*.csproj ./src/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/
+COPY ./src/Ladesa.TimetableGenerator.Infrastructure.Solver/*.csproj ./src/Ladesa.TimetableGenerator.Infrastructure.Solver/
+COPY ./src/Ladesa.TimetableGenerator.Server.Api/*.csproj ./src/Ladesa.TimetableGenerator.Server.Api/
+COPY ./src/Ladesa.TimetableGenerator.Server.Workers.Generator/*.csproj ./src/Ladesa.TimetableGenerator.Server.Workers.Generator/
+COPY ./src/Ladesa.TimetableGenerator.Domain.Test/*.csproj ./src/Ladesa.TimetableGenerator.Domain.Test/
 
-RUN dotnet restore ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
+RUN dotnet restore ./src/Ladesa.TimetableGenerator.slnx
 
 # Copia o código completo
 COPY . .
 
 # Build e publish - API
-RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/Ladesa.TimetableGenerator.Server.Api.csproj \
+RUN dotnet publish ./src/Ladesa.TimetableGenerator.Server.Api/Ladesa.TimetableGenerator.Server.Api.csproj \
   -c Release -o /app/publish-api /p:UseAppHost=false
 
 # Build e publish - Worker
-RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/Ladesa.TimetableGenerator.Server.Workers.Generator.csproj \
+RUN dotnet publish ./src/Ladesa.TimetableGenerator.Server.Workers.Generator/Ladesa.TimetableGenerator.Server.Workers.Generator.csproj \
   -c Release -o /app/publish-worker /p:UseAppHost=false
 
 # =============================

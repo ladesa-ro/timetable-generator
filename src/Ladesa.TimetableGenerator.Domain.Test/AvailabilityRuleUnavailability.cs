@@ -345,15 +345,17 @@ public class AvailabilityRuleUnavailabilityDetailedTests
         );
 
 
-        var week1 = new DateOnly(year: 2025, month: 10, day: 20);
-        var week2 = new DateOnly(year: 2025, month: 10, day: 27);
-        var between = new DateOnly(year: 2025, month: 10, day: 24);
+        var week1 = new DateOnly(year: 2025, month: 10, day: 20);  // Monday, occurrence 1
+        var week2 = new DateOnly(year: 2025, month: 10, day: 27);  // Monday, 1 week later (skipped by INTERVAL=2)
+        var week3 = new DateOnly(year: 2025, month: 11, day: 3);   // Monday, 2 weeks later (occurrence 2)
+        var between = new DateOnly(year: 2025, month: 10, day: 24); // Friday, non-occurrence
 
         Assert.Multiple(testDelegate: () =>
         {
-            Assert.That(actual: _evaluator.IsAvailable(unavailability, week1, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
-            Assert.That(actual: _evaluator.IsAvailable(unavailability, between, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True);
-            Assert.That(actual: _evaluator.IsAvailable(unavailability, week2, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False);
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, week1, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False, () => "Week 1 should be blocked");
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, between, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True, () => "Between weeks should be available");
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, week2, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.True, () => "Week 2 should be available (INTERVAL=2 skips)");
+            Assert.That(actual: _evaluator.IsAvailable(unavailability, week3, new TimeSlot(Start: "10:00", End: "10:30")), expression: Is.False, () => "Week 3 should be blocked (next occurrence)");
         });
     }
 

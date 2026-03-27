@@ -3,10 +3,10 @@ set -e
 
 function generate_protos() {
   PROTO_SRC="./vendors/ladesa-ro/protobufs/protos/timetable-generator-v1"
-  OUT_DIR="./Ladesa.TimetableGenerator.v1/Protobuf/Generated"
+  OUT_DIR="./src/Protobuf/Generated"
 
-  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.v1.Protobuf"
-  TARGET_NAMESPACE="Ladesa.TimetableGenerator.v1.Protobuf"
+  GENERATED_NAMESPACE="Ladesa.TimetableGenerator.Protobuf"
+  TARGET_NAMESPACE="Ladesa.TimetableGenerator.Protobuf"
 
   rm -rf "$OUT_DIR"
   mkdir -p "$OUT_DIR"
