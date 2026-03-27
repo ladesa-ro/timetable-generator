@@ -98,23 +98,30 @@ WORKDIR /src
 
 # Copia apenas os arquivos de projeto para melhor aproveitamento de cache
 COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx ./Ladesa.TimetableGenerator.v1/
-COPY ./Ladesa.TimetableGenerator.v1/Core/*.csproj ./Ladesa.TimetableGenerator.v1/Core/
-COPY ./Ladesa.TimetableGenerator.v1/Core.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Core.Test/
-COPY ./Ladesa.TimetableGenerator.v1/Service/*.csproj ./Ladesa.TimetableGenerator.v1/Service/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Application/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Infrastructure.RabbitMq/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/
+COPY ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/*.csproj ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Domain.Test/
 
 RUN dotnet restore ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
 
 # Copia o código completo
 COPY . .
 
-# Build e publish (sem apphost para imagem menor)
-RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Service/Service.csproj \
-  -c Release -o /app/publish /p:UseAppHost=false
+# Build e publish - API
+RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Api/Ladesa.TimetableGenerator.Server.Api.csproj \
+  -c Release -o /app/publish-api /p:UseAppHost=false
+
+# Build e publish - Worker
+RUN dotnet publish ./Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.Server.Workers.Generator/Ladesa.TimetableGenerator.Server.Workers.Generator.csproj \
+  -c Release -o /app/publish-worker /p:UseAppHost=false
 
 # =============================
-# Etapa 5: Runtime leve (não-root)
+# Etapa 5a: Runtime da API
 # =============================
-FROM os-slim AS timetable-generator-runtime
+FROM os-slim AS timetable-api-runtime
 
 ENV DOTNET_CHANNEL=9.0
 ENV DOTNET_ROOT=/usr/share/dotnet
@@ -131,13 +138,41 @@ RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh \
   && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
   && rm dotnet-install.sh
 
-# Cria usuário de runtime não-root
 ARG APP_USER=appuser
 RUN addgroup --system $APP_USER && adduser --system --ingroup $APP_USER $APP_USER
 
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app/publish-api .
 
 USER $APP_USER
 
-ENTRYPOINT ["dotnet", "Service.dll"]
+ENTRYPOINT ["dotnet", "Ladesa.TimetableGenerator.Server.Api.dll"]
+
+# =============================
+# Etapa 5b: Runtime do Worker
+# =============================
+FROM os-slim AS timetable-worker-runtime
+
+ENV DOTNET_CHANNEL=9.0
+ENV DOTNET_ROOT=/usr/share/dotnet
+ENV PATH="$PATH:/usr/share/dotnet"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  curl ca-certificates libc6 libgcc1 libgssapi-krb5-2 libicu72 libssl3 libstdc++6 zlib1g \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh \
+  && chmod +x dotnet-install.sh \
+  && ./dotnet-install.sh --runtime dotnet --install-dir /usr/share/dotnet --channel $DOTNET_CHANNEL \
+  && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
+  && rm dotnet-install.sh
+
+ARG APP_USER=appuser
+RUN addgroup --system $APP_USER && adduser --system --ingroup $APP_USER $APP_USER
+
+WORKDIR /app
+COPY --from=build /app/publish-worker .
+
+USER $APP_USER
+
+ENTRYPOINT ["dotnet", "Ladesa.TimetableGenerator.Server.Workers.Generator.dll"]
