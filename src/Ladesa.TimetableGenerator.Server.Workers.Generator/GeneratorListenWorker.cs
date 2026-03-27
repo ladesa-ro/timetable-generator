@@ -3,6 +3,7 @@ using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
 using Ladesa.TimetableGenerator.Application.Generator;
 using Ladesa.TimetableGenerator.Application.Generator.DTOs;
 using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
 
@@ -14,7 +15,8 @@ public class GeneratorListenWorker(
     ISystemClock systemClock,
     IMessageDeserializer<ServiceGenerateRequestDto> requestDeserializer,
     IMessageSerializer<ServiceGenerateResponseDto> responseSerializer,
-    IErrorMapper errorMapper)
+    IErrorMapper errorMapper,
+    ILogger<GeneratorListenWorker> logger)
     : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,10 +39,17 @@ public class GeneratorListenWorker(
         {
             return requestDeserializer.Deserialize(bytes);
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
+            logger.LogWarning(ex, "Failed to deserialize request message: invalid JSON ({ByteLength} bytes).", bytes.Length);
             var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
             // TODO: currently goes to dead letter; consider pulling request-id from a header
+            throw new Exception(JsonSerializer.Serialize(errorDto));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unexpected error deserializing request message ({ByteLength} bytes).", bytes.Length);
+            var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
     }
@@ -74,8 +83,41 @@ public class GeneratorListenWorker(
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
         }
+        catch (GeneratorValidationException ex)
+        {
+            logger.LogWarning(ex, "Validation error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
+            var errorDto = errorMapper.MapToErrorDto(
+                GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
+
+            var responseDto = new ServiceGenerateResponseDto(
+                requestDto.RequestId,
+                false,
+                null,
+                errorDto,
+                systemClock.Today
+            );
+
+            await PublishResponse(responseDto, replyQueue, stoppingToken);
+        }
+        catch (InvalidOperationException ex)
+        {
+            logger.LogError(ex, "Invalid operation during timetable generation for request '{RequestId}'.", requestDto.RequestId);
+            var errorDto = errorMapper.MapToErrorDto(
+                GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
+
+            var responseDto = new ServiceGenerateResponseDto(
+                requestDto.RequestId,
+                false,
+                null,
+                errorDto,
+                systemClock.Today
+            );
+
+            await PublishResponse(responseDto, replyQueue, stoppingToken);
+        }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Unexpected error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
             var errorDto = errorMapper.MapToErrorDto(
                 GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
 

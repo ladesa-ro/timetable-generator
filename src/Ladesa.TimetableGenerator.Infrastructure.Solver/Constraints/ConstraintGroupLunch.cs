@@ -1,15 +1,14 @@
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Constants;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 /// <summary>
 ///     CONSTRAINT: Group - no schedules in lunchtime - at least 01:30
 /// </summary>
-public static class ConstraintGroupLunch
+public class ConstraintGroupLunch : IConstraint
 {
-    public static void Apply(GenerationContext generationContext)
+    public void Apply(GenerationContext generationContext)
     {
         var lunchBefore = TimeSlotConstants.LunchBufferBefore;
         var lunchAfter = TimeSlotConstants.LunchBufferAfter;

@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Configuration;
-
-namespace Ladesa.TimetableGenerator.Application.Ports;
+namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 
 public static class ConfigurationExtensions
 {

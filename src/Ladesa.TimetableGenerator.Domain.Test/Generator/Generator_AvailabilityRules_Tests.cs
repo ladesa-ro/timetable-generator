@@ -1,7 +1,8 @@
 using System.Globalization;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
+using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
@@ -28,7 +29,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to teacher unavailability on Monday.");
@@ -52,7 +53,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to group unavailability on specific time slot.");
@@ -76,7 +77,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to partial unavailability overlap.");
@@ -101,7 +102,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate schedules only on Tue and Thu.");
@@ -136,7 +137,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate schedules only outside unavailability (Mon, Tue).");
@@ -161,7 +162,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate schedule with full availability.");
@@ -191,7 +192,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules when both are unavailable.");
@@ -217,7 +218,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(5), "Should generate full schedules with no impact from weekend unavailability.");
@@ -246,7 +247,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to multiple unavailability rules.");
@@ -272,7 +273,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         
@@ -300,7 +301,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to exact time match unavailability.");
@@ -325,7 +326,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         // Other weekdays remain valid unless explicitly made unavailable.
@@ -358,7 +359,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(5), "Should generate full schedules with no impact from unavailability after range.");
@@ -382,7 +383,7 @@ public class Generator_AvailabilityRules_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0), "Should generate 0 schedules due to group unavailability overriding teacher availability.");

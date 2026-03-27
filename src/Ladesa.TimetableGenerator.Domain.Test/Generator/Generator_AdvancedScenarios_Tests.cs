@@ -1,6 +1,7 @@
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
+using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
 
@@ -27,7 +28,7 @@ public class Generator_AdvancedScenarios_Tests
             [timeSlot]
         );
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(5));
@@ -56,7 +57,7 @@ public class Generator_AdvancedScenarios_Tests
             [timeSlot]
         );
 
-        var resultWithRule = Gen.GenerateTimetables(requestWithRule).FirstOrDefault();
+        var resultWithRule = GeneratorFactory.CreateDefault().GenerateTimetables(requestWithRule, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(resultWithRule, Is.Not.Null);
         Assert.That(resultWithRule!.Timetable.Schedules, Has.Length.EqualTo(4));
@@ -89,7 +90,7 @@ public class Generator_AdvancedScenarios_Tests
             slots
         );
 
-        var results = Gen.GenerateTimetables(request).ToList();
+        var results = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).ToList();
 
         Assert.That(results, Has.Count.GreaterThan(0));
 
@@ -140,9 +141,9 @@ public class Generator_AdvancedScenarios_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, groups, teachers, diaries, [timeSlot]);
 
-        Assert.DoesNotThrow(() => Gen.GenerateTimetables(request).ToList());
+        Assert.DoesNotThrow(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).ToList());
 
-        var results = Gen.GenerateTimetables(request).ToList();
+        var results = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).ToList();
         Assert.That(results, Is.Not.Empty);
 
         var result = results.First();
@@ -166,7 +167,7 @@ public class Generator_AdvancedScenarios_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(3));
@@ -195,7 +196,7 @@ public class Generator_AdvancedScenarios_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacherWithUnavail], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(0));
@@ -203,7 +204,7 @@ public class Generator_AdvancedScenarios_Tests
         // Variant: no unavailability
         var teacherNoUnavail = new Teacher("prof:1", new Availability([]));
         var requestNoUnavail = new GenerateRequest(date, date, [group], [teacherNoUnavail], [diary], [timeSlot]);
-        var resultNoUnavail = Gen.GenerateTimetables(requestNoUnavail).FirstOrDefault();
+        var resultNoUnavail = GeneratorFactory.CreateDefault().GenerateTimetables(requestNoUnavail, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(resultNoUnavail!.Timetable.Schedules, Has.Length.EqualTo(1));
     }

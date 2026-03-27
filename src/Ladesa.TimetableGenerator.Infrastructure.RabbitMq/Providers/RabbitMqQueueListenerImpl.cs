@@ -1,7 +1,9 @@
+using System.Net.Sockets;
 using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 
@@ -11,6 +13,10 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 /// </summary>
 public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueListener
 {
+    private const string DeadLetterExchangePrefix = "dlx.";
+    private const string DeadLetterQueuePrefix = "dlq.";
+    private const ushort PrefetchCount = 5;
+
     private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
     private readonly ILogger<RabbitMqQueueListenerImpl> _logger;
     private readonly SemaphoreSlim _initializationSemaphore = new(1, 1);
@@ -59,30 +65,31 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
 
             _logger.LogInformation("Initializing consumer for queue '{QueueName}'...", _queueName);
 
-            _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
-            _channel.CallbackExceptionAsync += OnChannelCallbackException;
-
-            var dlxName = $"dlx.{_queueName}";
-            var dlqName = $"dlq.{_queueName}";
-
-            await _channel.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, cancellationToken: cancellationToken);
-            await _channel.QueueDeclareAsync(dlqName, true, false, false, cancellationToken: cancellationToken);
-            await _channel.QueueBindAsync(dlqName, dlxName, "", cancellationToken: cancellationToken);
-
-            var args = new Dictionary<string, object> { { "x-dead-letter-exchange", dlxName } };
-            await _channel.QueueDeclareAsync(_queueName, true, false, false, args, cancellationToken: cancellationToken);
-
-            await _channel.BasicQosAsync(0, 5, false, cancellationToken);
-
-            var consumer = new AsyncEventingBasicConsumer(_channel);
-            consumer.ReceivedAsync += OnMessageReceivedAsync;
-
-            _consumerTag = await _channel.BasicConsumeAsync(_queueName, false, consumer, cancellationToken);
-            _logger.LogInformation("Consumer started on queue '{QueueName}' with ConsumerTag '{ConsumerTag}'.", _queueName, _consumerTag);
+            await SetupChannelAsync(cancellationToken);
+            await ConfigureDeadLetterQueueAsync(cancellationToken);
+            await StartConsumerAsync(cancellationToken);
+        }
+        catch (BrokerUnreachableException ex)
+        {
+            _logger.LogError(ex, "Broker unreachable while initializing consumer for queue '{QueueName}'.", _queueName);
+            _channel?.Dispose();
+            _channel = null;
+        }
+        catch (AlreadyClosedException ex)
+        {
+            _logger.LogError(ex, "Channel or connection already closed while initializing consumer for queue '{QueueName}'.", _queueName);
+            _channel?.Dispose();
+            _channel = null;
+        }
+        catch (SocketException ex)
+        {
+            _logger.LogError(ex, "Socket error while initializing consumer for queue '{QueueName}'.", _queueName);
+            _channel?.Dispose();
+            _channel = null;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to initialize consumer for queue '{QueueName}'.", _queueName);
+            _logger.LogError(ex, "Unexpected error initializing consumer for queue '{QueueName}'.", _queueName);
             _channel?.Dispose();
             _channel = null;
         }
@@ -90,6 +97,36 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
         {
             _initializationSemaphore.Release();
         }
+    }
+
+    private async Task SetupChannelAsync(CancellationToken cancellationToken)
+    {
+        _channel = await _persistentConnectionImpl.CreateChannelAsync(cancellationToken);
+        _channel.CallbackExceptionAsync += OnChannelCallbackException;
+    }
+
+    private async Task ConfigureDeadLetterQueueAsync(CancellationToken cancellationToken)
+    {
+        var dlxName = $"{DeadLetterExchangePrefix}{_queueName}";
+        var dlqName = $"{DeadLetterQueuePrefix}{_queueName}";
+
+        await _channel!.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, cancellationToken: cancellationToken);
+        await _channel.QueueDeclareAsync(dlqName, true, false, false, cancellationToken: cancellationToken);
+        await _channel.QueueBindAsync(dlqName, dlxName, "", cancellationToken: cancellationToken);
+
+        var args = new Dictionary<string, object> { { "x-dead-letter-exchange", dlxName } };
+        await _channel.QueueDeclareAsync(_queueName!, true, false, false, args, cancellationToken: cancellationToken);
+
+        await _channel.BasicQosAsync(0, PrefetchCount, false, cancellationToken);
+    }
+
+    private async Task StartConsumerAsync(CancellationToken cancellationToken)
+    {
+        var consumer = new AsyncEventingBasicConsumer(_channel!);
+        consumer.ReceivedAsync += OnMessageReceivedAsync;
+
+        _consumerTag = await _channel!.BasicConsumeAsync(_queueName!, false, consumer, cancellationToken);
+        _logger.LogInformation("Consumer started on queue '{QueueName}' with ConsumerTag '{ConsumerTag}'.", _queueName, _consumerTag);
     }
 
     private async Task OnMessageReceivedAsync(object sender, BasicDeliverEventArgs ea)
@@ -104,7 +141,8 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error processing message from queue '{QueueName}'. Sending to DLQ.", _queueName);
+            _logger.LogError(ex, "Error processing message from queue '{QueueName}' (DeliveryTag={DeliveryTag}, Size={MessageSize} bytes). Sending to DLQ.",
+                _queueName, ea.DeliveryTag, message.Length);
             await _channel.BasicNackAsync(ea.DeliveryTag, false, false);
         }
     }
@@ -143,9 +181,17 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
 
             _logger.LogInformation("Listener for queue '{QueueName}' disposed successfully.", _queueName);
         }
+        catch (AlreadyClosedException ex)
+        {
+            _logger.LogWarning(ex, "Channel already closed during disposal of listener for queue '{QueueName}'.", _queueName);
+        }
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "I/O error during disposal of listener for queue '{QueueName}'.", _queueName);
+        }
         catch (Exception ex)
         {
-            _logger.LogCritical(ex, "Error disposing listener for queue '{QueueName}'.", _queueName);
+            _logger.LogCritical(ex, "Unexpected error disposing listener for queue '{QueueName}'.", _queueName);
         }
         finally
         {

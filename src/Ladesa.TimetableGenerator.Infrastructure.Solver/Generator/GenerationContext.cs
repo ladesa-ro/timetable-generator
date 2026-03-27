@@ -6,10 +6,13 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 public class GenerationContext
 {
-    public GenerationContext(GenerateRequest generateRequest, IAvailabilityEvaluator availabilityEvaluator)
+    public GenerationContext(
+        GenerateRequest generateRequest,
+        IAvailabilityEvaluator availabilityEvaluator,
+        IScheduleCombinationGenerator scheduleCombinationGenerator)
     {
         GenerateRequest = generateRequest;
-        InitializeProposals(availabilityEvaluator);
+        InitializeProposals(availabilityEvaluator, scheduleCombinationGenerator);
     }
 
     public GenerateRequest GenerateRequest { get; }
@@ -18,11 +21,13 @@ public class GenerationContext
 
     public LinearExpr? Score { set; get; }
 
-    private void InitializeProposals(IAvailabilityEvaluator availabilityEvaluator)
+    private void InitializeProposals(
+        IAvailabilityEvaluator availabilityEvaluator,
+        IScheduleCombinationGenerator scheduleCombinationGenerator)
     {
         AllProposals.Clear();
 
-        foreach (var scheduleCombination in ScheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateRequest, availabilityEvaluator))
+        foreach (var scheduleCombination in scheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateRequest, availabilityEvaluator))
         {
             var scheduleProposal = new GenerationContextScheduleProposal(
                 this,

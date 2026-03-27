@@ -1,7 +1,8 @@
 using System.Globalization;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
+using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 using NUnit.Framework;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
@@ -22,7 +23,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate only one schedule due to single slot.");
@@ -45,7 +46,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary1, diary2], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate only one schedule due to teacher conflict.");
@@ -67,7 +68,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate only one schedule due to overlapping slots.");
@@ -86,7 +87,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher1, teacher2], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate schedule only with the diary's teacher.");
@@ -106,7 +107,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate schedule only with the diary's group.");
@@ -126,7 +127,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate only one schedule due to limited slots.");
@@ -146,7 +147,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should treat duplicates as one; no double schedules.");
@@ -170,7 +171,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary1, diary2], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate two schedules in different slots.");
@@ -196,7 +197,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher1, teacher2], [diary1, diary2], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate two schedules in different slots.");
@@ -226,7 +227,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate partial schedules due to unavailability conflict.");
@@ -250,7 +251,7 @@ public class Generator_ConflictResolution_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should schedule independently, no conflict on subject.");

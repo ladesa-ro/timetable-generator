@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
 using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
 namespace Ladesa.TimetableGenerator.Domain.Test.Constraints;
@@ -33,7 +33,7 @@ public class Constraints_NoOverlapping_Tests
         );
 
         // Act
-        var result = Gen.GenerateTimetables(request).First();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).First();
 
         // Assert: Because of teacher overlap constraint, only one schedule across the two diaries should be chosen
         Assert.That(result.Timetable.Schedules.Length, Is.EqualTo(1));
@@ -64,7 +64,7 @@ public class Constraints_NoOverlapping_Tests
         );
 
         // Act
-        var result = Gen.GenerateTimetables(request).First();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).First();
 
         // Assert: Because of group overlap constraint, only one schedule for the same group should be chosen
         Assert.That(result.Timetable.Schedules.Length, Is.EqualTo(1));
@@ -95,7 +95,7 @@ public class Constraints_NoOverlapping_Tests
         );
 
         // Act
-        var result = Gen.GenerateTimetables(request).First();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).First();
 
         // Assert: Adjacent slots do not count as overlap; should allow two schedules
         Assert.That(result.Timetable.Schedules.Length, Is.EqualTo(2));
@@ -127,7 +127,7 @@ public class Constraints_NoOverlapping_Tests
         );
 
         // Act
-        var result = Gen.GenerateTimetables(request).First();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).First();
 
         // Assert: Overlap constraint is per-day; across different days, both should schedule
         Assert.That(result.Timetable.Schedules.Length, Is.EqualTo(2));

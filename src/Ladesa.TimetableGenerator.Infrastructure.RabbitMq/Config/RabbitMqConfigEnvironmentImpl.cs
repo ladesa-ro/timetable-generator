@@ -1,5 +1,3 @@
-using Ladesa.TimetableGenerator.Application.Ports;
-
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 
 public class RabbitMqConfigEnvironmentImpl(IConfiguration config) : IRabbitMqConfigProvider

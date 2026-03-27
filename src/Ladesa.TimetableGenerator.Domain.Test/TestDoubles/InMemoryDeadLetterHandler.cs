@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Application.Ports;
 
-namespace Ladesa.TimetableGenerator.Application.TestDoubles;
+namespace Ladesa.TimetableGenerator.Domain.Test.TestDoubles;
 
 public class InMemoryDeadLetterHandler : IDeadLetterHandler
 {

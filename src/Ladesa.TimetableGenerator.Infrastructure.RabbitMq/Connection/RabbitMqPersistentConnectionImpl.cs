@@ -9,6 +9,10 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 
 public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
 {
+    private const double RetryBackoffBase = 2.0;
+    private const int MaxJitterMilliseconds = 1000;
+    private static readonly TimeSpan NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
+
     private readonly IRabbitMqConnectionFactory _rabbitMqConnectionFactoryImpl;
     private readonly ILogger<RabbitMqPersistentConnectionImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
@@ -30,8 +34,8 @@ public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
             .Or<BrokerUnreachableException>()
             .WaitAndRetryAsync(
                 retryCount,
-                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) +
-                                TimeSpan.FromMilliseconds(new Random().Next(0, 1000)),
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(RetryBackoffBase, retryAttempt)) +
+                                TimeSpan.FromMilliseconds(Random.Shared.Next(0, MaxJitterMilliseconds)),
                 (ex, time, attempt, context) =>
                 {
                     _logger.LogWarning(ex,
@@ -55,28 +59,13 @@ public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
 
             _logger.LogInformation("RabbitMQ: Attempting to connect...");
 
-            var connectionFactory = _rabbitMqConnectionFactoryImpl.GetConnectionFactory();
-            connectionFactory.AutomaticRecoveryEnabled = true;
-            connectionFactory.NetworkRecoveryInterval = TimeSpan.FromSeconds(10);
-
-            var policyResult = await _retryPolicy.ExecuteAndCaptureAsync(async () =>
-            {
-                _connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
-            });
-
-            if (policyResult.Outcome == OutcomeType.Failure || !IsConnected || _connection is null)
-            {
-                _logger.LogError("RabbitMQ: Failed to connect after multiple attempts. Final error: {Exception}",
-                    policyResult.FinalException?.Message);
+            if (!await EstablishConnectionAsync(cancellationToken))
                 return false;
-            }
 
-            _connection.ConnectionShutdownAsync += OnConnectionShutdown;
-            _connection.CallbackExceptionAsync += OnCallbackException;
-            _connection.ConnectionBlockedAsync += OnConnectionBlocked;
+            RegisterConnectionEventHandlers();
 
             _logger.LogInformation("RabbitMQ: Connected successfully to host '{HostName}'",
-                _connection.Endpoint.HostName);
+                _connection!.Endpoint.HostName);
 
             OnReconnected?.Invoke();
 
@@ -86,6 +75,34 @@ public sealed class RabbitMqPersistentConnectionImpl : RabbitMqDisposableBase
         {
             _connectionSemaphore.Release();
         }
+    }
+
+    private async Task<bool> EstablishConnectionAsync(CancellationToken cancellationToken)
+    {
+        var connectionFactory = _rabbitMqConnectionFactoryImpl.GetConnectionFactory();
+        connectionFactory.AutomaticRecoveryEnabled = true;
+        connectionFactory.NetworkRecoveryInterval = NetworkRecoveryInterval;
+
+        var policyResult = await _retryPolicy.ExecuteAndCaptureAsync(async () =>
+        {
+            _connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
+        });
+
+        if (policyResult.Outcome == OutcomeType.Failure || !IsConnected || _connection is null)
+        {
+            _logger.LogError("RabbitMQ: Failed to connect after multiple attempts. Final error: {Exception}",
+                policyResult.FinalException?.Message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void RegisterConnectionEventHandlers()
+    {
+        _connection!.ConnectionShutdownAsync += OnConnectionShutdown;
+        _connection.CallbackExceptionAsync += OnCallbackException;
+        _connection.ConnectionBlockedAsync += OnConnectionBlocked;
     }
 
     public async Task<IChannel> CreateChannelAsync(CancellationToken cancellationToken = default)

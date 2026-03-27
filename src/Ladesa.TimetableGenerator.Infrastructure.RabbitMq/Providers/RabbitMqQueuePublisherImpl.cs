@@ -133,9 +133,17 @@ public sealed class RabbitMqQueuePublisherImpl : RabbitMqDisposableBase, IQueueP
 
             _logger.LogInformation("Publisher disposed successfully.");
         }
+        catch (AlreadyClosedException ex)
+        {
+            _logger.LogWarning(ex, "Channel already closed during publisher disposal.");
+        }
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "I/O error during publisher disposal.");
+        }
         catch (Exception ex)
         {
-            _logger.LogCritical(ex, "Error disposing publisher.");
+            _logger.LogCritical(ex, "Unexpected error disposing publisher.");
         }
         finally
         {

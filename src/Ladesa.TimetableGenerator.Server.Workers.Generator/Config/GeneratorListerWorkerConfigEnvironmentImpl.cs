@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
 

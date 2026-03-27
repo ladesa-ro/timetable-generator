@@ -1,6 +1,6 @@
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
 using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
 namespace Ladesa.TimetableGenerator.Domain.Test.Domain;
@@ -102,7 +102,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: t.Id);
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
         Assert.That(ex!.Message, Does.Contain("Group not found"));
     }
 
@@ -115,7 +115,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: g.Id, teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
         Assert.That(ex!.Message, Does.Contain("Teacher not found"));
     }
 
@@ -128,7 +128,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => Gen.GenerateTimetables(req).First());
+        var ex = Assert.Throws<Ladesa.TimetableGenerator.Domain.Models.GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
         Assert.That(ex!.Message, Does.Contain("Diary references not found"));
     }
 }

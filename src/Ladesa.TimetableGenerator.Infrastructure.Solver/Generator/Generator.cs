@@ -9,20 +9,33 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 ///     Main entry point for timetable generation. Orchestrates validation,
 ///     constraint application, optimization, and solution streaming.
 /// </summary>
-public static class Generator
+public class Generator
 {
+    private readonly IEnumerable<IConstraint> _constraints;
+    private readonly ITimetableOptimizer _optimizer;
+    private readonly IScheduleCombinationGenerator _combinationGenerator;
+
+    public Generator(
+        IEnumerable<IConstraint> constraints,
+        ITimetableOptimizer optimizer,
+        IScheduleCombinationGenerator combinationGenerator)
+    {
+        _constraints = constraints;
+        _optimizer = optimizer;
+        _combinationGenerator = combinationGenerator;
+    }
+
     /// <summary>
     ///     Generates timetable solutions for the given request, iteratively improving
     ///     quality. Yields results as they are found by the solver.
     /// </summary>
     /// <param name="request">The generation request containing groups, teachers, diaries, time slots, and constraints.</param>
+    /// <param name="availabilityEvaluator">The availability evaluator to use.</param>
     /// <returns>An enumerable of generated timetables, ordered by decreasing quality score.</returns>
-    public static IEnumerable<GeneratedTimetable> GenerateTimetables(
+    public IEnumerable<GeneratedTimetable> GenerateTimetables(
         GenerateRequest request,
-        IAvailabilityEvaluator? availabilityEvaluator = null)
+        IAvailabilityEvaluator availabilityEvaluator)
     {
-        availabilityEvaluator ??= new IcalAvailabilityEvaluator();
-
         ValidateDiaryReferences(request);
 
         var generationContext = CreateContextWithRestrictionsApplied(request, availabilityEvaluator);
@@ -44,32 +57,24 @@ public static class Generator
 
     /// <summary>
     ///     Generates all possible schedule combinations, filtering by availability.
-    ///     Delegates to <see cref="ScheduleCombinationGenerator"/>.
+    ///     Delegates to <see cref="IScheduleCombinationGenerator"/>.
     /// </summary>
-    public static IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
+    public IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
         GenerateRequest generateRequest,
-        IAvailabilityEvaluator? availabilityEvaluator = null)
-        => ScheduleCombinationGenerator.GetAllCombinationsWithAvailability(
-            generateRequest, availabilityEvaluator ?? new IcalAvailabilityEvaluator());
+        IAvailabilityEvaluator availabilityEvaluator)
+        => _combinationGenerator.GetAllCombinationsWithAvailability(
+            generateRequest, availabilityEvaluator);
 
-    private static GenerationContext CreateContextWithRestrictionsApplied(
+    private GenerationContext CreateContextWithRestrictionsApplied(
         GenerateRequest request,
         IAvailabilityEvaluator availabilityEvaluator)
     {
-        var generationContext = new GenerationContext(request, availabilityEvaluator);
+        var generationContext = new GenerationContext(request, availabilityEvaluator, _combinationGenerator);
 
-        ConstraintGroupOneScheduleAtSameTime.Apply(generationContext);
-        ConstraintTeacherOneScheduleAtSameTime.Apply(generationContext);
-        ConstraintDiaryLimitSchedulesInOneWeek.Apply(generationContext);
-        ConstraintDiaryLimitRemaining.Apply(generationContext);
-        ConstraintTeacherLunch.Apply(generationContext);
-        ConstraintGroupLunch.Apply(generationContext);
-        ConstraintTeacherNoOppositeTurns.Apply(generationContext);
-        ConstraintTeacher12Hours.Apply(generationContext);
-        ConstraintGroupNoOverlappingTimeSlots.Apply(generationContext);
-        ConstraintTeacherNoOverlappingTimeSlots.Apply(generationContext);
+        foreach (var constraint in _constraints)
+            constraint.Apply(generationContext);
 
-        TimetableOptimizer.OptimizeResult(generationContext);
+        _optimizer.OptimizeResult(generationContext);
 
         return generationContext;
     }
@@ -100,39 +105,14 @@ public static class Generator
         );
     }
 
-    private static void SolveAndWriteToChannel(
+    private void SolveAndWriteToChannel(
         ChannelWriter<GeneratedTimetable> writer,
         GenerationContext generationContext,
         GenerateRequest request)
     {
         try
         {
-            long? previousScore = null;
-            var producedAny = false;
-
-            do
-            {
-                var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
-
-                var solutionPrinter = new GeneratorSolutionCallback(
-                    generationContext,
-                    timetable =>
-                    {
-                        producedAny = true;
-                        writer.TryWrite(timetable);
-                    }
-                );
-
-                if (previousScore != null)
-                    TimetableOptimizer.OptimizeResult(generationContext, previousScore - 1);
-
-                var sat = solver.Solve(generationContext.CpModel, solutionPrinter);
-
-                if (sat is CpSolverStatus.Feasible or CpSolverStatus.Optimal)
-                    previousScore = (long)solver.ObjectiveValue;
-                else
-                    previousScore = 0;
-            } while (previousScore > 0);
+            var producedAny = RunSolverIterations(writer, generationContext);
 
             if (!producedAny)
                 writer.TryWrite(CreateEmptyTimetable(request));
@@ -141,6 +121,49 @@ public static class Generator
         {
             writer.Complete();
         }
+    }
+
+    private bool RunSolverIterations(
+        ChannelWriter<GeneratedTimetable> writer,
+        GenerationContext generationContext)
+    {
+        long? previousScore = null;
+        var producedAny = false;
+
+        do
+        {
+            if (previousScore != null)
+                _optimizer.OptimizeResult(generationContext, previousScore - 1);
+
+            previousScore = SolveIteration(generationContext, writer, ref producedAny);
+        } while (previousScore > 0);
+
+        return producedAny;
+    }
+
+    private static long SolveIteration(
+        GenerationContext generationContext,
+        ChannelWriter<GeneratedTimetable> writer,
+        ref bool producedAny)
+    {
+        var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
+        var localProducedAny = producedAny;
+
+        var solutionPrinter = new GeneratorSolutionCallback(
+            generationContext,
+            timetable =>
+            {
+                localProducedAny = true;
+                writer.TryWrite(timetable);
+            }
+        );
+
+        var sat = solver.Solve(generationContext.CpModel, solutionPrinter);
+        producedAny = localProducedAny;
+
+        return sat is CpSolverStatus.Feasible or CpSolverStatus.Optimal
+            ? (long)solver.ObjectiveValue
+            : 0;
     }
 
     private static IEnumerable<GeneratedTimetable> ReadChannel(ChannelReader<GeneratedTimetable> reader)

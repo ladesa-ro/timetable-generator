@@ -1,7 +1,8 @@
 using System.Globalization;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Gen = global::Ladesa.TimetableGenerator.Infrastructure.Solver.Generator.Generator;
+using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 using NUnit.Framework;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
@@ -21,7 +22,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should have exactly 1 schedule.");
@@ -54,7 +55,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate exactly 2 schedules on the same day.");
@@ -81,7 +82,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(3), "Should generate exactly 3 schedules.");
@@ -118,7 +119,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(2), "Should generate 2 schedules on the same day.");
@@ -145,7 +146,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(5), "Should generate at most 5 schedules (one per day).");
@@ -167,7 +168,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(5), "Should fill all 5 available slots.");
@@ -189,7 +190,7 @@ public class Generator_CoreFunctionality_Tests
 
         var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
-        var result = Gen.GenerateTimetables(request).FirstOrDefault();
+        var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(10), "Should generate exactly 10 schedules (2 per week over 5 weeks).");

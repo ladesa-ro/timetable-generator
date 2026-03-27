@@ -6,7 +6,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 ///     Generates all possible schedule combinations from the request,
 ///     with optional availability filtering.
 /// </summary>
-public static class ScheduleCombinationGenerator
+public class ScheduleCombinationGenerator : IScheduleCombinationGenerator
 {
     internal static IEnumerable<GenerationScheduleCombination> GetAllPossibleCombinations(
         GenerateRequest request)
@@ -19,7 +19,7 @@ public static class ScheduleCombinationGenerator
                 date, timeSlot, grp.Id, diary.Id, diary.TeacherId);
     }
 
-    public static IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
+    public IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
         GenerateRequest generateRequest,
         IAvailabilityEvaluator availabilityEvaluator)
     {

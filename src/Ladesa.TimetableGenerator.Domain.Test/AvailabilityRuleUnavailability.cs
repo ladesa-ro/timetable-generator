@@ -1,5 +1,6 @@
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Ladesa.TimetableGenerator.Domain.Test;
 
