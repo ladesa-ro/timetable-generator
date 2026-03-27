@@ -1,4 +1,6 @@
-namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
+using Microsoft.Extensions.Configuration;
+
+namespace Ladesa.TimetableGenerator.Application.Extensions;
 
 public static class ConfigurationExtensions
 {

@@ -9,7 +9,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 ///     Main entry point for timetable generation. Orchestrates validation,
 ///     constraint application, optimization, and solution streaming.
 /// </summary>
-public class Generator
+public class Generator : IGenerator
 {
     private readonly IEnumerable<IConstraint> _constraints;
     private readonly ITimetableOptimizer _optimizer;

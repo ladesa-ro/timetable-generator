@@ -1,6 +1,8 @@
 using System.Net.Sockets;
 using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
+using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Constants;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
@@ -13,12 +15,9 @@ namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;
 /// </summary>
 public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueListener
 {
-    private const string DeadLetterExchangePrefix = "dlx.";
-    private const string DeadLetterQueuePrefix = "dlq.";
-    private const ushort PrefetchCount = 5;
-
     private readonly RabbitMqPersistentConnectionImpl _persistentConnectionImpl;
     private readonly ILogger<RabbitMqQueueListenerImpl> _logger;
+    private readonly ushort _prefetchCount;
     private readonly SemaphoreSlim _initializationSemaphore = new(1, 1);
 
     private IChannel? _channel;
@@ -28,10 +27,12 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
 
     public RabbitMqQueueListenerImpl(
         RabbitMqPersistentConnectionImpl persistentConnectionImpl,
+        IRabbitMqConfigProvider configProvider,
         ILogger<RabbitMqQueueListenerImpl> logger)
     {
         _persistentConnectionImpl = persistentConnectionImpl;
         _logger = logger;
+        _prefetchCount = configProvider.GetConnectionOptions().PrefetchCount;
 
         _persistentConnectionImpl.OnReconnected += OnConnectionImplReconnected;
     }
@@ -107,8 +108,8 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
 
     private async Task ConfigureDeadLetterQueueAsync(CancellationToken cancellationToken)
     {
-        var dlxName = $"{DeadLetterExchangePrefix}{_queueName}";
-        var dlqName = $"{DeadLetterQueuePrefix}{_queueName}";
+        var dlxName = RabbitMqNamingConventions.GetDlxName(_queueName!);
+        var dlqName = RabbitMqNamingConventions.GetDlqName(_queueName!);
 
         await _channel!.ExchangeDeclareAsync(dlxName, ExchangeType.Fanout, cancellationToken: cancellationToken);
         await _channel.QueueDeclareAsync(dlqName, true, false, false, cancellationToken: cancellationToken);
@@ -117,7 +118,7 @@ public sealed class RabbitMqQueueListenerImpl : RabbitMqDisposableBase, IQueueLi
         var args = new Dictionary<string, object> { { "x-dead-letter-exchange", dlxName } };
         await _channel.QueueDeclareAsync(_queueName!, true, false, false, args, cancellationToken: cancellationToken);
 
-        await _channel.BasicQosAsync(0, PrefetchCount, false, cancellationToken);
+        await _channel.BasicQosAsync(0, _prefetchCount, false, cancellationToken);
     }
 
     private async Task StartConsumerAsync(CancellationToken cancellationToken)

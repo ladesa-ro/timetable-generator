@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
+using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Constants;
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
@@ -54,8 +55,8 @@ public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetter
         ThrowIfDisposed();
         if (string.IsNullOrWhiteSpace(queue)) throw new ArgumentNullException(nameof(queue));
 
-        var dlqName = $"dlq.{queue}";
-        var dlxName = $"dlx.{queue}";
+        var dlqName = RabbitMqNamingConventions.GetDlqName(queue);
+        var dlxName = RabbitMqNamingConventions.GetDlxName(queue);
 
         try
         {

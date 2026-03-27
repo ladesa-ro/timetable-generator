@@ -1,6 +1,4 @@
-using Ladesa.TimetableGenerator.Domain.Models;
-
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+namespace Ladesa.TimetableGenerator.Domain.Models;
 
 public interface IScheduleCombinationGenerator
 {

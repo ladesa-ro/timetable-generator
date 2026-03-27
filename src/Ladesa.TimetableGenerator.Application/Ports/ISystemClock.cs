@@ -6,8 +6,3 @@ public interface ISystemClock
     DateTimeOffset UtcNow { get; }
     DateOnly Today => DateOnly.FromDateTime(UtcNow.DateTime);
 }
-
-public class SystemClock : ISystemClock
-{
-    public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
-}

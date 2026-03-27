@@ -12,7 +12,7 @@ public class GeneratorListenWorker(
     IQueueListener queueListener,
     IQueuePublisher queuePublisher,
     ITimetableGeneratorService timetableGeneratorService,
-    ISystemClock systemClock,
+    GenerateResponseBuilder responseBuilder,
     IMessageDeserializer<ServiceGenerateRequestDto> requestDeserializer,
     IMessageSerializer<ServiceGenerateResponseDto> responseSerializer,
     IErrorMapper errorMapper,
@@ -67,68 +67,20 @@ public class GeneratorListenWorker(
                 .Take(1)
                 .ToArray();
 
-            var successDto = new ServiceGenerateResponseResultSuccessDto(
-                requestDto.RequestId,
-                requestDto.GenerateRequest,
-                generatedTimetables
-            );
-
-            var responseDto = new ServiceGenerateResponseDto(
-                requestDto.RequestId,
-                true,
-                successDto,
-                null,
-                systemClock.Today
-            );
-
-            await PublishResponse(responseDto, replyQueue, stoppingToken);
-        }
-        catch (GeneratorValidationException ex)
-        {
-            logger.LogWarning(ex, "Validation error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
-            var errorDto = errorMapper.MapToErrorDto(
-                GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
-
-            var responseDto = new ServiceGenerateResponseDto(
-                requestDto.RequestId,
-                false,
-                null,
-                errorDto,
-                systemClock.Today
-            );
-
-            await PublishResponse(responseDto, replyQueue, stoppingToken);
-        }
-        catch (InvalidOperationException ex)
-        {
-            logger.LogError(ex, "Invalid operation during timetable generation for request '{RequestId}'.", requestDto.RequestId);
-            var errorDto = errorMapper.MapToErrorDto(
-                GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
-
-            var responseDto = new ServiceGenerateResponseDto(
-                requestDto.RequestId,
-                false,
-                null,
-                errorDto,
-                systemClock.Today
-            );
+            var responseDto = responseBuilder.BuildSuccess(
+                requestDto.RequestId, requestDto.GenerateRequest, generatedTimetables);
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unexpected error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
+            var logLevel = ex is GeneratorValidationException ? LogLevel.Warning : LogLevel.Error;
+            logger.Log(logLevel, ex, "Error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
+
             var errorDto = errorMapper.MapToErrorDto(
                 GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);
 
-            var responseDto = new ServiceGenerateResponseDto(
-                requestDto.RequestId,
-                false,
-                null,
-                errorDto,
-                systemClock.Today
-            );
-
+            var responseDto = responseBuilder.BuildError(requestDto.RequestId, errorDto);
             await PublishResponse(responseDto, replyQueue, stoppingToken);
         }
     }
