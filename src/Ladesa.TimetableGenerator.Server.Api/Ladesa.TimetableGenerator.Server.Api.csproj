@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Ladesa.TimetableGenerator.Server.Api</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Application\Ladesa.TimetableGenerator.Application.csproj" />
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.RabbitMq\Ladesa.TimetableGenerator.Infrastructure.RabbitMq.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+  </ItemGroup>
+</Project>

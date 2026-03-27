@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Domain/">
+    <Project Path="Ladesa.TimetableGenerator.Domain\Ladesa.TimetableGenerator.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Application/">
+    <Project Path="Ladesa.TimetableGenerator.Application\Ladesa.TimetableGenerator.Application.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Ladesa.TimetableGenerator.Infrastructure.RabbitMq\Ladesa.TimetableGenerator.Infrastructure.RabbitMq.csproj" />
+    <Project Path="Ladesa.TimetableGenerator.Infrastructure.Solver\Ladesa.TimetableGenerator.Infrastructure.Solver.csproj" />
+  </Folder>
+  <Folder Name="/Server/" />
+  <Folder Name="/Server/APIs/">
+    <Project Path="Ladesa.TimetableGenerator.Server.Api\Ladesa.TimetableGenerator.Server.Api.csproj" />
+  </Folder>
+  <Folder Name="/Server/Workers/">
+    <Project Path="Ladesa.TimetableGenerator.Server.Workers.Generator\Ladesa.TimetableGenerator.Server.Workers.Generator.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Ladesa.TimetableGenerator.Domain.Test\Ladesa.TimetableGenerator.Domain.Test.csproj" />
+  </Folder>
+</Solution>

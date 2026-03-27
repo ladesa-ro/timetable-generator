@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -25,14 +25,14 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Restore dependencies
-        run: dotnet restore Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx
+        run: dotnet restore src/Ladesa.TimetableGenerator.slnx
 
       - name: Build solution
-        run: dotnet build Ladesa.TimetableGenerator.v1/Ladesa.TimetableGenerator.v1.slnx --configuration Release --no-restore
+        run: dotnet build src/Ladesa.TimetableGenerator.slnx --configuration Release --no-restore
 
       - name: Run tests (NUnit)
         run: |
-          dotnet test Ladesa.TimetableGenerator.v1/Core.Test/Core.Test.csproj \
+          dotnet test src/Ladesa.TimetableGenerator.Domain.Test/Ladesa.TimetableGenerator.Domain.Test.csproj \
             --configuration Release \
             --no-build \
             --logger "trx;LogFileName=test-results.trx" \

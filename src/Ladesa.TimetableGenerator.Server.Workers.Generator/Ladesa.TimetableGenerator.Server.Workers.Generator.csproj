@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Ladesa.TimetableGenerator.Server.Workers.Generator</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Application\Ladesa.TimetableGenerator.Application.csproj" />
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.RabbitMq\Ladesa.TimetableGenerator.Infrastructure.RabbitMq.csproj" />
+    <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.Solver\Ladesa.TimetableGenerator.Infrastructure.Solver.csproj" />
+  </ItemGroup>
+</Project>
