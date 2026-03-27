@@ -2,11 +2,11 @@ using System.Globalization;
 using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
-namespace Ladesa.TimetableGenerator.Domain.Test;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test;
 
 [TestFixture]
 public class Generator_AvailabilityRules_Tests

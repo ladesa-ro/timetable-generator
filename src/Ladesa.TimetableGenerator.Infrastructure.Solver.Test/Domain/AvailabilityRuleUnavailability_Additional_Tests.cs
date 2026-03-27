@@ -2,7 +2,7 @@ using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Ladesa.TimetableGenerator.Domain.Test.Domain;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Domain;
 
 [TestFixture]
 public class AvailabilityRuleUnavailability_Additional_Tests

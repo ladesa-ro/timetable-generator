@@ -1,10 +1,10 @@
 using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Ladesa.TimetableGenerator.Domain.Test.Domain;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Domain;
 
 [TestFixture]
 public class Validation_Standardization_Tests

@@ -8,13 +8,13 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 ///     Configures the objective function for the CP solver to maximize
 ///     schedule quality based on preferences and continuity with previous timetables.
 /// </summary>
-public class TimetableOptimizer : ITimetableOptimizer
+internal class TimetableOptimizer : ITimetableOptimizer
 {
     public void OptimizeResult(
-        IGenerationContext context,
+        GenerationContext context,
         long? scoreLimit = null)
     {
-        var generationContext = (GenerationContext)context;
+        var generationContext = context;
         var qualityScore = LinearExpr.NewBuilder();
 
         AddBasicScheduleScore(qualityScore, generationContext);

@@ -18,5 +18,6 @@
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Ladesa.TimetableGenerator.Domain.Test\Ladesa.TimetableGenerator.Domain.Test.csproj" />
+    <Project Path="Ladesa.TimetableGenerator.Infrastructure.Solver.Test\Ladesa.TimetableGenerator.Infrastructure.Solver.Test.csproj" />
   </Folder>
 </Solution>

@@ -1,6 +1,7 @@
 using System.Threading.Channels;
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
@@ -10,17 +11,27 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 /// </summary>
 public class Generator : IGenerator
 {
-    private readonly IEnumerable<IConstraint> _constraints;
-    private readonly ITimetableOptimizer _optimizer;
+    private static readonly Dictionary<ConstraintKind, Func<IConstraint>> ConstraintFactories = new()
+    {
+        [ConstraintKind.GroupOneScheduleAtSameTime] = () => new ConstraintGroupOneScheduleAtSameTime(),
+        [ConstraintKind.TeacherOneScheduleAtSameTime] = () => new ConstraintTeacherOneScheduleAtSameTime(),
+        [ConstraintKind.DiaryLimitSchedulesInOneWeek] = () => new ConstraintDiaryLimitSchedulesInOneWeek(),
+        [ConstraintKind.DiaryLimitRemaining] = () => new ConstraintDiaryLimitRemaining(),
+        [ConstraintKind.TeacherLunch] = () => new ConstraintTeacherLunch(),
+        [ConstraintKind.GroupLunch] = () => new ConstraintGroupLunch(),
+        [ConstraintKind.TeacherNoOppositeTurns] = () => new ConstraintTeacherNoOppositeTurns(),
+        [ConstraintKind.Teacher12Hours] = () => new ConstraintTeacher12Hours(),
+        [ConstraintKind.GroupNoOverlappingTimeSlots] = () => new ConstraintGroupNoOverlappingTimeSlots(),
+        [ConstraintKind.TeacherNoOverlappingTimeSlots] = () => new ConstraintTeacherNoOverlappingTimeSlots(),
+    };
+
+    private static readonly ConstraintKind[] AllConstraintKinds = Enum.GetValues<ConstraintKind>();
+
+    private readonly ITimetableOptimizer _optimizer = new TimetableOptimizer();
     private readonly IScheduleCombinationGenerator _combinationGenerator;
 
-    public Generator(
-        IEnumerable<IConstraint> constraints,
-        ITimetableOptimizer optimizer,
-        IScheduleCombinationGenerator combinationGenerator)
+    public Generator(IScheduleCombinationGenerator combinationGenerator)
     {
-        _constraints = constraints;
-        _optimizer = optimizer;
         _combinationGenerator = combinationGenerator;
     }
 
@@ -28,9 +39,6 @@ public class Generator : IGenerator
     ///     Generates timetable solutions for the given request, iteratively improving
     ///     quality. Yields results as they are found by the solver.
     /// </summary>
-    /// <param name="request">The generation request containing groups, teachers, diaries, time slots, and constraints.</param>
-    /// <param name="availabilityEvaluator">The availability evaluator to use.</param>
-    /// <returns>An enumerable of generated timetables, ordered by decreasing quality score.</returns>
     public IEnumerable<GeneratedTimetable> GenerateTimetables(
         GenerateRequest request,
         IAvailabilityEvaluator availabilityEvaluator)
@@ -56,7 +64,6 @@ public class Generator : IGenerator
 
     /// <summary>
     ///     Generates all possible schedule combinations, filtering by availability.
-    ///     Delegates to <see cref="IScheduleCombinationGenerator"/>.
     /// </summary>
     public IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
         GenerateRequest generateRequest,
@@ -64,13 +71,22 @@ public class Generator : IGenerator
         => _combinationGenerator.GetAllCombinationsWithAvailability(
             generateRequest, availabilityEvaluator);
 
+    private static IConstraint[] BuildConstraints(GenerateRequest request)
+    {
+        var enabledKinds = request.EnabledConstraints ?? AllConstraintKinds;
+        return enabledKinds
+            .Where(ConstraintFactories.ContainsKey)
+            .Select(kind => ConstraintFactories[kind]())
+            .ToArray();
+    }
+
     private GenerationContext CreateContextWithRestrictionsApplied(
         GenerateRequest request,
         IAvailabilityEvaluator availabilityEvaluator)
     {
         var generationContext = new GenerationContext(request, availabilityEvaluator, _combinationGenerator);
 
-        foreach (var constraint in _constraints)
+        foreach (var constraint in BuildConstraints(request))
             constraint.Apply(generationContext);
 
         _optimizer.OptimizeResult(generationContext);

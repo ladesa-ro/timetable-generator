@@ -1,6 +1,4 @@
-using Ladesa.TimetableGenerator.Domain.Models;
-
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+namespace Ladesa.TimetableGenerator.Domain.Models;
 
 /// <summary>
 ///     Generates all possible schedule combinations from the request,

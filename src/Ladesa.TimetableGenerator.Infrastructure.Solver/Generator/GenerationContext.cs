@@ -4,7 +4,7 @@ using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-public class GenerationContext : IGenerationContext
+internal class GenerationContext
 {
     public GenerationContext(
         GenerateRequest generateRequest,
@@ -18,8 +18,6 @@ public class GenerationContext : IGenerationContext
     public GenerateRequest GenerateRequest { get; }
     public CpModel CpModel { get; } = new();
     public List<GenerationContextScheduleProposal> AllProposals { get; } = [];
-
-    IReadOnlyList<IScheduleProposal> IGenerationContext.AllProposals => AllProposals;
 
     public LinearExpr? Score { set; get; }
 

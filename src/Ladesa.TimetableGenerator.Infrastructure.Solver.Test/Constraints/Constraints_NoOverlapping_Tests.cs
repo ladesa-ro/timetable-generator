@@ -1,9 +1,9 @@
 using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
-using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 
-namespace Ladesa.TimetableGenerator.Domain.Test.Constraints;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Constraints;
 
 [TestFixture]
 public class Constraints_NoOverlapping_Tests

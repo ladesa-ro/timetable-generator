@@ -3,7 +3,7 @@ using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-public class GeneratorSolutionCallback(
+internal class GeneratorSolutionCallback(
     GenerationContext generationContext,
     Action<GeneratedTimetable> action)
     : CpSolverSolutionCallback

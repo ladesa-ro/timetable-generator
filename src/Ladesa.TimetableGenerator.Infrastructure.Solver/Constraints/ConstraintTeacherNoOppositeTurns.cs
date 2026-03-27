@@ -1,6 +1,5 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Domain.Models.Constraints;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
@@ -10,7 +9,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 ///     Allowed combinations: none, morning only, afternoon only, night only,
 ///     morning+afternoon, afternoon+night. (Morning+night is forbidden.)
 /// </summary>
-public class ConstraintTeacherNoOppositeTurns : IConstraintTeacherNoOppositeTurns
+internal class ConstraintTeacherNoOppositeTurns : IConstraint
 {
     /// <summary>
     ///     Allowed shift combinations per teacher per day: [morning, afternoon, night].
@@ -28,30 +27,29 @@ public class ConstraintTeacherNoOppositeTurns : IConstraintTeacherNoOppositeTurn
         // { 1, 0, 1 } is intentionally excluded: morning + night (opposite turns)
     };
 
-    public void Apply(IGenerationContext context)
+    public void Apply(GenerationContext context)
     {
-        var generationContext = (GenerationContext)context;
-        var proposalsByTeacherAndDate = GroupProposalsByTeacherAndDate(generationContext);
+        var proposalsByTeacherAndDate = GroupProposalsByTeacherAndDate(context);
 
         foreach (var bucket in proposalsByTeacherAndDate)
         {
             if (bucket.Proposals.Count == 0)
                 continue;
 
-            ApplyShiftConstraintForBucket(generationContext, bucket.TeacherId, bucket.Date, bucket.Proposals);
+            ApplyShiftConstraintForBucket(context, bucket.TeacherId, bucket.Date, bucket.Proposals);
         }
     }
 
     private static IEnumerable<(string TeacherId, DateOnly Date, List<GenerationContextScheduleProposal> Proposals)>
-        GroupProposalsByTeacherAndDate(GenerationContext generationContext)
+        GroupProposalsByTeacherAndDate(GenerationContext context)
     {
-        return from proposal in generationContext.AllProposals
+        return from proposal in context.AllProposals
             group proposal by new { proposal.TeacherId, proposal.Date } into grouped
             select (grouped.Key.TeacherId, grouped.Key.Date, grouped.ToList());
     }
 
     private static void ApplyShiftConstraintForBucket(
-        GenerationContext generationContext,
+        GenerationContext context,
         string teacherId,
         DateOnly date,
         List<GenerationContextScheduleProposal> proposals)
@@ -67,16 +65,16 @@ public class ConstraintTeacherNoOppositeTurns : IConstraintTeacherNoOppositeTurn
 
         var shiftCounts = new[]
         {
-            CreateShiftCount(generationContext, morningVars, $"{prefix}_morning"),
-            CreateShiftCount(generationContext, afternoonVars, $"{prefix}_afternoon"),
-            CreateShiftCount(generationContext, nightVars, $"{prefix}_night"),
+            CreateShiftCount(context, morningVars, $"{prefix}_morning"),
+            CreateShiftCount(context, afternoonVars, $"{prefix}_afternoon"),
+            CreateShiftCount(context, nightVars, $"{prefix}_night"),
         };
 
         var shiftActive = shiftCounts
-            .Select(c => CreateShiftActiveVar(generationContext, c.countVar, c.label))
+            .Select(c => CreateShiftActiveVar(context, c.countVar, c.label))
             .ToArray();
 
-        generationContext.CpModel
+        context.CpModel
             .AddAllowedAssignments(shiftActive)
             .AddTuples(AllowedShiftArrangements);
     }
