@@ -1,7 +1,4 @@
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
 using Ladesa.TimetableGenerator.Domain.Models.Availability;
 using Ladesa.TimetableGenerator.Domain.Models.Diary;
 using Ladesa.TimetableGenerator.Domain.Models.Group;
@@ -24,7 +21,7 @@ public static class Builders
         string disciplineId = "disc:1"
     ) => new(id, groupId, teacherId, disciplineId, weekLimit, remaining);
 
-    public static TimeSlot Slot(string start, string end) => new(start, end);
+    public static TimeSlot Slot(string start, string end) => new(TimeOnly.Parse(start), TimeOnly.Parse(end));
 
     public static GenerateTimetableCommand Request(
         DateOnly start,
@@ -39,18 +36,20 @@ public static class Builders
         int boostSameTimeOnly = 50,
         int boostDayDistance = 40,
         int boostTimeDistance = 40
-    ) => new(
-        DateStart: start,
-        DateEnd: end,
-        Groups: groups,
-        Teachers: teachers,
-        Diaries: diaries,
-        TimeSlots: timeSlots,
-        PreviousTimetableGrid: previous,
-        BoostSameDayOfWeekAndTimeSlot: boostSameDayAndTime,
-        BoostSameDayOfWeekOnly: boostSameDayOnly,
-        BoostSameTimeSlotOnly: boostSameTimeOnly,
-        BoostLesserDistanceFromDayOfWeek: boostDayDistance,
-        BoostLesserDistanceFromTimeSlot: boostTimeDistance
-    );
+    ) => new()
+    {
+        DateStart = start,
+        DateEnd = end,
+        Groups = groups,
+        Teachers = teachers,
+        Diaries = diaries,
+        TimeSlots = timeSlots,
+        PreviousTimetableGrid = previous,
+        BoostSameDayOfWeekAndTimeSlot = boostSameDayAndTime,
+        BoostSameDayOfWeekOnly = boostSameDayOnly,
+        BoostSameTimeSlotOnly = boostSameTimeOnly,
+        BoostLesserDistanceFromDayOfWeek = boostDayDistance,
+        BoostLesserDistanceFromTimeSlot = boostTimeDistance,
+        EnabledConstraints = null
+    };
 }

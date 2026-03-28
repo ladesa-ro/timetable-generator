@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Todo.Extensions;
+using Ladesa.TimetableGenerator.Application.Abstractions.Configuration.Extensions;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
 

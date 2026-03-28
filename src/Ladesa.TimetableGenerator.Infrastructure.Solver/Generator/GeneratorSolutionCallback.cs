@@ -1,7 +1,6 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
 using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
@@ -16,7 +15,7 @@ internal class GeneratorSolutionCallback(
         var schedules =
             from proposal in generationContext.AllProposals
             where BooleanValue(proposal.ModelBoolVar)
-            select new TimetableGridSchedule(
+            select new Schedule(
                 proposal.GroupId,
                 proposal.DiaryId,
                 proposal.TeacherId,

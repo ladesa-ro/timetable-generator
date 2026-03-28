@@ -1,5 +1,5 @@
 using System.Net.Sockets;
-using Ladesa.TimetableGenerator.Application.Todo.Ports;
+using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 using Polly;
 using Polly.Retry;

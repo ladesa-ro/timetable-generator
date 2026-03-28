@@ -1,8 +1,6 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
 using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
@@ -86,7 +84,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
     private static void AddDayDistanceBonus(
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
-        TimetableGridSchedule previousSchedule,
+        Schedule previousSchedule,
         GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.Date.DayOfWeek))
@@ -102,7 +100,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
     private static void AddTimeSlotDistanceBonus(
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
-        TimetableGridSchedule previousSchedule,
+        Schedule previousSchedule,
         GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.TimeSlot))

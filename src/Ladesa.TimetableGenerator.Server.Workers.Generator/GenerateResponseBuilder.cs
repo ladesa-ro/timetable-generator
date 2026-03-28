@@ -1,9 +1,6 @@
-using Ladesa.TimetableGenerator.Application.Abstractions;
-using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Abstractions;
+using Ladesa.TimetableGenerator.Server.Workers.Generator.DTOs;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
 

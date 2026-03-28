@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using Ladesa.TimetableGenerator.Application.Todo.Ports;
+using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Constants;
 using Polly;

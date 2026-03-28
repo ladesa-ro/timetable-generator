@@ -1,5 +1,5 @@
 using Ladesa.TimetableGenerator.Domain.Abstractions.Entities.Interfaces;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
+using Ladesa.TimetableGenerator.Domain.Exceptions;
 
 namespace Ladesa.TimetableGenerator.Domain.Abstractions.Entities;
 
@@ -9,9 +9,10 @@ public static class EntityExtensions
     {
         return items.FirstOrDefault(item => item.Id == id);
     }
-    public static T FindByIdStrict<T>(this IEnumerable<T> items, string id, GeneratorValidationErrorCode errorCode) where T : IHasId
+
+    public static T FindByIdStrict<T>(this IEnumerable<T> items, string id) where T : IHasId
     {
         return items.FindById(id)
-            ?? throw new GeneratorValidationException(errorCode, $"{typeof(T).Name} not found: {id}.");
+            ?? throw new EntityNotFoundException(typeof(T).Name, id);
     }
 }

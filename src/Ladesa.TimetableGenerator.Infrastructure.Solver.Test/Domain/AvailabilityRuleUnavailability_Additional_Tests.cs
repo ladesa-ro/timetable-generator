@@ -26,7 +26,7 @@ public class AvailabilityRuleUnavailability_Additional_Tests
         var monday = DateOnly.FromDateTime(dateStart);
         var tuesday = monday.AddDays(1);
 
-        var slot = new TimeSlot("09:00:00", "10:00:00");
+        var slot = new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(10, 0, 0));
 
         Assert.That(_evaluator.IsAvailable(rule, monday, slot), Is.False, "Monday should be blocked by default.");
         Assert.That(_evaluator.IsAvailable(rule, tuesday, slot), Is.True, "Tuesday should be available.");

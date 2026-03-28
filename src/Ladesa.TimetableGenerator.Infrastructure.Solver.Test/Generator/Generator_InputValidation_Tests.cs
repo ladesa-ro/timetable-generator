@@ -1,6 +1,5 @@
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
 using Ladesa.TimetableGenerator.Domain.Models.Availability;
 using Ladesa.TimetableGenerator.Domain.Models.Diary;
 using Ladesa.TimetableGenerator.Domain.Models.Group;
@@ -21,7 +20,16 @@ public class Generator_InputValidation_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], []);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -33,11 +41,20 @@ public class Generator_InputValidation_Tests
     public void No_Groups_Provided()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", "nonexistent-turma", teacher.Id, "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(date, date, [], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("Group not found"), "Should throw exception for non-existent group.");
@@ -47,11 +64,20 @@ public class Generator_InputValidation_Tests
     public void No_Teachers_Provided()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var group = new Group("turma:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, "nonexistent-prof", "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(date, date, [group], [], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("Teacher not found"), "Should throw exception for non-existent teacher.");
@@ -61,12 +87,21 @@ public class Generator_InputValidation_Tests
     public void Diary_With_Non_Existent_Group_And_Teacher()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", "nonexistent-turma", "nonexistent-prof", "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("not found"), "Should throw exception for non-existent group and/or teacher.");
@@ -76,7 +111,7 @@ public class Generator_InputValidation_Tests
     public void Invalid_RRULE_In_Unavailability()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([
@@ -88,7 +123,16 @@ public class Generator_InputValidation_Tests
         ]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
         Assert.That(ex!.Message, Does.Contain("invalid"), "Should throw exception for invalid RRULE syntax.");
@@ -99,12 +143,21 @@ public class Generator_InputValidation_Tests
     {
         var dateStart = new DateOnly(2025, 10, 28);
         var dateEnd = new DateOnly(2025, 10, 27); // End before start
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        var request = new GenerateTimetableCommand(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = dateStart,
+            DateEnd = dateEnd,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -116,11 +169,20 @@ public class Generator_InputValidation_Tests
     public void No_Diaries_Provided()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
 
-        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -132,12 +194,23 @@ public class Generator_InputValidation_Tests
     public void Time_Slots_With_Invalid_Times_Start_After_End()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var invalidTimeSlot = new TimeSlot("09:00:00", "08:00:00"); // Start after end
+        var invalidTimeSlot = new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(8, 0, 0)); // Start after end
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        Assert.Throws<ArgumentException>(() => new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [invalidTimeSlot]),
+        var command = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [invalidTimeSlot],
+            PreviousTimetableGrid = null
+        };
+
+        Assert.Throws<ArgumentException>(() => GenerateTimetableCommandValidator.Validate(command),
             "Should throw exception for invalid time slot (start after end).");
     }
 
@@ -146,7 +219,16 @@ public class Generator_InputValidation_Tests
     {
         var date = new DateOnly(2025, 10, 27); // Monday
 
-        var request = new GenerateTimetableCommand(date, date, [], [], [], []);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [],
+            Teachers = [],
+            Diaries = [],
+            TimeSlots = [],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -165,12 +247,23 @@ public class Generator_InputValidation_Tests
     public void Time_Slot_Spanning_Midnight()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var spanningTimeSlot = new TimeSlot("23:00:00", "01:00:00"); // Spans midnight
+        var spanningTimeSlot = new TimeSlot(new TimeOnly(23, 0, 0), new TimeOnly(1, 0, 0)); // Spans midnight
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        Assert.Throws<ArgumentException>(() => new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [spanningTimeSlot]),
+        var command = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [spanningTimeSlot],
+            PreviousTimetableGrid = null
+        };
+
+        Assert.Throws<ArgumentException>(() => GenerateTimetableCommandValidator.Validate(command),
             "Should throw exception for time slot spanning midnight.");
     }
 
@@ -178,12 +271,23 @@ public class Generator_InputValidation_Tests
     public void Zero_Duration_Time_Slot()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var zeroDurationSlot = new TimeSlot("08:00:00", "08:00:00"); // Start equals end
+        var zeroDurationSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 0, 0)); // Start equals end
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        Assert.Throws<ArgumentException>(() => new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [zeroDurationSlot]),
+        var command = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [zeroDurationSlot],
+            PreviousTimetableGrid = null
+        };
+
+        Assert.Throws<ArgumentException>(() => GenerateTimetableCommandValidator.Validate(command),
             "Should throw exception for zero-duration time slot.");
     }
 
@@ -191,13 +295,24 @@ public class Generator_InputValidation_Tests
     public void Duplicate_IDs_In_Entities()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var group1 = new Group("turma:1", new Availability([]));
         var group2 = new Group("turma:1", new Availability([])); // Duplicate ID
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group1.Id, teacher.Id, "disc:1", 1, 1);
 
-        Assert.Throws<GeneratorValidationException>(() => new GenerateTimetableCommand(date, date, [group1, group2], [teacher], [diary], [timeSlot]),
+        var command = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group1, group2],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
+
+        Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(command),
             "Should throw exception for duplicate entity IDs.");
     }
 }

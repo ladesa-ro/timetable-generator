@@ -5,5 +5,5 @@ public record TimetableGrid(
     DateOnly DateEnd,
 
     TimeSlot.TimeSlot[] TimeSlots,
-    TimetableGridSchedule[] Schedules
+    Schedule.Schedule[] Schedules
 );

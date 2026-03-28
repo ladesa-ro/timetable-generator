@@ -1,11 +1,9 @@
 using System.Text.Json;
-using Ladesa.TimetableGenerator.Application.Abstractions;
-using Ladesa.TimetableGenerator.Application.Todo.Generator;
-using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
-using Ladesa.TimetableGenerator.Application.Todo.Ports;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
+using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
 using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Server.Workers.Generator.DTOs;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
 
@@ -13,7 +11,7 @@ public class GeneratorListenWorker(
     IGeneratorListenWorkerConfig generatorListenWorkerConfig,
     IQueueListener queueListener,
     IQueuePublisher queuePublisher,
-    ITimetableGeneratorService timetableGeneratorService,
+    IGenerateTimetableUseCase generateTimetableUseCase,
     GenerateResponseBuilder responseBuilder,
     IMessageDeserializer<ServiceGenerateRequestDto> requestDeserializer,
     IMessageSerializer<ServiceGenerateResponseDto> responseSerializer,
@@ -45,7 +43,6 @@ public class GeneratorListenWorker(
         {
             logger.LogWarning(ex, "Failed to deserialize timetableCommand message: invalid JSON ({ByteLength} bytes).", bytes.Length);
             var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
-            // TODO: currently goes to dead letter; consider pulling timetableCommand-id from a header
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
         catch (Exception ex)
@@ -64,13 +61,10 @@ public class GeneratorListenWorker(
     {
         try
         {
-            var generatedTimetables = timetableGeneratorService
-                .Generate(requestDto.GenerateTimetableCommand)
-                .Take(1)
-                .ToArray();
+            var result = await generateTimetableUseCase.HandleAsync(requestDto.GenerateTimetableCommand);
 
             var responseDto = responseBuilder.BuildSuccess(
-                requestDto.RequestId, requestDto.GenerateTimetableCommand, generatedTimetables);
+                requestDto.RequestId, requestDto.GenerateTimetableCommand, [result]);
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
         }

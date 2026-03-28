@@ -1,6 +1,5 @@
 using Ladesa.TimetableGenerator.Domain.Abstractions;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
 using Ladesa.TimetableGenerator.Domain.Models.Availability;
 using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
@@ -67,7 +66,7 @@ public class Validation_Standardization_Tests
         );
 
         var date = new DateOnly(2025, 10, 27);
-        var slot = new TimeSlot("09:00:00", "10:00:00");
+        var slot = new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(10, 0, 0));
 
         var ex = Assert.Throws<GeneratorValidationException>(() => _evaluator.IsAvailable(invalidRule, date, slot));
         Assert.That(ex!.Code, Is.EqualTo(GeneratorValidationErrorCode.InvalidRRule));

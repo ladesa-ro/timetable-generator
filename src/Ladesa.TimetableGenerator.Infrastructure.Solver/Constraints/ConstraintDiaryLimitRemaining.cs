@@ -1,6 +1,5 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Extensions;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Extensions;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;

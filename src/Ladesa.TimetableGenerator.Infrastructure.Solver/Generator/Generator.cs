@@ -1,16 +1,11 @@
 using System.Threading.Channels;
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Application.Abstractions;
-using Ladesa.TimetableGenerator.Application.Todo;
-using Ladesa.TimetableGenerator.Application.Todo.Generator;
-using Ladesa.TimetableGenerator.Domain.Abstractions;
-using Ladesa.TimetableGenerator.Domain.Commands;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
-using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
-using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.Services;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
 using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models.Constraints;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
 using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
@@ -39,9 +34,9 @@ public class Generator : IGenerator
     private static readonly ConstraintKind[] AllConstraintKinds = Enum.GetValues<ConstraintKind>();
 
     private readonly ITimetableOptimizer _optimizer = new TimetableOptimizer();
-    private readonly IScheduleCombinationGenerator _combinationGenerator;
+    private readonly ICombinationGenerator _combinationGenerator;
 
-    public Generator(IScheduleCombinationGenerator combinationGenerator)
+    public Generator(ICombinationGenerator combinationGenerator)
     {
         _combinationGenerator = combinationGenerator;
     }
@@ -72,15 +67,6 @@ public class Generator : IGenerator
 
         solverTask.GetAwaiter().GetResult();
     }
-
-    /// <summary>
-    ///     Generates all possible schedule combinations, filtering by availability.
-    /// </summary>
-    public IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
-        GenerateTimetableCommand generateTimetableCommand,
-        IAvailabilityEvaluator availabilityEvaluator)
-        => _combinationGenerator.GetAllCombinationsWithAvailability(
-            generateTimetableCommand, availabilityEvaluator);
 
     private static IConstraint[] BuildConstraints(GenerateTimetableCommand timetableCommand)
     {
@@ -126,7 +112,7 @@ public class Generator : IGenerator
     private static GenerateTimetableCommandResponse CreateEmptyTimetable(GenerateTimetableCommand timetableCommand)
     {
         return new GenerateTimetableCommandResponse(
-            new TimetableGrid(timetableCommand.DateStart, timetableCommand.DateEnd, timetableCommand.TimeSlots, Array.Empty<TimetableGridSchedule>()),
+            new TimetableGrid(timetableCommand.DateStart, timetableCommand.DateEnd, timetableCommand.TimeSlots, Array.Empty<Schedule>()),
             0
         );
     }
