@@ -2,7 +2,6 @@ using System.Threading.Channels;
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Application.Services;
 using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
-using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
 using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models.Constraints;
 using Ladesa.TimetableGenerator.Domain.Models.Schedule;
@@ -33,12 +32,13 @@ public class Generator : IGenerator
 
     private static readonly ConstraintKind[] AllConstraintKinds = Enum.GetValues<ConstraintKind>();
 
-    private readonly ITimetableOptimizer _optimizer = new TimetableOptimizer();
+    private readonly ITimetableOptimizer _optimizer;
     private readonly ICombinationGenerator _combinationGenerator;
 
-    public Generator(ICombinationGenerator combinationGenerator)
+    public Generator(ICombinationGenerator combinationGenerator, ITimetableOptimizer optimizer)
     {
         _combinationGenerator = combinationGenerator;
+        _optimizer = optimizer;
     }
 
     /// <summary>
@@ -49,8 +49,6 @@ public class Generator : IGenerator
         GenerateTimetableCommand timetableCommand,
         IAvailabilityEvaluator availabilityEvaluator)
     {
-        ValidateDiaryReferences(timetableCommand);
-
         var generationContext = CreateContextWithRestrictionsApplied(timetableCommand, availabilityEvaluator);
 
         if (generationContext.AllProposals.Count == 0)
@@ -89,24 +87,6 @@ public class Generator : IGenerator
         _optimizer.OptimizeResult(generationContext);
 
         return generationContext;
-    }
-
-    private static void ValidateDiaryReferences(GenerateTimetableCommand timetableCommand)
-    {
-        if (timetableCommand.Diaries is null) return;
-
-        var groupIds = new HashSet<string>(timetableCommand.Groups.Select(g => g.Id));
-        var teacherIds = new HashSet<string>(timetableCommand.Teachers.Select(t => t.Id));
-
-        foreach (var diary in timetableCommand.Diaries)
-        {
-            if (!groupIds.Contains(diary.GroupId) && !teacherIds.Contains(diary.TeacherId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.DiaryReferencesNotFound, "Diary references not found: group and teacher not found.");
-            if (!groupIds.Contains(diary.GroupId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.GroupNotFound, $"Group not found: {diary.GroupId}.");
-            if (!teacherIds.Contains(diary.TeacherId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.TeacherNotFound, $"Teacher not found: {diary.TeacherId}.");
-        }
     }
 
     private static GenerateTimetableCommandResponse CreateEmptyTimetable(GenerateTimetableCommand timetableCommand)

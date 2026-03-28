@@ -56,7 +56,7 @@ public class Generator_InputValidation_Tests
             PreviousTimetableGrid = null
         };
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(request));
         Assert.That(ex!.Message, Does.Contain("Group not found"), "Should throw exception for non-existent group.");
     }
 
@@ -79,7 +79,7 @@ public class Generator_InputValidation_Tests
             PreviousTimetableGrid = null
         };
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(request));
         Assert.That(ex!.Message, Does.Contain("Teacher not found"), "Should throw exception for non-existent teacher.");
     }
 
@@ -103,7 +103,7 @@ public class Generator_InputValidation_Tests
             PreviousTimetableGrid = null
         };
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(request));
         Assert.That(ex!.Message, Does.Contain("not found"), "Should throw exception for non-existent group and/or teacher.");
     }
 

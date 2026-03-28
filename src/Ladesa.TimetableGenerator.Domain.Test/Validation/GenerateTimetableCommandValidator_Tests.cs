@@ -1,11 +1,11 @@
 using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
 using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Exceptions;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
+using Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Domain;
+namespace Ladesa.TimetableGenerator.Domain.Test.Validation;
 
 [TestFixture]
-public class GenerateRequest_Tests
+public class GenerateTimetableCommandValidator_Tests
 {
     [Test]
     public void Invalid_TimeSlot_StartEqualsEnd_ShouldThrow()
@@ -48,7 +48,7 @@ public class GenerateRequest_Tests
     {
         var date = new DateOnly(2025, 10, 27);
         var g1 = Builders.Group("group:1");
-        var g2 = Builders.Group("group:1"); // duplicate id
+        var g2 = Builders.Group("group:1");
 
         var command = Builders.Request(
             start: date,
@@ -67,7 +67,7 @@ public class GenerateRequest_Tests
     {
         var date = new DateOnly(2025, 10, 27);
         var t1 = Builders.Teacher("teacher:1");
-        var t2 = Builders.Teacher("teacher:1"); // duplicate id
+        var t2 = Builders.Teacher("teacher:1");
 
         var command = Builders.Request(
             start: date,
@@ -88,7 +88,7 @@ public class GenerateRequest_Tests
         var g = Builders.Group();
         var t = Builders.Teacher();
         var d1 = Builders.Diary("diary:1", g.Id, t.Id);
-        var d2 = Builders.Diary("diary:1", g.Id, t.Id); // duplicate id
+        var d2 = Builders.Diary("diary:1", g.Id, t.Id);
 
         var command = Builders.Request(
             start: date,
@@ -103,7 +103,7 @@ public class GenerateRequest_Tests
     }
 
     [Test]
-    public void GenerateTimetables_DiaryReferencesMissingGroup_ShouldThrow()
+    public void DiaryReferencesMissingGroup_ShouldThrow()
     {
         var date = new DateOnly(2025, 10, 27);
         var g = Builders.Group("group:1");
@@ -111,12 +111,12 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: t.Id);
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(req));
         Assert.That(ex!.Message, Does.Contain("Group not found"));
     }
 
     [Test]
-    public void GenerateTimetables_DiaryReferencesMissingTeacher_ShouldThrow()
+    public void DiaryReferencesMissingTeacher_ShouldThrow()
     {
         var date = new DateOnly(2025, 10, 27);
         var g = Builders.Group("group:1");
@@ -124,12 +124,12 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: g.Id, teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(req));
         Assert.That(ex!.Message, Does.Contain("Teacher not found"));
     }
 
     [Test]
-    public void GenerateTimetables_DiaryReferencesMissingBoth_ShouldThrow()
+    public void DiaryReferencesMissingBoth_ShouldThrow()
     {
         var date = new DateOnly(2025, 10, 27);
         var g = Builders.Group("group:1");
@@ -137,7 +137,7 @@ public class GenerateRequest_Tests
         var d = Builders.Diary("diary:1", groupId: "group:missing", teacherId: "teacher:missing");
         var req = Builders.Request(date, date, [g], [t], [d], [Builders.Slot("08:00:00", "08:50:00")]);
 
-        var ex = Assert.Throws<GeneratorValidationException>(() => GeneratorFactory.CreateDefault().GenerateTimetables(req, new IcalAvailabilityEvaluator()).First());
+        var ex = Assert.Throws<GeneratorValidationException>(() => GenerateTimetableCommandValidator.Validate(req));
         Assert.That(ex!.Message, Does.Contain("Diary references not found"));
     }
 }

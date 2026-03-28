@@ -2,13 +2,8 @@ namespace Ladesa.TimetableGenerator.Server.Api.Health;
 
 public class HealthService : IHealthService
 {
-    public object GetStatus()
+    public HealthStatus GetStatus()
     {
-        return new
-        {
-            status = "up",
-            service = "timetable-generator",
-            timestamp = DateTimeOffset.UtcNow
-        };
+        return new HealthStatus("up", "timetable-generator", DateTimeOffset.UtcNow);
     }
 }

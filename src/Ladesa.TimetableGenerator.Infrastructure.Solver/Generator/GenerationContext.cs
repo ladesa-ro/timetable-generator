@@ -6,7 +6,7 @@ using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-internal class GenerationContext
+public class GenerationContext
 {
     public GenerationContext(
         GenerateTimetableCommand generateTimetableCommand,

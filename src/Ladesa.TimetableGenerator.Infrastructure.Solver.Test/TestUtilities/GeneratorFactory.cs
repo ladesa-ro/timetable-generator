@@ -1,4 +1,5 @@
 using Ladesa.TimetableGenerator.Application.Services;
+using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 
@@ -10,6 +11,7 @@ public static class GeneratorFactory
     public static Solver.Generator.Generator CreateDefault()
     {
         var combinationGenerator = new CombinationGenerator();
-        return new Solver.Generator.Generator(combinationGenerator);
+        var optimizer = new TimetableOptimizer();
+        return new Solver.Generator.Generator(combinationGenerator, optimizer);
     }
 }
