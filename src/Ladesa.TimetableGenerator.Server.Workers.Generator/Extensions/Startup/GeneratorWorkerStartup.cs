@@ -1,7 +1,11 @@
-using Ladesa.TimetableGenerator.Application.Generator;
-using Ladesa.TimetableGenerator.Application.Generator.DTOs;
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Abstractions;
+using Ladesa.TimetableGenerator.Application.Todo;
+using Ladesa.TimetableGenerator.Application.Todo.Generator;
+using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
+using Ladesa.TimetableGenerator.Application.Todo.Ports;
+using Ladesa.TimetableGenerator.Domain.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 
 using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;

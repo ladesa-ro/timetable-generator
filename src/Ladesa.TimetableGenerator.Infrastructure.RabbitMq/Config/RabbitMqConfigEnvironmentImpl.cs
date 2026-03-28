@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Extensions;
+using Ladesa.TimetableGenerator.Application.Todo.Extensions;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 

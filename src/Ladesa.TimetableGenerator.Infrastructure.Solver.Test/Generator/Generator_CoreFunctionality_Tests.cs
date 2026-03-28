@@ -1,11 +1,14 @@
 using System.Globalization;
-using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Infrastructure.Solver;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Diary;
+using Ladesa.TimetableGenerator.Domain.Models.Group;
+using Ladesa.TimetableGenerator.Domain.Models.Teacher;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
-using NUnit.Framework;
 
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Generator;
 
 [TestFixture]
 public class Generator_CoreFunctionality_Tests
@@ -20,7 +23,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], [timeSlot]);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -53,7 +56,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 10);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], slots);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -80,7 +83,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 3, 10);
 
-        var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -117,7 +120,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 10);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand(date, date, [group], [teacher], [diary], slots);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -144,7 +147,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 10, 100);
 
-        var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -166,7 +169,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 5, 5);
 
-        var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -188,7 +191,7 @@ public class Generator_CoreFunctionality_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 100);
 
-        var request = new GenerateRequest(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand(dateStart, dateEnd, [group], [teacher], [diary], [timeSlot]);
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 

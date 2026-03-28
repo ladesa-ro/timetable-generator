@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Todo.Ports;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Config;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Connection;
 using Ladesa.TimetableGenerator.Infrastructure.RabbitMq.Providers;

@@ -1,8 +1,10 @@
 using System.Text.Json;
+using Ladesa.TimetableGenerator.Application.Abstractions;
+using Ladesa.TimetableGenerator.Application.Todo.Generator;
+using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
+using Ladesa.TimetableGenerator.Application.Todo.Ports;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
 using Ladesa.TimetableGenerator.Server.Workers.Generator.Config;
-using Ladesa.TimetableGenerator.Application.Generator;
-using Ladesa.TimetableGenerator.Application.Generator.DTOs;
-using Ladesa.TimetableGenerator.Application.Ports;
 using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
@@ -41,14 +43,14 @@ public class GeneratorListenWorker(
         }
         catch (JsonException ex)
         {
-            logger.LogWarning(ex, "Failed to deserialize request message: invalid JSON ({ByteLength} bytes).", bytes.Length);
+            logger.LogWarning(ex, "Failed to deserialize timetableCommand message: invalid JSON ({ByteLength} bytes).", bytes.Length);
             var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
-            // TODO: currently goes to dead letter; consider pulling request-id from a header
+            // TODO: currently goes to dead letter; consider pulling timetableCommand-id from a header
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Unexpected error deserializing request message ({ByteLength} bytes).", bytes.Length);
+            logger.LogError(ex, "Unexpected error deserializing timetableCommand message ({ByteLength} bytes).", bytes.Length);
             var errorDto = errorMapper.MapToErrorDto(GeneratorErrorCodes.ParseError, GeneratorErrorMessages.ParseError, ex, bytes);
             throw new Exception(JsonSerializer.Serialize(errorDto));
         }
@@ -63,19 +65,19 @@ public class GeneratorListenWorker(
         try
         {
             var generatedTimetables = timetableGeneratorService
-                .Generate(requestDto.GenerateRequest)
+                .Generate(requestDto.GenerateTimetableCommand)
                 .Take(1)
                 .ToArray();
 
             var responseDto = responseBuilder.BuildSuccess(
-                requestDto.RequestId, requestDto.GenerateRequest, generatedTimetables);
+                requestDto.RequestId, requestDto.GenerateTimetableCommand, generatedTimetables);
 
             await PublishResponse(responseDto, replyQueue, stoppingToken);
         }
         catch (Exception ex)
         {
             var logLevel = ex is GeneratorValidationException ? LogLevel.Warning : LogLevel.Error;
-            logger.Log(logLevel, ex, "Error during timetable generation for request '{RequestId}'.", requestDto.RequestId);
+            logger.Log(logLevel, ex, "Error during timetable generation for timetableCommand '{RequestId}'.", requestDto.RequestId);
 
             var errorDto = errorMapper.MapToErrorDto(
                 GeneratorErrorCodes.GenerationError, GeneratorErrorMessages.GenerationError, ex, originalBytes);

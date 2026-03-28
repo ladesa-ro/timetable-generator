@@ -1,5 +1,10 @@
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver;
 
@@ -16,6 +21,6 @@ public class TimetableGeneratorService : ITimetableGeneratorService
         _availabilityEvaluator = availabilityEvaluator;
     }
 
-    public IEnumerable<GeneratedTimetable> Generate(GenerateRequest request)
-        => _generator.GenerateTimetables(request, _availabilityEvaluator);
+    public IEnumerable<GenerateTimetableCommandResponse> Generate(GenerateTimetableCommand timetableCommand)
+        => _generator.GenerateTimetables(timetableCommand, _availabilityEvaluator);
 }

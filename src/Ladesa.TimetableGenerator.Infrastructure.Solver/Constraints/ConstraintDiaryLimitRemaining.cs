@@ -1,4 +1,5 @@
 using Google.OrTools.Sat;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Extensions;
 using Ladesa.TimetableGenerator.Domain.Models;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
@@ -11,8 +12,8 @@ internal class ConstraintDiaryLimitRemaining : IConstraint
 {
     public void Apply(GenerationContext context)
     {
-        foreach (var group in context.GenerateRequest.Groups)
-        foreach (var diary in context.GenerateRequest.DiaryFindByGroupId(group.Id))
+        foreach (var group in context.GenerateTimetableCommand.Groups)
+        foreach (var diary in context.GenerateTimetableCommand.DiaryFindByGroupId(group.Id))
         {
             if (diary.Remaining < 0) continue;
 

@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Todo.Ports;
 
 namespace Ladesa.TimetableGenerator.Domain.Test.TestDoubles;
 

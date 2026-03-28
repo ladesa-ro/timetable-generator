@@ -1,5 +1,11 @@
 using Google.OrTools.Sat;
+using Ladesa.TimetableGenerator.Application.Todo;
+using Ladesa.TimetableGenerator.Domain.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
@@ -7,15 +13,15 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 internal class GenerationContext
 {
     public GenerationContext(
-        GenerateRequest generateRequest,
+        GenerateTimetableCommand generateTimetableCommand,
         IAvailabilityEvaluator availabilityEvaluator,
         IScheduleCombinationGenerator scheduleCombinationGenerator)
     {
-        GenerateRequest = generateRequest;
+        GenerateTimetableCommand = generateTimetableCommand;
         InitializeProposals(availabilityEvaluator, scheduleCombinationGenerator);
     }
 
-    public GenerateRequest GenerateRequest { get; }
+    public GenerateTimetableCommand GenerateTimetableCommand { get; }
     public CpModel CpModel { get; } = new();
     public List<GenerationContextScheduleProposal> AllProposals { get; } = [];
 
@@ -27,7 +33,7 @@ internal class GenerationContext
     {
         AllProposals.Clear();
 
-        foreach (var scheduleCombination in scheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateRequest, availabilityEvaluator))
+        foreach (var scheduleCombination in scheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateTimetableCommand, availabilityEvaluator))
         {
             var scheduleProposal = new GenerationContextScheduleProposal(
                 this,

@@ -1,4 +1,13 @@
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Diary;
+using Ladesa.TimetableGenerator.Domain.Models.Group;
+using Ladesa.TimetableGenerator.Domain.Models.Teacher;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
+using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 
 namespace Ladesa.TimetableGenerator.Domain.Test.TestUtilities;
 
@@ -17,7 +26,7 @@ public static class Builders
 
     public static TimeSlot Slot(string start, string end) => new(start, end);
 
-    public static GenerateRequest Request(
+    public static GenerateTimetableCommand Request(
         DateOnly start,
         DateOnly end,
         Group[] groups,

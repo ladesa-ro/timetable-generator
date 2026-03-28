@@ -1,5 +1,8 @@
-using Ladesa.TimetableGenerator.Application.Generator.DTOs;
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Abstractions;
+using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
 using Ladesa.TimetableGenerator.Domain.Models;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator;
@@ -8,12 +11,12 @@ public class GenerateResponseBuilder(ISystemClock systemClock)
 {
     public ServiceGenerateResponseDto BuildSuccess(
         Guid requestId,
-        GenerateRequest generateRequest,
-        GeneratedTimetable[] generatedTimetables)
+        GenerateTimetableCommand generateTimetableCommand,
+        GenerateTimetableCommandResponse[] generatedTimetables)
     {
         var successDto = new ServiceGenerateResponseResultSuccessDto(
             requestId,
-            generateRequest,
+            generateTimetableCommand,
             generatedTimetables
         );
 

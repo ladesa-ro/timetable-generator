@@ -1,5 +1,9 @@
 using Google.OrTools.Sat;
+using Ladesa.TimetableGenerator.Domain.Commands;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand;
+using Ladesa.TimetableGenerator.Domain.Generator.GenerateRequest;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
@@ -19,7 +23,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
 
         AddBasicScheduleScore(qualityScore, generationContext);
 
-        var previousTimetableGrid = generationContext.GenerateRequest.PreviousTimetableGrid;
+        var previousTimetableGrid = generationContext.GenerateTimetableCommand.PreviousTimetableGrid;
         if (previousTimetableGrid is not null)
             AddPreviousTimetableBonus(qualityScore, generationContext, previousTimetableGrid);
 
@@ -41,7 +45,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
         GenerationContext context,
         TimetableGrid previousTimetableGrid)
     {
-        var request = context.GenerateRequest;
+        var request = context.GenerateTimetableCommand;
 
         foreach (var previousSchedule in previousTimetableGrid.Schedules)
         {
@@ -83,12 +87,12 @@ internal class TimetableOptimizer : ITimetableOptimizer
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
         TimetableGridSchedule previousSchedule,
-        GenerateRequest request)
+        GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.Date.DayOfWeek))
         {
             var distance = Math.Abs((int)group.Key - (int)previousSchedule.Date.DayOfWeek);
-            var score = (7 - distance) * request.BoostLesserDistanceFromDayOfWeek;
+            var score = (7 - distance) * timetableCommand.BoostLesserDistanceFromDayOfWeek;
 
             foreach (var proposal in group)
                 qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);
@@ -99,12 +103,12 @@ internal class TimetableOptimizer : ITimetableOptimizer
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
         TimetableGridSchedule previousSchedule,
-        GenerateRequest request)
+        GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.TimeSlot))
         {
             var distanceMinutes = previousSchedule.TimeSlot.Distance(group.Key).TotalMinutes;
-            var score = (long)((-distanceMinutes) * request.BoostLesserDistanceFromTimeSlot);
+            var score = (long)((-distanceMinutes) * timetableCommand.BoostLesserDistanceFromTimeSlot);
 
             foreach (var proposal in group)
                 qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);

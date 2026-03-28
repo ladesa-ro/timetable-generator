@@ -1,4 +1,8 @@
+using Ladesa.TimetableGenerator.Domain.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 

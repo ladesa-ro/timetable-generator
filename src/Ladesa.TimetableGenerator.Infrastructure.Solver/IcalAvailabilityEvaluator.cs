@@ -2,7 +2,12 @@ using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization.DataTypes;
+using Ladesa.TimetableGenerator.Domain.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Commands.GenerateTimetableCommand.Exceptions;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver;
 

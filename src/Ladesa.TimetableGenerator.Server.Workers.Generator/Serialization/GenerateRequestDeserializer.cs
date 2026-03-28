@@ -1,7 +1,7 @@
 using System.Text;
-using Ladesa.TimetableGenerator.Application.Generator.DTOs;
-using Ladesa.TimetableGenerator.Application.Generator.Mappers;
-using Ladesa.TimetableGenerator.Application.Ports;
+using Ladesa.TimetableGenerator.Application.Todo.Generator.DTOs;
+using Ladesa.TimetableGenerator.Application.Todo.Generator.Mappers;
+using Ladesa.TimetableGenerator.Application.Todo.Ports;
 
 namespace Ladesa.TimetableGenerator.Server.Workers.Generator.Serialization;
 
