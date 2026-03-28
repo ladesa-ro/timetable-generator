@@ -12,4 +12,7 @@
     <PackageReference Include="Ladesa.Messages.TimetableGenerator.V1" Version="0.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstractions\Configuration\" />
+  </ItemGroup>
 </Project>

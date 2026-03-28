@@ -1,4 +1,4 @@
-namespace Ladesa.TimetableGenerator.Application.Ports;
+namespace Ladesa.TimetableGenerator.Domain.Abstractions;
 
 /// <summary>Abstraction for the system clock, enabling deterministic testing.</summary>
 public interface ISystemClock
