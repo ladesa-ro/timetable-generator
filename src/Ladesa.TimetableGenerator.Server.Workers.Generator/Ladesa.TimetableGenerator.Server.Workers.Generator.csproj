@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Ladesa.Messages.TimetableGenerator.V1" Version="0.0.2" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Ladesa.TimetableGenerator.Application\Ladesa.TimetableGenerator.Application.csproj" />
     <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.RabbitMq\Ladesa.TimetableGenerator.Infrastructure.RabbitMq.csproj" />
     <ProjectReference Include="..\Ladesa.TimetableGenerator.Infrastructure.Solver\Ladesa.TimetableGenerator.Infrastructure.Solver.csproj" />

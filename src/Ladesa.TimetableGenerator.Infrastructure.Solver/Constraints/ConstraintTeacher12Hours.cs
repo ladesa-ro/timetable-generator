@@ -1,4 +1,5 @@
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable.Extensions;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
@@ -12,11 +13,11 @@ internal class ConstraintTeacher12Hours : IConstraint
 
     public void Apply(GenerationContext context)
     {
-        foreach (var date in context.GenerateRequest.GetDates())
+        foreach (var date in context.GenerateTimetableCommand.GetDates())
         {
             var nextDay = date.AddDays(1);
 
-            foreach (var teacher in context.GenerateRequest.Teachers)
+            foreach (var teacher in context.GenerateTimetableCommand.Teachers)
             {
                 var nightProposals =
                     from scheduleProposal in context.AllProposals
@@ -28,7 +29,7 @@ internal class ConstraintTeacher12Hours : IConstraint
 
                 foreach (var nightProposal in nightProposals)
                 {
-                    var timeSpanAfter12 = TimeSpan.Parse(nightProposal.TimeSlot.End).Add(MaxDailyWorkDuration);
+                    var timeSpanAfter12 = nightProposal.TimeSlot.End.ToTimeSpan().Add(MaxDailyWorkDuration);
 
                     var conflictingProposalsNextDay =
                         from scheduleProposal in context.AllProposals

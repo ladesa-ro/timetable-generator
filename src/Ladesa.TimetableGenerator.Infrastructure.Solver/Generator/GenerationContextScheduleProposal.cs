@@ -1,9 +1,10 @@
 using Google.OrTools.Sat;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-internal class GenerationContextScheduleProposal(
+public class GenerationContextScheduleProposal(
     GenerationContext generationContext,
     string groupId,
     string diaryId,

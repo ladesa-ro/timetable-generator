@@ -14,6 +14,7 @@ public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetter
     private readonly IRabbitMqPersistentConnection _persistentConnection;
     private readonly ILogger<RabbitMqDeadLetterHandlerImpl> _logger;
     private readonly AsyncRetryPolicy _retryPolicy;
+    private readonly SemaphoreSlim _channelSemaphore = new(1, 1);
 
     private IChannel? _channel;
 
@@ -40,14 +41,22 @@ public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetter
 
     private async Task<IChannel> GetOrCreateChannelAsync(CancellationToken cancellationToken = default)
     {
-        if (_channel != null && _channel.IsOpen)
+        await _channelSemaphore.WaitAsync(cancellationToken);
+        try
+        {
+            if (_channel != null && _channel.IsOpen)
+                return _channel;
+
+            if (!await _persistentConnection.TryConnectAsync(cancellationToken))
+                throw new InvalidOperationException("Could not connect to RabbitMQ to create DLQ channel.");
+
+            _channel = await _persistentConnection.CreateChannelAsync(cancellationToken);
             return _channel;
-
-        if (!await _persistentConnection.TryConnectAsync(cancellationToken))
-            throw new InvalidOperationException("Could not connect to RabbitMQ to create DLQ channel.");
-
-        _channel = await _persistentConnection.CreateChannelAsync(cancellationToken);
-        return _channel;
+        }
+        finally
+        {
+            _channelSemaphore.Release();
+        }
     }
 
     public async Task HandleAsync(string queue, byte[] message, Exception exception)
@@ -107,6 +116,8 @@ public class RabbitMqDeadLetterHandlerImpl : RabbitMqDisposableBase, IDeadLetter
         {
             _logger.LogWarning(ex, "Error disposing DLQ channel.");
         }
+
+        _channelSemaphore.Dispose();
 
         GC.SuppressFinalize(this);
     }

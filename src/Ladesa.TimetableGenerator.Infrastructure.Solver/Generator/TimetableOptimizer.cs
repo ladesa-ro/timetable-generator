@@ -1,5 +1,7 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
+using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
@@ -8,7 +10,7 @@ namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 ///     Configures the objective function for the CP solver to maximize
 ///     schedule quality based on preferences and continuity with previous timetables.
 /// </summary>
-internal class TimetableOptimizer : ITimetableOptimizer
+public class TimetableOptimizer : ITimetableOptimizer
 {
     public void OptimizeResult(
         GenerationContext context,
@@ -19,7 +21,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
 
         AddBasicScheduleScore(qualityScore, generationContext);
 
-        var previousTimetableGrid = generationContext.GenerateRequest.PreviousTimetableGrid;
+        var previousTimetableGrid = generationContext.GenerateTimetableCommand.PreviousTimetableGrid;
         if (previousTimetableGrid is not null)
             AddPreviousTimetableBonus(qualityScore, generationContext, previousTimetableGrid);
 
@@ -41,7 +43,7 @@ internal class TimetableOptimizer : ITimetableOptimizer
         GenerationContext context,
         TimetableGrid previousTimetableGrid)
     {
-        var request = context.GenerateRequest;
+        var request = context.GenerateTimetableCommand;
 
         foreach (var previousSchedule in previousTimetableGrid.Schedules)
         {
@@ -82,13 +84,13 @@ internal class TimetableOptimizer : ITimetableOptimizer
     private static void AddDayDistanceBonus(
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
-        TimetableGridSchedule previousSchedule,
-        GenerateRequest request)
+        Schedule previousSchedule,
+        GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.Date.DayOfWeek))
         {
             var distance = Math.Abs((int)group.Key - (int)previousSchedule.Date.DayOfWeek);
-            var score = (7 - distance) * request.BoostLesserDistanceFromDayOfWeek;
+            var score = (7 - distance) * timetableCommand.BoostLesserDistanceFromDayOfWeek;
 
             foreach (var proposal in group)
                 qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);
@@ -98,13 +100,13 @@ internal class TimetableOptimizer : ITimetableOptimizer
     private static void AddTimeSlotDistanceBonus(
         LinearExprBuilder qualityScore,
         GenerationContextScheduleProposal[] matchingProposals,
-        TimetableGridSchedule previousSchedule,
-        GenerateRequest request)
+        Schedule previousSchedule,
+        GenerateTimetableCommand timetableCommand)
     {
         foreach (var group in matchingProposals.GroupBy(p => p.TimeSlot))
         {
             var distanceMinutes = previousSchedule.TimeSlot.Distance(group.Key).TotalMinutes;
-            var score = (long)((-distanceMinutes) * request.BoostLesserDistanceFromTimeSlot);
+            var score = (long)((-distanceMinutes) * timetableCommand.BoostLesserDistanceFromTimeSlot);
 
             foreach (var proposal in group)
                 qualityScore.AddTerm((IntVar)proposal.ModelBoolVar, score);

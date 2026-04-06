@@ -1,9 +1,12 @@
-using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Infrastructure.Solver;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Diary;
+using Ladesa.TimetableGenerator.Domain.Models.Group;
+using Ladesa.TimetableGenerator.Domain.Models.Teacher;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
 
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Generator;
 
 [TestFixture]
 public class Generator_AdvancedScenarios_Tests
@@ -13,20 +16,22 @@ public class Generator_AdvancedScenarios_Tests
     {
         var dateStart = new DateOnly(2025, 4, 21); // Monday, Tiradentes Day
         var dateEnd = new DateOnly(2025, 4, 25); // Friday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 5, 5);
 
-        var request = new GenerateRequest(
-            dateStart, 
-            dateEnd,
-            [group],
-            [teacher],
-            [diary],
-            [timeSlot]
-        );
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = dateStart,
+            DateEnd = dateEnd,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -48,14 +53,16 @@ public class Generator_AdvancedScenarios_Tests
             ])
         );
 
-        var requestWithRule = new GenerateRequest(
-            dateStart,
-            dateEnd,
-            [group],
-            [teacherWithHoliday],
-            [diary],
-            [timeSlot]
-        );
+        var requestWithRule = new GenerateTimetableCommand
+        {
+            DateStart = dateStart,
+            DateEnd = dateEnd,
+            Groups = [group],
+            Teachers = [teacherWithHoliday],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var resultWithRule = GeneratorFactory.CreateDefault().GenerateTimetables(requestWithRule, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -72,8 +79,8 @@ public class Generator_AdvancedScenarios_Tests
         var date = new DateOnly(2025, 10, 27);
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group = new Group("turma:1", new Availability([]));
@@ -81,14 +88,16 @@ public class Generator_AdvancedScenarios_Tests
         var diary1 = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group.Id, teacher.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(
-            date,
-            date,
-            [group],
-            [teacher],
-            [diary1, diary2],
-            slots
-        );
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var results = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).ToList();
 
@@ -119,7 +128,7 @@ public class Generator_AdvancedScenarios_Tests
     {
         var dateStart = new DateOnly(2025, 10, 27);
         var dateEnd = new DateOnly(2025, 10, 31);
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var groups = Enumerable.Range(1, 10)
             .Select(i => new Group($"turma:{i}", new Availability([])))
@@ -139,7 +148,16 @@ public class Generator_AdvancedScenarios_Tests
             })
             .ToArray();
 
-        var request = new GenerateRequest(dateStart, dateEnd, groups, teachers, diaries, [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = dateStart,
+            DateEnd = dateEnd,
+            Groups = groups,
+            Teachers = teachers,
+            Diaries = diaries,
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         Assert.DoesNotThrow(() => GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).ToList());
 
@@ -156,16 +174,25 @@ public class Generator_AdvancedScenarios_Tests
         var date = new DateOnly(2025, 10, 27);
         var slots = new[]
         {
-            new TimeSlot("10:00:00", "10:50:00"),
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(10, 0, 0), new TimeOnly(10, 50, 0)),
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 3, 3);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -173,14 +200,14 @@ public class Generator_AdvancedScenarios_Tests
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(3));
 
         var scheduledStarts = result.Timetable.Schedules.Select(s => s.TimeSlot.Start).OrderBy(t => t).ToArray();
-        Assert.That(scheduledStarts, Is.EqualTo(["08:00:00", "09:00:00", "10:00:00"]));
+        Assert.That(scheduledStarts, Is.EqualTo(new[] { new TimeOnly(8, 0, 0), new TimeOnly(9, 0, 0), new TimeOnly(10, 0, 0) }));
     }
 
     [Test]
     public void Unavailability_With_Timezone_Consideration_If_Applicable()
     {
         var date = new DateOnly(2025, 10, 27);
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var unavailableStart = date.ToDateTime(new TimeOnly(8, 0, 0), DateTimeKind.Utc);
         var unavailableEnd = date.ToDateTime(new TimeOnly(8, 50, 0), DateTimeKind.Utc);
@@ -194,7 +221,16 @@ public class Generator_AdvancedScenarios_Tests
         );
         var diary = new Diary("diario:1", group.Id, teacherWithUnavail.Id, "disc:1", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group], [teacherWithUnavail], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacherWithUnavail],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -203,7 +239,16 @@ public class Generator_AdvancedScenarios_Tests
 
         // Variant: no unavailability
         var teacherNoUnavail = new Teacher("prof:1", new Availability([]));
-        var requestNoUnavail = new GenerateRequest(date, date, [group], [teacherNoUnavail], [diary], [timeSlot]);
+        var requestNoUnavail = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacherNoUnavail],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
         var resultNoUnavail = GeneratorFactory.CreateDefault().GenerateTimetables(requestNoUnavail, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(resultNoUnavail!.Timetable.Schedules, Has.Length.EqualTo(1));

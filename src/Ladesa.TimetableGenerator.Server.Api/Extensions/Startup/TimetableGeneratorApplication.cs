@@ -1,4 +1,4 @@
-using Ladesa.TimetableGenerator.Application.Health;
+using Ladesa.TimetableGenerator.Server.Api.Health;
 
 namespace Ladesa.TimetableGenerator.Server.Api.Extensions.Startup;
 

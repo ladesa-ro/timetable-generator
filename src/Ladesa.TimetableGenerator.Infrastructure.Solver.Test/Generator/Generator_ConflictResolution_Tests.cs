@@ -1,11 +1,12 @@
-using System.Globalization;
-using Ladesa.TimetableGenerator.Domain.Models;
-using Ladesa.TimetableGenerator.Infrastructure.Solver;
-using Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Diary;
+using Ladesa.TimetableGenerator.Domain.Models.Group;
+using Ladesa.TimetableGenerator.Domain.Models.Teacher;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Test.TestUtilities;
-using NUnit.Framework;
 
-namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test;
+namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Test.Generator;
 
 [TestFixture]
 public class Generator_ConflictResolution_Tests
@@ -14,14 +15,23 @@ public class Generator_ConflictResolution_Tests
     public void Multiple_Diaries_For_Same_Group_And_Teacher()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary1 = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group.Id, teacher.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -36,7 +46,7 @@ public class Generator_ConflictResolution_Tests
     public void Conflicting_Schedules_Between_Two_Diaries()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group1 = new Group("turma:1", new Availability([]));
         var group2 = new Group("turma:2", new Availability([]));
@@ -44,7 +54,16 @@ public class Generator_ConflictResolution_Tests
         var diary1 = new Diary("diario:1", group1.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group2.Id, teacher.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary1, diary2], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group1, group2],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -58,15 +77,24 @@ public class Generator_ConflictResolution_Tests
         var date = new DateOnly(2025, 10, 27); // Monday
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "09:00:00"),
-            new TimeSlot("08:30:00", "09:30:00") // Overlapping
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(9, 0, 0)),
+            new TimeSlot(new TimeOnly(8, 30, 0), new TimeOnly(9, 30, 0)) // Overlapping
         };
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 2);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -78,14 +106,23 @@ public class Generator_ConflictResolution_Tests
     public void Multiple_Teachers_For_One_Diary()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group = new Group("turma:1", new Availability([]));
         var teacher1 = new Teacher("prof:1", new Availability([]));
         var teacher2 = new Teacher("prof:2", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher1.Id, "disc:1", 1, 1); // References teacher1
 
-        var request = new GenerateRequest(date, date, [group], [teacher1, teacher2], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher1, teacher2],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -98,14 +135,23 @@ public class Generator_ConflictResolution_Tests
     public void Multiple_Groups_For_One_Diary()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group1 = new Group("turma:1", new Availability([]));
         var group2 = new Group("turma:2", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group1.Id, teacher.Id, "disc:1", 1, 1); // References group1
 
-        var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group1, group2],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -118,14 +164,23 @@ public class Generator_ConflictResolution_Tests
     public void Priority_Or_Ordering_Of_Diaries()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary1 = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group.Id, teacher.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], [timeSlot]);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = [timeSlot],
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -138,14 +193,23 @@ public class Generator_ConflictResolution_Tests
     public void Duplicate_Time_Slots()
     {
         var date = new DateOnly(2025, 10, 27); // Monday
-        var timeSlot = new TimeSlot("08:00:00", "08:50:00");
+        var timeSlot = new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0));
         var slots = new[] { timeSlot, timeSlot }; // Duplicates
 
         var group = new Group("turma:1", new Availability([]));
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 2);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -159,8 +223,8 @@ public class Generator_ConflictResolution_Tests
         var date = new DateOnly(2025, 10, 27); // Monday
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group1 = new Group("turma:1", new Availability([]));
@@ -169,7 +233,16 @@ public class Generator_ConflictResolution_Tests
         var diary1 = new Diary("diario:1", group1.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group2.Id, teacher.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group1, group2], [teacher], [diary1, diary2], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group1, group2],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -185,8 +258,8 @@ public class Generator_ConflictResolution_Tests
         var date = new DateOnly(2025, 10, 27); // Monday
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group = new Group("turma:1", new Availability([]));
@@ -195,7 +268,16 @@ public class Generator_ConflictResolution_Tests
         var diary1 = new Diary("diario:1", group.Id, teacher1.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group.Id, teacher2.Id, "disc:2", 1, 1);
 
-        var request = new GenerateRequest(date, date, [group], [teacher1, teacher2], [diary1, diary2], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher1, teacher2],
+            Diaries = [diary1, diary2],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
@@ -211,8 +293,8 @@ public class Generator_ConflictResolution_Tests
         var date = new DateOnly(2025, 10, 27); // Monday
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group = new Group("turma:1", new Availability([
@@ -225,13 +307,22 @@ public class Generator_ConflictResolution_Tests
         var teacher = new Teacher("prof:1", new Availability([]));
         var diary = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 2, 2);
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 
         Assert.That(result, Is.Not.Null, "Should generate at least one timetable.");
         Assert.That(result!.Timetable.Schedules, Has.Length.EqualTo(1), "Should generate partial schedules due to unavailability conflict.");
-        Assert.That(result.Timetable.Schedules[0].TimeSlot.Start, Is.EqualTo("08:00:00"), "Should schedule only in available slot.");
+        Assert.That(result.Timetable.Schedules[0].TimeSlot.Start, Is.EqualTo(new TimeOnly(8, 0, 0)), "Should schedule only in available slot.");
     }
 
     [Test]
@@ -240,8 +331,8 @@ public class Generator_ConflictResolution_Tests
         var date = new DateOnly(2025, 10, 27); // Monday
         var slots = new[]
         {
-            new TimeSlot("08:00:00", "08:50:00"),
-            new TimeSlot("09:00:00", "09:50:00")
+            new TimeSlot(new TimeOnly(8, 0, 0), new TimeOnly(8, 50, 0)),
+            new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(9, 50, 0))
         };
 
         var group = new Group("turma:1", new Availability([]));
@@ -249,7 +340,16 @@ public class Generator_ConflictResolution_Tests
         var diary1 = new Diary("diario:1", group.Id, teacher.Id, "disc:1", 1, 1);
         var diary2 = new Diary("diario:2", group.Id, teacher.Id, "disc:2", 1, 1); // Different subject
 
-        var request = new GenerateRequest(date, date, [group], [teacher], [diary1, diary2], slots);
+        var request = new GenerateTimetableCommand
+        {
+            DateStart = date,
+            DateEnd = date,
+            Groups = [group],
+            Teachers = [teacher],
+            Diaries = [diary1, diary2],
+            TimeSlots = slots,
+            PreviousTimetableGrid = null
+        };
 
         var result = GeneratorFactory.CreateDefault().GenerateTimetables(request, new IcalAvailabilityEvaluator()).FirstOrDefault();
 

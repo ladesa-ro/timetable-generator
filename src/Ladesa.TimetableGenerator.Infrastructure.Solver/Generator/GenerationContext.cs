@@ -1,21 +1,23 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.Services;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
 using LinearExpr = Google.OrTools.Sat.LinearExpr;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
-internal class GenerationContext
+public class GenerationContext
 {
     public GenerationContext(
-        GenerateRequest generateRequest,
+        GenerateTimetableCommand generateTimetableCommand,
         IAvailabilityEvaluator availabilityEvaluator,
-        IScheduleCombinationGenerator scheduleCombinationGenerator)
+        ICombinationGenerator combinationGenerator)
     {
-        GenerateRequest = generateRequest;
-        InitializeProposals(availabilityEvaluator, scheduleCombinationGenerator);
+        GenerateTimetableCommand = generateTimetableCommand;
+        InitializeProposals(availabilityEvaluator, combinationGenerator);
     }
 
-    public GenerateRequest GenerateRequest { get; }
+    public GenerateTimetableCommand GenerateTimetableCommand { get; }
     public CpModel CpModel { get; } = new();
     public List<GenerationContextScheduleProposal> AllProposals { get; } = [];
 
@@ -23,11 +25,11 @@ internal class GenerationContext
 
     private void InitializeProposals(
         IAvailabilityEvaluator availabilityEvaluator,
-        IScheduleCombinationGenerator scheduleCombinationGenerator)
+        ICombinationGenerator combinationGenerator)
     {
         AllProposals.Clear();
 
-        foreach (var scheduleCombination in scheduleCombinationGenerator.GetAllCombinationsWithAvailability(GenerateRequest, availabilityEvaluator))
+        foreach (var scheduleCombination in combinationGenerator.GetAllCombinationsWithAvailability(GenerateTimetableCommand, availabilityEvaluator))
         {
             var scheduleProposal = new GenerationContextScheduleProposal(
                 this,

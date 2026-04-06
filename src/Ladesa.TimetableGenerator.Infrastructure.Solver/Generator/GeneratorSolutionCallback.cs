@@ -1,11 +1,13 @@
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
+using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
 
 internal class GeneratorSolutionCallback(
     GenerationContext generationContext,
-    Action<GeneratedTimetable> action)
+    Action<GenerateTimetableCommandResponse> action)
     : CpSolverSolutionCallback
 {
     public override void OnSolutionCallback()
@@ -13,7 +15,7 @@ internal class GeneratorSolutionCallback(
         var schedules =
             from proposal in generationContext.AllProposals
             where BooleanValue(proposal.ModelBoolVar)
-            select new TimetableGridSchedule(
+            select new Schedule(
                 proposal.GroupId,
                 proposal.DiaryId,
                 proposal.TeacherId,
@@ -22,13 +24,13 @@ internal class GeneratorSolutionCallback(
             );
 
         var timetableGrid = new TimetableGrid(
-            generationContext.GenerateRequest.DateStart,
-            generationContext.GenerateRequest.DateEnd,
-            generationContext.GenerateRequest.TimeSlots,
+            generationContext.GenerateTimetableCommand.DateStart,
+            generationContext.GenerateTimetableCommand.DateEnd,
+            generationContext.GenerateTimetableCommand.TimeSlots,
             schedules.ToArray()
         );
 
-        var generatedTimetable = new GeneratedTimetable(timetableGrid, (int)ObjectiveValue());
+        var generatedTimetable = new GenerateTimetableCommandResponse(timetableGrid, (int)ObjectiveValue());
 
         action(generatedTimetable);
     }

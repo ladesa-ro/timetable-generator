@@ -1,4 +1,8 @@
+using Ladesa.TimetableGenerator.Domain.Abstractions;
 using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Domain.Models.Availability;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Models.TimeSlot;
 using Ladesa.TimetableGenerator.Infrastructure.Solver;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -22,7 +26,7 @@ public class AvailabilityRuleUnavailability_Additional_Tests
         var monday = DateOnly.FromDateTime(dateStart);
         var tuesday = monday.AddDays(1);
 
-        var slot = new TimeSlot("09:00:00", "10:00:00");
+        var slot = new TimeSlot(new TimeOnly(9, 0, 0), new TimeOnly(10, 0, 0));
 
         Assert.That(_evaluator.IsAvailable(rule, monday, slot), Is.False, "Monday should be blocked by default.");
         Assert.That(_evaluator.IsAvailable(rule, tuesday, slot), Is.True, "Tuesday should be available.");

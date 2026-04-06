@@ -1,6 +1,11 @@
 using System.Threading.Channels;
 using Google.OrTools.Sat;
-using Ladesa.TimetableGenerator.Domain.Models;
+using Ladesa.TimetableGenerator.Application.Services;
+using Ladesa.TimetableGenerator.Application.UseCases.GenerateTimetable;
+using Ladesa.TimetableGenerator.Domain.Models.Availability.Abstractions;
+using Ladesa.TimetableGenerator.Domain.Models.Constraints;
+using Ladesa.TimetableGenerator.Domain.Models.Schedule;
+using Ladesa.TimetableGenerator.Domain.Models.TimetableGrid;
 using Ladesa.TimetableGenerator.Infrastructure.Solver.Constraints;
 
 namespace Ladesa.TimetableGenerator.Infrastructure.Solver.Generator;
@@ -27,34 +32,33 @@ public class Generator : IGenerator
 
     private static readonly ConstraintKind[] AllConstraintKinds = Enum.GetValues<ConstraintKind>();
 
-    private readonly ITimetableOptimizer _optimizer = new TimetableOptimizer();
-    private readonly IScheduleCombinationGenerator _combinationGenerator;
+    private readonly ITimetableOptimizer _optimizer;
+    private readonly ICombinationGenerator _combinationGenerator;
 
-    public Generator(IScheduleCombinationGenerator combinationGenerator)
+    public Generator(ICombinationGenerator combinationGenerator, ITimetableOptimizer optimizer)
     {
         _combinationGenerator = combinationGenerator;
+        _optimizer = optimizer;
     }
 
     /// <summary>
-    ///     Generates timetable solutions for the given request, iteratively improving
+    ///     Generates timetable solutions for the given timetableCommand, iteratively improving
     ///     quality. Yields results as they are found by the solver.
     /// </summary>
-    public IEnumerable<GeneratedTimetable> GenerateTimetables(
-        GenerateRequest request,
+    public IEnumerable<GenerateTimetableCommandResponse> GenerateTimetables(
+        GenerateTimetableCommand timetableCommand,
         IAvailabilityEvaluator availabilityEvaluator)
     {
-        ValidateDiaryReferences(request);
-
-        var generationContext = CreateContextWithRestrictionsApplied(request, availabilityEvaluator);
+        var generationContext = CreateContextWithRestrictionsApplied(timetableCommand, availabilityEvaluator);
 
         if (generationContext.AllProposals.Count == 0)
         {
-            yield return CreateEmptyTimetable(request);
+            yield return CreateEmptyTimetable(timetableCommand);
             yield break;
         }
 
-        var channel = Channel.CreateUnbounded<GeneratedTimetable>();
-        var solverTask = Task.Run(() => SolveAndWriteToChannel(channel.Writer, generationContext, request));
+        var channel = Channel.CreateUnbounded<GenerateTimetableCommandResponse>();
+        var solverTask = Task.Run(() => SolveAndWriteToChannel(channel.Writer, generationContext, timetableCommand));
 
         foreach (var timetable in ReadChannel(channel.Reader))
             yield return timetable;
@@ -62,18 +66,9 @@ public class Generator : IGenerator
         solverTask.GetAwaiter().GetResult();
     }
 
-    /// <summary>
-    ///     Generates all possible schedule combinations, filtering by availability.
-    /// </summary>
-    public IEnumerable<GenerationScheduleCombination> GetAllCombinationsWithAvailability(
-        GenerateRequest generateRequest,
-        IAvailabilityEvaluator availabilityEvaluator)
-        => _combinationGenerator.GetAllCombinationsWithAvailability(
-            generateRequest, availabilityEvaluator);
-
-    private static IConstraint[] BuildConstraints(GenerateRequest request)
+    private static IConstraint[] BuildConstraints(GenerateTimetableCommand timetableCommand)
     {
-        var enabledKinds = request.EnabledConstraints ?? AllConstraintKinds;
+        var enabledKinds = timetableCommand.EnabledConstraints ?? AllConstraintKinds;
         return enabledKinds
             .Where(ConstraintFactories.ContainsKey)
             .Select(kind => ConstraintFactories[kind]())
@@ -81,12 +76,12 @@ public class Generator : IGenerator
     }
 
     private GenerationContext CreateContextWithRestrictionsApplied(
-        GenerateRequest request,
+        GenerateTimetableCommand timetableCommand,
         IAvailabilityEvaluator availabilityEvaluator)
     {
-        var generationContext = new GenerationContext(request, availabilityEvaluator, _combinationGenerator);
+        var generationContext = new GenerationContext(timetableCommand, availabilityEvaluator, _combinationGenerator);
 
-        foreach (var constraint in BuildConstraints(request))
+        foreach (var constraint in BuildConstraints(timetableCommand))
             constraint.Apply(generationContext);
 
         _optimizer.OptimizeResult(generationContext);
@@ -94,43 +89,25 @@ public class Generator : IGenerator
         return generationContext;
     }
 
-    private static void ValidateDiaryReferences(GenerateRequest request)
+    private static GenerateTimetableCommandResponse CreateEmptyTimetable(GenerateTimetableCommand timetableCommand)
     {
-        if (request.Diaries is null) return;
-
-        var groupIds = new HashSet<string>(request.Groups.Select(g => g.Id));
-        var teacherIds = new HashSet<string>(request.Teachers.Select(t => t.Id));
-
-        foreach (var diary in request.Diaries)
-        {
-            if (!groupIds.Contains(diary.GroupId) && !teacherIds.Contains(diary.TeacherId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.DiaryReferencesNotFound, "Diary references not found: group and teacher not found.");
-            if (!groupIds.Contains(diary.GroupId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.GroupNotFound, $"Group not found: {diary.GroupId}.");
-            if (!teacherIds.Contains(diary.TeacherId))
-                throw new GeneratorValidationException(GeneratorValidationErrorCode.TeacherNotFound, $"Teacher not found: {diary.TeacherId}.");
-        }
-    }
-
-    private static GeneratedTimetable CreateEmptyTimetable(GenerateRequest request)
-    {
-        return new GeneratedTimetable(
-            new TimetableGrid(request.DateStart, request.DateEnd, request.TimeSlots, Array.Empty<TimetableGridSchedule>()),
+        return new GenerateTimetableCommandResponse(
+            new TimetableGrid(timetableCommand.DateStart, timetableCommand.DateEnd, timetableCommand.TimeSlots, Array.Empty<Schedule>()),
             0
         );
     }
 
     private void SolveAndWriteToChannel(
-        ChannelWriter<GeneratedTimetable> writer,
+        ChannelWriter<GenerateTimetableCommandResponse> writer,
         GenerationContext generationContext,
-        GenerateRequest request)
+        GenerateTimetableCommand timetableCommand)
     {
         try
         {
             var producedAny = RunSolverIterations(writer, generationContext);
 
             if (!producedAny)
-                writer.TryWrite(CreateEmptyTimetable(request));
+                writer.TryWrite(CreateEmptyTimetable(timetableCommand));
         }
         finally
         {
@@ -139,7 +116,7 @@ public class Generator : IGenerator
     }
 
     private bool RunSolverIterations(
-        ChannelWriter<GeneratedTimetable> writer,
+        ChannelWriter<GenerateTimetableCommandResponse> writer,
         GenerationContext generationContext)
     {
         long? previousScore = null;
@@ -158,7 +135,7 @@ public class Generator : IGenerator
 
     private static long SolveIteration(
         GenerationContext generationContext,
-        ChannelWriter<GeneratedTimetable> writer,
+        ChannelWriter<GenerateTimetableCommandResponse> writer,
         ref bool producedAny)
     {
         var solver = new CpSolver { StringParameters = "enumerate_all_solutions:true" };
@@ -181,7 +158,7 @@ public class Generator : IGenerator
             : 0;
     }
 
-    private static IEnumerable<GeneratedTimetable> ReadChannel(ChannelReader<GeneratedTimetable> reader)
+    private static IEnumerable<GenerateTimetableCommandResponse> ReadChannel(ChannelReader<GenerateTimetableCommandResponse> reader)
     {
         while (reader.WaitToReadAsync().AsTask().GetAwaiter().GetResult())
         {
